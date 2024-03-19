@@ -1,15 +1,16 @@
 "use client";
 
 import { useInput } from "@/hooks/customhook";
+import { zustandStore } from "@/lib/zustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
-  const [email, setEmail, clearvEmail] = useInput();
+  const [email, setEmail, clearEmail] = useInput();
   const [password, setPassword, clearPassword] = useInput();
   const router = useRouter();
-
   const supabase = createClientComponentClient();
+  const changeLoggedIn = zustandStore((state) => state.changeLoggedIn);
 
   const handleSignUp = async () => {
     await supabase.auth.signUp({
@@ -21,7 +22,7 @@ const LoginPage = () => {
       },
     });
     router.refresh();
-    clearvEmail();
+    clearEmail();
     clearPassword();
   };
 
@@ -30,10 +31,15 @@ const LoginPage = () => {
       email,
       password,
     });
-    router.refresh();
-    clearvEmail();
-    clearPassword();
-    alert("로그인에 성공했습니다.");
+    if (data.session) {
+      router.refresh();
+      clearEmail();
+      clearPassword();
+      alert("로그인에 성공했습니다.");
+      changeLoggedIn();
+      router.push("/");
+    }
+
     if (error) alert("로그인 오류");
   };
 
