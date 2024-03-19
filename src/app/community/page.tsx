@@ -1,30 +1,28 @@
 "use client";
+import usePostQuery from "@/hook/use-post-query";
 
-import { createClient } from "@supabase/supabase-js";
-import { Database } from "@/lib/types";
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+const CommunityPage = () => {
+  const { data: posts, isLoading, isError } = usePostQuery(id);
+  if (isLoading) {
+    return <div>Loading 중...</div>;
+  }
+  if (isError || !posts) {
+    return <div>Error</div>;
+  }
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const client = createClient<Database>(supabaseUrl!, supabaseAnonKey!);
-
-const CommunityPage = async () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [rating, setRating] = useState("");
-  const [ingredient, setIngredient] = useState("");
-  const [userId, setUserId] = useState("");
-
-  const { isPending, isError, data } = useQuery({
-    queryKey: ["posts"],
-    queryFn: async () => {
-      const response = await client.auth.getUser();
-    },
-  });
-
-  return <div>CommunityPage</div>;
+  return (
+    <div>
+      <h1>CommunityPage</h1>
+      {posts.map((post) => (
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.content}</p>
+          <p>평점: {post.rating}</p>
+          <p>성분: {post.ingredient}</p>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default CommunityPage;
