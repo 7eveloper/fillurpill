@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest) => {
   const requestUrl = new URL(request.url);
+
   const code = requestUrl.searchParams.get("code");
 
   if (code) {
@@ -11,6 +12,6 @@ export const GET = async (request: NextRequest) => {
     const supabase = createRouteHandlerClient({ cookies });
     await supabase.auth.exchangeCodeForSession(code);
   }
-  // sign-in이 끝나면(쎄션 exchange 성공 or 실패 후) 다시 어플리케이션 페이지로 돌아가도록
+  // sign-in이 끝나면(쎄션 exchange 성공 or 실패 후) 다시 클라이언트 페이지로 돌아가도록
   return NextResponse.redirect(requestUrl.origin);
 };
