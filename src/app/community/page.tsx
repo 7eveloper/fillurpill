@@ -1,8 +1,17 @@
 "use client";
-import usePostQuery from "@/hook/use-post-query";
+// import usePostQuery from "@/hook/use-post-query";
+import useSupabaseBrowser from "@/utils/supabase";
+import { getPostById } from "@/utils/get-post-by-id";
+import { useQuery } from "@supabase-cache-helpers/postgrest-react-query";
 
-const CommunityPage = () => {
-  const { data: posts, isLoading, isError } = usePostQuery(id);
+const CommunityPage = ({ params }: { params: { id: number } }) => {
+  const supabase = useSupabaseBrowser();
+  const {
+    data: posts,
+    isLoading,
+    isError,
+  } = useQuery(getPostById(supabase, params.id));
+
   if (isLoading) {
     return <div>Loading 중...</div>;
   }
@@ -13,14 +22,11 @@ const CommunityPage = () => {
   return (
     <div>
       <h1>CommunityPage</h1>
-      {posts.map((post) => (
-        <div key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-          <p>평점: {post.rating}</p>
-          <p>성분: {post.ingredient}</p>
-        </div>
-      ))}
+
+      <h2>{posts.title}</h2>
+      <p>{posts.content}</p>
+      <p>평점: {posts.rating}</p>
+      <p>성분: {posts.ingredient}</p>
     </div>
   );
 };
