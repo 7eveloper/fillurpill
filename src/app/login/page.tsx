@@ -26,13 +26,15 @@ const LoginPage = () => {
   };
 
   const handleSignIn = async () => {
-    await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     router.refresh();
     clearvEmail();
     clearPassword();
+    alert("로그인에 성공했습니다.");
+    if (error) alert("로그인 오류");
   };
 
   return (
