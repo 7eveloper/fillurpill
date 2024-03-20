@@ -1,12 +1,12 @@
 "use client";
 
 import React, { FormEvent, useEffect, useState } from "react";
-import { supabase } from "@/utils/supabase";
 import { Post } from "@/lib/types";
 import usePostStore from "@/hook/store";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Input } from "@/components/ui/DefaultInput";
+import { Label } from "@/components/ui/DefaultLabel";
+import { Button } from "@/components/ui/PrimaryButton";
 import {
   Select,
   SelectContent,
@@ -76,7 +76,10 @@ const PostForm = () => {
   };
 
   return (
-    <form className="flex-column border-2 p-4 w-2/3" onSubmit={onSubmitHandler}>
+    <form
+      className="flex-column border-2 p-4 w-2/3 m-2"
+      onSubmit={onSubmitHandler}
+    >
       <section className="flex">
         <Label htmlFor="제목" className="w-20">
           제목
