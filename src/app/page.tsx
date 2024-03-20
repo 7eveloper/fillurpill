@@ -1,7 +1,11 @@
 import GameApp from "@/components/GameApp";
+import { AlertDemo } from "@/components/shadcn/AlertDemo";
 
-export default function Home() {
+export default async function Home() {
   return (
+    <>
     <GameApp />
-    );
+      <AlertDemo />
+    </>
+  );
 }
