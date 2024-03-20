@@ -12,7 +12,7 @@ const Survey = () => {
     weight: "",
     height: "",
   });
-  console.log(userResult);
+  // console.log(userResult);
   const [clickList, setClickList] = useState([false, false, false, false]);
   const router = useRouter();
   const genderList = ["남성", "여성"];

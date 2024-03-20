@@ -12,6 +12,13 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient({ req, res });
 
   const { data } = await supabase.auth.getSession();
+  // console.log(data.session?.user.id);
+  console.log(data.session);
+  const { data: userResults, error } = await supabase
+    .from("survey")
+    .select("*")
+    .eq("user_id", data.session?.user.id);
+
   if (
     !data.session &&
     !req.nextUrl.pathname.startsWith("/login") &&
@@ -20,6 +27,13 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
   if (data.session && req.nextUrl.pathname.startsWith("/login")) {
+    return NextResponse.redirect(new URL("/", req.nextUrl.origin));
+  }
+  if (
+    data.session &&
+    userResults?.length !== 0 &&
+    req.nextUrl.pathname.startsWith("/survey")
+  ) {
     return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   } else {
     return res;

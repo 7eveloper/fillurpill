@@ -10,7 +10,7 @@ const SurveyPage = async () => {
     .select("*")
     .eq("user_id", user?.id);
 
-  console.log("유저리저트", userResults);
+  // console.log("유저리저트", userResults);
 
   return (
     <div>
