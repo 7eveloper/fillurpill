@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertAuthResult } from "@/components/shadcn/AlertAuthResult";
 import { useInput } from "@/hooks/customhook";
 import { zustandStore } from "@/lib/zustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -18,7 +19,18 @@ const LoginPage = () => {
     setLoginMode(!loginMode);
   };
 
+  const clearInput = () => {
+    clearEmail();
+    clearPassword();
+  };
+
   const handleSignUp = async () => {
+    let message = "";
+    clearInput();
+    if (email.length === 0 || password.length === 0) {
+      message = "이메일과 비밀번호를 모두 입력해주세요.";
+      return message;
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -27,29 +39,39 @@ const LoginPage = () => {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
-    console.log(data);
-    router.refresh();
-    clearEmail();
-    clearPassword();
+    if (data.session) {
+      router.refresh();
+      message = "Fill ur Pill의 회원이 되신 걸 환영합니다.";
+      return message;
+    }
     if (error) {
-      alert("회원가입 과정에 오류가 발생하였습니다.");
+      message = "회원가입 과정에 오류가 발생했습니다.";
+      return message;
     }
   };
 
   const handleSignIn = async () => {
+    let message = "";
+    clearInput();
+    if (email.length === 0 || password.length === 0) {
+      message = "이메일과 비밀번호를 모두 입력해주세요.";
+      return message;
+    }
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (data.session) {
       router.refresh();
-      clearEmail();
-      clearPassword();
-      alert("로그인에 성공했습니다.");
+      message = "로그인에 성공했습니다.";
       changeLoggedIn(!!data.session);
       router.push("/");
+      // return message;
     }
-    if (error) alert("로그인 과정에 오류가 발생하였습니다.");
+    if (error) {
+      message = "로그인 과정에 오류가 발생하였습니다.";
+    }
+    return message;
   };
 
   return (
@@ -67,14 +89,16 @@ const LoginPage = () => {
         <div>
           {loginMode ? (
             <>
-              <button onClick={handleSignIn}>로그인</button>
+              <AlertAuthResult func={handleSignIn} text="로그인" />
+              {/* <button onClick={handleSignIn}>로그인</button> */}
               <button onClick={handlerLoginMode}>
                 아직 회원이 아니신가요?
               </button>
             </>
           ) : (
             <>
-              <button onClick={handleSignUp}>회원가입</button>
+              <AlertAuthResult func={handleSignUp} text="회원가입" />
+              {/* <button onClick={handleSignUp}>회원가입</button> */}
               <button onClick={handlerLoginMode}>로그인하러 가기</button>
             </>
           )}
