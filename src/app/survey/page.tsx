@@ -1,8 +1,6 @@
-"use client";
-
 import Survey from "@/components/Survey";
 
-const SurveyPage = () => {
+const SurveyPage = async () => {
   return (
     <div>
       SurveyPage

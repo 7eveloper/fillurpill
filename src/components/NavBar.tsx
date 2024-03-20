@@ -2,31 +2,30 @@
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { zustandStore } from "@/lib/zustandStore";
+import { useEffect } from "react";
 
 const NavBar = () => {
   const router = useRouter();
   const supabase = createClientComponentClient();
   const loggedIn = zustandStore((state) => state.loggedIn);
   const changeLoggedIn = zustandStore((state) => state.changeLoggedIn);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log(loggedIn);
 
-  // useEffect(() => {
-  //   const fetchSession = async () => {
-  //     const { data } = await supabase.auth.getSession();
-  //     console.log("세션은", data.session);
-  //     console.log(!!data.session);
-  //     setIsLoggedIn(!!data.session);
-  //   };
-  //   fetchSession();
-  // }, [supabase.auth, isLoggedIn]);
+  useEffect(() => {
+    const fetchSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      console.log("세션은", data.session);
+      console.log(!!data.session);
+      changeLoggedIn(!!data.session);
+    };
+    fetchSession();
+  }, [supabase.auth, changeLoggedIn]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    changeLoggedIn();
+    changeLoggedIn(false);
     router.refresh();
   };
-
-  // console.log(isLoggedIn);
 
   const goToLoginpage = () => {
     router.push("/login");

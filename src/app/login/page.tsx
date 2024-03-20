@@ -36,7 +36,7 @@ const LoginPage = () => {
       clearEmail();
       clearPassword();
       alert("로그인에 성공했습니다.");
-      changeLoggedIn();
+      changeLoggedIn(!!data.session);
       router.push("/");
     }
 

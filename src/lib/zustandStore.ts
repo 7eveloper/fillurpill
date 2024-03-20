@@ -15,14 +15,14 @@ type State = {
 };
 
 type Actions = {
-  changeLoggedIn: () => void;
+  changeLoggedIn: (isSession: boolean) => void;
   addUser: (user: User) => void;
 };
 
 export const zustandStore = create<State & Actions>((set) => ({
   loggedIn: false,
   users: [],
-  changeLoggedIn: () => set((state) => ({ loggedIn: !state.loggedIn })),
+  changeLoggedIn: (isSession) => set({ loggedIn: isSession }),
   addUser: (user) =>
     set(
       produce((state) => {

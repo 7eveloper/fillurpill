@@ -1,5 +1,7 @@
+"use client";
 import { User } from "@/lib/zustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Survey = () => {
@@ -12,6 +14,8 @@ const Survey = () => {
     height: "",
   });
   console.log(userResult);
+  const [clickList, setClickList] = useState([false, false, false, false]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetch = async () => {
@@ -22,8 +26,6 @@ const Survey = () => {
     };
     fetch();
   }, []);
-
-  const [clickList, setClickList] = useState([false, false, false, false]);
 
   const handleClick = (idx: number, value: string) => {
     setClickList((prev) => {
@@ -41,6 +43,16 @@ const Survey = () => {
         ? "weight"
         : "height"]: value,
     });
+  };
+
+  const addUserReault = async () => {
+    // await fetch("http://localhost:3000/user/survey", {
+    //     method: "post",
+    //     body: JSON.stringify({userResult})
+    // })
+    // router.refresh()
+    const { data, error } = await supabase.from("survey").insert(userResult);
+    return { data, error };
   };
 
   const genderList = ["남성", "여성"];
@@ -121,7 +133,7 @@ const Survey = () => {
     return (
       <>
         당신은{userResult.age}입니다
-        <button onClick={() => {}}>마이페이지 가기</button>
+        <button onClick={addUserReault}>마이페이지 가기</button>
       </>
     );
   }
