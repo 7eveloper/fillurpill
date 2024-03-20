@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addIntake } from "@/lib/mypage/mutation";
 
 // 시간대 설정
-moment.locale("en");
+
 const localizer = momentLocalizer(moment);
 
 const MyIntakeHistory = () => {
@@ -24,6 +24,7 @@ const MyIntakeHistory = () => {
   const queryClient = useQueryClient();
 
   const fetchIntakeList = async () => {
+    //supabase intake테이블을 전부 가져오는거
     const { data, error } = await supabase.from("intake").select("*");
     if (error) {
       throw new Error(error.message);
@@ -48,9 +49,14 @@ const MyIntakeHistory = () => {
   });
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-    setSelectedSlot({ start, end });
+    const nextDay = new Date(start);
+    const endDay = new Date(end);
+    endDay.setDate(endDay.getDate() + 1);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setSelectedSlot({ start: nextDay, end: endDay });
     setModalOpen(true);
   };
+
   const handleModalSubmit = async () => {
     if (title && contents && selectedSlot) {
       try {
@@ -61,6 +67,7 @@ const MyIntakeHistory = () => {
           title,
           contents,
         });
+        console.log(title, contents, selectedSlot);
         setModalOpen(false);
         setSelectedSlot(null);
         setTitle("");
@@ -82,20 +89,19 @@ const MyIntakeHistory = () => {
     }),
     []
   );
+
   return (
     <div>
       나의 섭취 이력
       <div style={{ height: "500px", margin: "50px" }}>
         <Calendar
-          defaultDate={defaultDate}
-          defaultView={Views.MONTH}
+          selectable
           localizer={localizer}
           events={intake} // 여기서 myEvents를 사용합니다.
           startAccessor="start"
           endAccessor="end"
           onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
-          selectable
           scrollToTime={scrollToTime}
         />
       </div>
