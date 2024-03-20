@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "./provider";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,14 +14,23 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <QueryProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </QueryProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <QueryProvider>
+          <Link href="/" className="m-2">
+            로고
+          </Link>
+          <Link href="/community" className="m-2">
+            커뮤니티
+          </Link>
+          <Button>로그아웃</Button>
+          {children}
+        </QueryProvider>
+      </body>
+    </html>
   );
 }

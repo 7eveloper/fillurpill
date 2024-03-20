@@ -21,25 +21,17 @@ export interface Database {
           userId: string;
           data: Json | null;
         };
-        Insert: {
-          id?: never;
-          title: string;
-          content: string;
-          rating: number;
-          ingredient: string;
-          userId: string;
-          data: Json | null;
-        };
-        Update: {
-          id?: never;
-          title: string;
-          content: string;
-          rating: number;
-          ingredient: string;
-          userId: string;
-          data: Json | null;
-        };
       };
     };
   };
+}
+
+export interface Post {
+  id: number;
+  title: string;
+  content: string;
+  rating: string;
+  ingredient: string;
+  userId: string;
+  data: Json | null;
 }
