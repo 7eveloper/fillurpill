@@ -5,6 +5,8 @@ import { isThereServerSession } from "@/hooks/session";
 import NavBar from "../components/NavBar";
 import "./globals.css";
 import QueryProvider from "./provider";
+import Link from "next/link";
+import { Button } from "@/components/ui/PrimaryButton";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,8 +33,15 @@ export default async function RootLayout({
           <nav>
             <NavBar />
           </nav>
+            <Link href="/" className="m-2">
+            로고
+          </Link>
+          <Link href="/community" className="m-2">
+            커뮤니티
+          </Link>
+          <Button>로그아웃</Button>
           {children}
-        </body>
+      </body>
       </html>
     </QueryProvider>
   );
