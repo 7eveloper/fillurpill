@@ -1,5 +1,10 @@
-import Image from "next/image";
+import { AlertDemo } from "@/components/shadcn/AlertDemo";
 
-export default function Home() {
-  return <div>랜딩 페이지</div>;
+export default async function Home() {
+  return (
+    <>
+      기본 홈
+      <AlertDemo />
+    </>
+  );
 }
