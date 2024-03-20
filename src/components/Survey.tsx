@@ -45,16 +45,6 @@ const Survey = () => {
     });
   };
 
-  const addUserReault = async () => {
-    // await fetch("http://localhost:3000/user/survey", {
-    //     method: "post",
-    //     body: JSON.stringify({userResult})
-    // })
-    // router.refresh()
-    const { data, error } = await supabase.from("survey").insert(userResult);
-    return { data, error };
-  };
-
   const genderList = ["남성", "여성"];
   const ageList = ["10대", "2-30대", "3-40대", "4-50대", "5-60대", "70대 이상"];
   const [weight, setWeight] = useState("");
@@ -133,7 +123,7 @@ const Survey = () => {
     return (
       <>
         당신은{userResult.age}입니다
-        <button onClick={addUserReault}>마이페이지 가기</button>
+        <button onClick={() => {}}>마이페이지 가기</button>
       </>
     );
   }

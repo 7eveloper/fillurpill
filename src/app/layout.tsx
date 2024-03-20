@@ -15,7 +15,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { session } = await isThereServerSession();
+  // const { session } = await isThereServerSession();
   // console.log(session);
   return (
     <html lang="en">

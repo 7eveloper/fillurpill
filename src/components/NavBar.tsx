@@ -9,13 +9,10 @@ const NavBar = () => {
   const supabase = createClientComponentClient();
   const loggedIn = zustandStore((state) => state.loggedIn);
   const changeLoggedIn = zustandStore((state) => state.changeLoggedIn);
-  console.log(loggedIn);
 
   useEffect(() => {
     const fetchSession = async () => {
       const { data } = await supabase.auth.getSession();
-      console.log("세션은", data.session);
-      console.log(!!data.session);
       changeLoggedIn(!!data.session);
     };
     fetchSession();
