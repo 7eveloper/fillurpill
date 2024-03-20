@@ -1,44 +1,49 @@
-import { fetchData } from "@/lib/queries/fetchData";
-import { useInfiniteQuery } from "@tanstack/react-query";
+"use client";
+
+import { useQueryProduct } from "@/lib/queries/fetchData";
+import { useEffect, useRef } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 const SearchResult = ({ keyword }: { keyword: string }) => {
+  const pageEnd = useRef<HTMLDivElement>(null);
+
   const {
     data = [],
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
     fetchNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["product"],
-    queryFn: ({ pageParam }) => fetchData(pageParam),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < 10) return null;
-      return allPages.length + 1;
-    },
-    select: (data) => {
-      return data.pages.flat();
-    },
-  });
+  } = useQueryProduct(keyword);
 
-  const handleMorePage = () => {
+  useEffect(() => {
     if (hasNextPage) {
-      fetchNextPage();
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            fetchNextPage();
+          }
+        },
+        { threshold: 1 }
+      );
+      observer.observe(pageEnd.current as HTMLDivElement);
     }
-  };
+  }, [hasNextPage]);
 
   return (
     <>
-      <ul className="flex flex-wrap justify-center gap-10">
+      <ul className="flex flex-wrap justify-center gap-6">
         {data.map((item) => (
-          <li key={item.id} className="w-80 border rounded-md min-h-[500px]">
+          <Card key={item.id} className="w-80 border rounded-md min-h-[500px]">
             {item.image && <img src={item.image} />}
-            <h3>{item.name}</h3>
-            <span>{item.company}</span>
-          </li>
+            <CardHeader>
+              <CardTitle>{item.name}</CardTitle>
+            </CardHeader>
+            <CardContent>{item.company}</CardContent>
+            <CardContent>{item.function}</CardContent>
+          </Card>
         ))}
       </ul>
-      <button onClick={handleMorePage}>더보기</button>
+      <div ref={pageEnd}>더보기</div>
+      {isFetchingNextPage ? <div>loading</div> : null}
     </>
   );
 };
