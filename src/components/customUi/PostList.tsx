@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import usePostStore from "@/hook/store";
+import usePostStore from "@/store/postStore";
 import type { Post } from "@/lib/types";
-import { Button } from "@/components/ui/PrimaryButton";
+
 import Image from "next/image";
 import EditModal from "./EditModal";
+import { Button } from "../ui/button";
 
 const PostList = () => {
   const { posts, isLoading, isError, fetchPostData, deletePost, editPost } =

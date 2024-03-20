@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { zustandStore } from "@/lib/zustandStore";
+import { zustandStore } from "@/store/zustandStore";
 import { useEffect } from "react";
 
 const NavBar = () => {

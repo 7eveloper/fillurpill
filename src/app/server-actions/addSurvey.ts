@@ -1,12 +1,15 @@
-import { User } from "@/lib/zustandStore";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { isThereClientSession } from "@/hooks/clientSession";
+import { User } from "@/store/zustandStore";
+// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export const addSurvey = async (userResult: User) => {
-  const supabase = createClientComponentClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const user = session?.user;
+  // const supabase = createClientComponentClient();
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession();
+  // const user = session?.user;
+
+  const { supabase, user } = await isThereClientSession();
 
   if (!user) {
     console.error("로그인하지 않은 사용자는 설문조사에 참여할 수 없습니다.");

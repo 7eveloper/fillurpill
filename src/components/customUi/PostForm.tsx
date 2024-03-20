@@ -2,11 +2,11 @@
 
 import React, { FormEvent, useEffect, useState } from "react";
 import { Post } from "@/lib/types";
-import usePostStore from "@/hook/store";
+import usePostStore from "@/store/postStore";
 import Link from "next/link";
-import { Input } from "@/components/ui/DefaultInput";
-import { Label } from "@/components/ui/DefaultLabel";
-import { Button } from "@/components/ui/PrimaryButton";
+
+import { Label } from "@/components/ui/label";
+
 import {
   Select,
   SelectContent,
@@ -15,6 +15,8 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const PostForm = () => {
   const [title, setTitle] = useState("");

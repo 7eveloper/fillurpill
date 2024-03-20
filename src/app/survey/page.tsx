@@ -1,4 +1,4 @@
-import Survey from "@/components/Survey";
+import Survey from "@/components/customUi/Survey";
 import { isThereServerSession } from "@/hooks/session";
 
 const SurveyPage = async () => {

@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { isThereServerSession } from "@/hooks/session";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/customUi/NavBar";
 import "./globals.css";
 import QueryProvider from "./provider";
 import Link from "next/link";
-import { Button } from "@/components/ui/PrimaryButton";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,7 +33,7 @@ export default async function RootLayout({
           <nav>
             <NavBar />
           </nav>
-            <Link href="/" className="m-2">
+          <Link href="/" className="m-2">
             로고
           </Link>
           <Link href="/community" className="m-2">
@@ -41,7 +41,7 @@ export default async function RootLayout({
           </Link>
           <Button>로그아웃</Button>
           {children}
-      </body>
+        </body>
       </html>
     </QueryProvider>
   );

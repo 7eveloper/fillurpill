@@ -1,5 +1,5 @@
 import { IntakeDiary } from "@/store/Intake";
-import { supabase } from "@/utils/supabase";
+import { supabase } from "../supabase";
 
 const addIntake = async (newIntake: IntakeDiary) => {
   const { data, error } = await supabase.from("intake").insert([newIntake]);

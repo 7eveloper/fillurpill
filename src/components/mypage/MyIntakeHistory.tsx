@@ -4,9 +4,9 @@ import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { IntakeDiary } from "@/store/Intake";
-import { supabase } from "@/utils/supabase";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addIntake } from "@/lib/mypage/mutation";
+import { supabase } from "@/lib/supabase";
 
 // 시간대 설정
 

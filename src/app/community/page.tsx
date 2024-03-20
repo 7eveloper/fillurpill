@@ -1,5 +1,6 @@
-import PostList from "@/components/PostList";
-import { Button } from "@/components/ui/PrimaryButton";
+import PostList from "@/components/customUi/PostList";
+import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
 
 const CommunityPage = () => {

@@ -4,7 +4,7 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from "@/components/ui/TabNavigation";
+} from "@/components/customUi/TabNavigation";
 import MyInfo from "@/components/mypage/MyInfo";
 import MyIntakeHistory from "@/components/mypage/MyIntakeHistory";
 import MySurveyHistory from "@/components/mypage/MySurveyHistory";

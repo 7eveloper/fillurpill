@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { Post } from "@/lib/types";
-import { supabase } from "@/utils/supabase";
+import { supabase } from "@/lib/supabase";
+import { isThereClientSession } from "@/hooks/clientSession";
 
 interface StoreState {
   posts: Post[];
@@ -30,8 +31,11 @@ const usePostStore = create<StoreState>((set) => ({
   },
 
   addPost: async (newPost: Partial<Post>) => {
+    const { user } = await isThereClientSession();
     try {
-      const { error } = await supabase.from("posts").insert([newPost]);
+      const { error } = await supabase
+        .from("posts")
+        .insert([{ user_id: user?.id, ...newPost }]);
       if (error) {
         throw error;
       }

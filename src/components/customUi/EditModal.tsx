@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/PrimaryButton";
-import { Label } from "@/components/ui/DefaultLabel";
-import { Input } from "@/components/ui/DefaultInput";
+import { Label } from "@/components/ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const EditModal = ({ postId, initialPost, onSave, onCancel }) => {
   const [editedPost, setEditedPost] = useState(initialPost);

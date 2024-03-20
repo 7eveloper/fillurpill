@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 const W = 500;
 const H = 500;
