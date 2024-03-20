@@ -1,12 +1,8 @@
 "use client";
-
 import React, { FormEvent, useEffect, useState } from "react";
 import { Post } from "@/lib/types";
 import usePostStore from "@/store/postStore";
-import Link from "next/link";
-
 import { Label } from "@/components/ui/label";
-
 import {
   Select,
   SelectContent,

@@ -31,7 +31,7 @@ const usePostStore = create<StoreState>((set) => ({
   },
 
   addPost: async (newPost: Partial<Post>) => {
-    const { user } = await isThereClientSession();
+    const { supabase, user } = await isThereClientSession();
     try {
       const { error } = await supabase
         .from("posts")
