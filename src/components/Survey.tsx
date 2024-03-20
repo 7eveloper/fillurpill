@@ -1,13 +1,12 @@
 "use client";
+import { addSurvey } from "@/app/server-actions/addSurvey";
 import { User } from "@/lib/zustandStore";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Survey = () => {
-  const supabase = createClientComponentClient();
   const [userResult, setUserResult] = useState<User>({
-    email: "",
+    // email: "",
     gender: "",
     age: "",
     weight: "",
@@ -16,16 +15,20 @@ const Survey = () => {
   console.log(userResult);
   const [clickList, setClickList] = useState([false, false, false, false]);
   const router = useRouter();
+  const genderList = ["남성", "여성"];
+  const ageList = ["10대", "2-30대", "3-40대", "4-50대", "5-60대", "70대 이상"];
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
 
-  useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (data) {
-        setUserResult({ ...userResult, email: data.user?.email as string });
-      }
-    };
-    fetch();
-  }, []);
+  //   useEffect(() => {
+  //     const fetch = async () => {
+  //       const { data } = await supabase.auth.getUser();
+  //       if (data) {
+  //         setUserResult({ ...userResult, email: data.user?.email as string });
+  //       }
+  //     };
+  //     fetch();
+  //   }, []);
 
   const handleClick = (idx: number, value: string) => {
     setClickList((prev) => {
@@ -45,10 +48,13 @@ const Survey = () => {
     });
   };
 
-  const genderList = ["남성", "여성"];
-  const ageList = ["10대", "2-30대", "3-40대", "4-50대", "5-60대", "70대 이상"];
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
+  const handleSubmit = async () => {
+    try {
+      await addSurvey(userResult);
+    } catch (error) {
+      console.log("저장실패!");
+    }
+  };
 
   if (!clickList[0]) {
     return genderList.map((gender, idx) => (
@@ -123,7 +129,7 @@ const Survey = () => {
     return (
       <>
         당신은{userResult.age}입니다
-        <button onClick={() => {}}>마이페이지 가기</button>
+        <button onClick={handleSubmit}>제출하기</button>
       </>
     );
   }

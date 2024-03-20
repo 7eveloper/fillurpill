@@ -1,12 +1,16 @@
 import Survey from "@/components/Survey";
 import { isThereServerSession } from "@/hooks/session";
-import { redirect } from "next/navigation";
 
 const SurveyPage = async () => {
-  // const { session } = await isThereServerSession();
-  // if (!session) {
-  //   return redirect("/login");
-  // }
+  const { supabase, session } = await isThereServerSession();
+  const user = session?.user;
+
+  const { data: userResults, error } = await supabase
+    .from("survey")
+    .select("*")
+    .eq("user_id", user?.id);
+
+  console.log("유저리저트", userResults);
 
   return (
     <div>
