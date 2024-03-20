@@ -55,7 +55,7 @@ export const useQueryProduct = (keyword: string) => {
 
 // export const useSearchProduct = (keyword: string) => {
 //   return useInfiniteQuery({
-//     queryKey: ["product"],
+//     queryKey: ["search"],
 //     queryFn: ({ pageParam }) => searchData(pageParam, keyword),
 //     initialPageParam: 1,
 //     getNextPageParam: (lastPage, allPages) => {
