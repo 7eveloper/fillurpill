@@ -29,8 +29,8 @@ export default async function RootLayout({
             "min-h-screen bg-background font-sans antialiased",
             fontSans.variable,
             "flex",
-            "flex-col",
-            "bg-lime-400"
+            "flex-col"
+            // "bg-lime-400"
           )}
         >
           <div className="w-[1500px] mx-auto">

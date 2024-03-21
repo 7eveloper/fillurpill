@@ -56,7 +56,6 @@ const MyIntakeHistory = () => {
   });
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-    console.log("12");
     const nextDay = new Date(start);
     const endDay = new Date(end);
     endDay.setDate(endDay.getDate() + 1);
@@ -75,7 +74,6 @@ const MyIntakeHistory = () => {
           title,
           contents,
         });
-        console.log(title, contents, selectedSlot);
         setModalOpen(false);
         setSelectedSlot(null);
         setTitle("");
@@ -89,7 +87,6 @@ const MyIntakeHistory = () => {
   const deleteIntakeMutation = useMutation({
     mutationFn: deleteIntake,
     onSuccess: () => {
-      console.log("성공");
       queryClient.invalidateQueries({ queryKey: ["intake"] });
     },
   });
@@ -120,8 +117,17 @@ const MyIntakeHistory = () => {
 
   return (
     <div>
-      나의 섭취 이력
-      <div style={{ width: "800px", height: "800px", margin: "50px" }}>
+      <h1 className="text-[28px] pl-5 border-b-4 border-black">
+        나의 섭취 이력
+      </h1>
+      <div
+        style={{
+          width: "800px",
+          height: "600px",
+          marginLeft: "20px",
+          marginTop: "30px",
+        }}
+      >
         <Calendar
           views={[Views.MONTH, Views.AGENDA]}
           defaultDate={defaultDate}
@@ -142,20 +148,39 @@ const MyIntakeHistory = () => {
         />
       </div>
       {modalOpen && (
-        <div className="bg-red-100 p-10">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-          />
-          <input
-            type="text"
-            value={contents}
-            onChange={(e) => setContents(e.target.value)}
-            placeholder="Contents"
-          />
-          <button onClick={handleModalSubmit}>Save</button>
+        <div className="fixed top-24 w-96 z-50 flex flex-col justify-between items-center bg-white rounded-2xl shadow-xl  transition-transform duration-300 ease-out">
+          <div className="flex w-full h-10 bg-gray-200 rounded-t-2xl justify-end">
+            <button
+              className="mr-2 font-semibold text-gray-600 border-none border-r border-gray-400 hover:text-black cursor-pointer focus:outline-none"
+              onClick={() => setModalOpen(false)}
+            >
+              닫기
+            </button>
+          </div>
+          <div className="w-full h-80 flex flex-col justify-between items-center">
+            <input
+              type="text"
+              className="w-11/12 h-10 my-2 border-b border-gray-300 outline-none text-lg"
+              placeholder="제목을 입력하세요"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+
+            <textarea
+              className="w-11/12 h-36 my-2 border border-gray-300 rounded-md resize-none outline-none text-sm"
+              placeholder="내용을 입력하세요"
+              value={contents}
+              onChange={(e) => setContents(e.target.value)}
+            ></textarea>
+          </div>
+          <div className="w-full h-16 bg-gray-200 rounded-b-2xl flex justify-center items-center">
+            <button
+              className="w-20 h-10 mr-4 bg-green-900 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none"
+              onClick={handleModalSubmit}
+            >
+              저장
+            </button>
+          </div>
         </div>
       )}
     </div>
