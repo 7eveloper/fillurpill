@@ -1,13 +1,15 @@
+"use client";
 import { fetchData } from "@/lib/fetchData";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useInfiniteScroll } from "./useInfiniteScroll";
 
-export const useQueryProduct = (query: string) => {
+export const useQueryProduct = (query: string, searchType: string) => {
+  console.log(searchType);
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage, refetch } =
     useInfiniteQuery({
       queryKey: ["search"],
-      queryFn: ({ pageParam }) => fetchData(pageParam, query),
+      queryFn: ({ pageParam }) => fetchData(pageParam, query, searchType),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPages) => {
         if (lastPage.length < 10) return null;
@@ -20,7 +22,7 @@ export const useQueryProduct = (query: string) => {
 
   useEffect(() => {
     refetch();
-  }, [query]);
+  }, [query, searchType]);
 
   const pageEnd = useInfiniteScroll(hasNextPage, fetchNextPage);
   return { data, isFetchingNextPage, pageEnd };

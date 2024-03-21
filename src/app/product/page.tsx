@@ -4,19 +4,28 @@ import ProductList from "@/components/product/ProductList";
 import SearchBar from "@/components/product/SearchBar";
 import { useQueryProduct } from "@/hooks/useQueryProduct";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
-const ProductListPage = () => {
+const ProductListPage = ({}) => {
   const params = useSearchParams();
   const query = params.get("q") ?? "";
-  const [searchType, setSearchType] = useState(params.get("type") ?? "");
+  const [searchType, setSearchType] = useState(
+    params.get("type") ?? "function"
+  );
 
-  const { data, isFetchingNextPage, pageEnd } = useQueryProduct(query);
+  const handleChangeType = (e: ChangeEvent<HTMLSelectElement>): void => {
+    setSearchType(e.target.value);
+  };
+
+  const { data, isFetchingNextPage, pageEnd } = useQueryProduct(
+    query,
+    searchType
+  );
 
   return (
     <section>
       <h1>전체 제품</h1>
-      <SearchBar />
+      <SearchBar searchType={searchType} handleChangeType={handleChangeType} />
       <ProductList data={data} />
       <div ref={pageEnd}>더보기</div>
       {isFetchingNextPage ? <div>loading</div> : null}
