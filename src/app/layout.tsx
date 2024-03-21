@@ -34,15 +34,17 @@ export default async function RootLayout({
         >
           <div className="w-[1500px] mx-auto">
             <nav>
+              <Link href="/" className="m-2">
+                Home
+              </Link>
               <NavBar />
+              <Link href="/community" className="m-2">
+                커뮤니티
+              </Link>
+              <Link href="/mypage" className="m-2">
+                마이페이지
+              </Link>
             </nav>
-            <Link href="/" className="m-2">
-              로고
-            </Link>
-            <Link href="/community" className="m-2">
-              커뮤니티
-            </Link>
-
             {children}
           </div>
         </body>

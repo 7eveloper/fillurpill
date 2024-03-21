@@ -49,12 +49,14 @@ const PostList = () => {
   return (
     <section className="m-2">
       {posts.map((post) => (
-        <div key={post.id} className="border-2 m-4">
-          <Image src="" alt="이미지"></Image>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-          <p>평점: {post.rating}</p>
-          <p>성분명: {post.ingredient}</p>
+        <div key={post.id} className=" border-2 m-4 bg-white">
+          <div className="">
+            <Image src="" alt="이미지"></Image>
+            <p>{post.title}</p>
+            <p>{post.content}</p>
+            <p>평점: {post.rating}</p>
+            <p>성분명: {post.ingredient}</p>
+          </div>
           <Button
             onClick={() => {
               setSelectedPost(post);

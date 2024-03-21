@@ -2,7 +2,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { Post } from "@/lib/types";
 import usePostStore from "@/store/postStore";
-import { supabase } from "@/lib/supabase";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -12,16 +11,15 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import SearchProductFunction from "./SearchProductFunction";
 
 const PostForm = () => {
   const [title, setTitle] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
 
   const addPost = usePostStore((state) => state.addPost);
 
@@ -59,35 +57,13 @@ const PostForm = () => {
     setRating("");
   };
 
-  const searchHandler = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("product")
-        .select("*")
-        .like("function", `%${searchKeyword}`);
-      if (error) {
-        console.error("검색 오류:", error.message);
-        return;
-      }
-
-      if (data && data.length > 0) {
-        setSearchResults(data);
-      } else {
-        console.log("검색 결과가 없습니다.");
-        setSearchResults([]);
-      }
-    } catch (error) {
-      console.error("검색 오류", error);
-    }
-  };
-
   return (
     <form
-      className="flex-column border-2 p-4 w-2/3 m-2"
+      className="flex-column border-2 p-4 w-2/3 m-2 bg-white"
       onSubmit={onSubmitHandler}
     >
       <section className="flex">
-        <Label htmlFor="제목" className="w-20">
+        <Label htmlFor="제목" className="w-24">
           제목
         </Label>
         <Input
@@ -99,39 +75,19 @@ const PostForm = () => {
         />
       </section>
       <section className="flex">
-        <Label htmlFor="추천 영양제" className="w-20">
+        <Label htmlFor="추천 영양제" className="w-24">
           추천 영양제
         </Label>
         <Input
           type="text"
           value={ingredient}
           onChange={(event) => setIngredient(event.target.value)}
-          placeholder="검색할 성분명을 입력해주세요."
+          placeholder="영양제 이름을 입력해주세요."
           className="w-96"
         />
-
-        <Button onClick={searchHandler}>검색</Button>
-        <section>
-          {searchResults.length > 0 ? (
-            <div>
-              <h2>검색 결과</h2>
-              <ul>
-                {searchResults.map((result, index) => (
-                  <li key={index}>
-                    <span>제품명: {result.product_name}</span>
-                    <span>기능: {result.function}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p>검색 결과가 없습니다.</p>
-          )}
-        </section>
       </section>
-
       <section className="flex">
-        <Label htmlFor="내용" className="w-20">
+        <Label htmlFor="내용" className="w-24">
           내용
         </Label>
         <Input
@@ -142,8 +98,9 @@ const PostForm = () => {
           className="w-96"
         />
       </section>
+      <SearchProductFunction />
       <section className="flex">
-        <Label htmlFor="별점" className="w-20">
+        <Label htmlFor="별점" className="w-24">
           별점
         </Label>
         <Select
@@ -164,7 +121,7 @@ const PostForm = () => {
           </SelectContent>
         </Select>
       </section>
-      <Button>등록하기</Button>
+      <Button type="submit">등록하기</Button>
     </form>
   );
 };
