@@ -1,19 +1,26 @@
 "use client";
+import ProductList from "@/components/product/ProductList";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useQueryProduct } from "@/lib/fetchData";
 
-import SearchResult from "@/components/search/SearchResult";
-import { useSearchParams } from "next/navigation";
+const ProductPage = () => {
+  const {
+    data = [],
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useQueryProduct();
 
-const SearchPage = () => {
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("q") ?? "";
+  const pageEnd = useInfiniteScroll(hasNextPage, fetchNextPage);
 
   return (
     <>
-      <h1>{keyword} 검색 결과</h1>
-      <div>SearchPage</div>
-      <SearchResult keyword={keyword} />
+      <h1>전체 제품</h1>
+      <ProductList data={data} />
+      <div ref={pageEnd}>더보기</div>
+      {isFetchingNextPage ? <div>loading</div> : null}
     </>
   );
 };
 
-export default SearchPage;
+export default ProductPage;
