@@ -19,25 +19,8 @@ const PostForm = () => {
   const [ingredient, setIngredient] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
-  const [userId, setUserId] = useState("");
 
   const addPost = usePostStore((state) => state.addPost);
-
-  // user 정보와 연결
-  //   const getUserData = async () => {
-  //     try {
-  //       const auth = await supabase.auth.getUser();
-  //       if (auth.data.user.id) {
-  //         setUserId(auth.data.user.id);
-  //       }
-  //     } catch (error) {
-  //       console.error("유저 데이터를 불러오는 데에 오류가 생겼습니다.");
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     getUserData();
-  //   }, []);
 
   const onSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();

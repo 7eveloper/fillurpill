@@ -1,17 +1,32 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Label } from "@/components/ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import type { Post } from "@/lib/types";
 
-const EditModal = ({ postId, initialPost, onSave, onCancel }) => {
+interface EditModalProps {
+  initialPost: Post;
+  onSave: (editedPost: Partial<Post>) => void;
+  onClose: () => void;
+}
+
+const EditModal: React.FC<EditModalProps> = ({
+  initialPost,
+  onSave,
+  onClose,
+}) => {
   const [editedPost, setEditedPost] = useState(initialPost);
-  const changeHandler = (event) => {
+
+  const changeHandler = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = event.target;
     setEditedPost((prev) => ({ ...prev, [name]: value }));
   };
 
   const submitHandler = () => {
-    onSave(postId, editedPost);
+    onSave(editedPost);
+    onClose();
   };
 
   return (
@@ -34,7 +49,7 @@ const EditModal = ({ postId, initialPost, onSave, onCancel }) => {
           onChange={changeHandler}
         />
         <Button onClick={submitHandler}>저장</Button>
-        <Button onClick={onCancel}></Button>
+        <Button onClick={onClose}>취소</Button>
       </div>
     </div>
   );
