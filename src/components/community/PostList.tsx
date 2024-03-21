@@ -3,26 +3,27 @@
 import React, { useEffect, useState } from "react";
 import usePostStore from "@/store/postStore";
 import type { Post } from "@/lib/types";
-
 import Image from "next/image";
-import EditModal from "./EditModal";
-import { Button } from "../ui/button";
+import EditModal from "@/components/customUi/EditModal";
+import { Button } from "@/components/ui/button";
 
 const PostList = () => {
   const { posts, isLoading, isError, fetchPostData, deletePost, editPost } =
     usePostStore();
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(null);
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   useEffect(() => {
     fetchPostData();
   }, [fetchPostData]);
 
-  const editHandler = async (postId: number) => {
+  const editHandler = async (updatedPost: Partial<Post>) => {
     try {
-      const updatedPost: Partial<Post> = {};
-      await editPost(postId, updatedPost);
+      if (selectedPost) {
+        await editPost(selectedPost.id, updatedPost);
+        fetchPostData();
+        setEditModalOpen(false);
+      }
     } catch (error) {
       console.error("게시글 수정 오류", error);
     }
@@ -56,7 +57,8 @@ const PostList = () => {
           <p>성분명: {post.ingredient}</p>
           <Button
             onClick={() => {
-              editHandler(post.id);
+              setSelectedPost(post);
+              setEditModalOpen(true);
             }}
             className="m-2"
           >
@@ -71,6 +73,15 @@ const PostList = () => {
           </Button>
         </div>
       ))}
+      {editModalOpen && (
+        <EditModal
+          initialPost={selectedPost}
+          onSave={(editedPost) => {
+            editHandler(editedPost);
+          }}
+          onClose={() => setEditModalOpen(false)}
+        />
+      )}
     </section>
   );
 };

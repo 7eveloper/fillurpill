@@ -1,5 +1,5 @@
 import React from "react";
-import PostForm from "@/components/customUi/PostForm";
+import PostForm from "@/components/community/PostForm";
 
 const NewPostPage = () => {
   return <PostForm />;

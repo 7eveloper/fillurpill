@@ -1,4 +1,4 @@
-import PostList from "@/components/customUi/PostList";
+import PostList from "@/components/community/PostList";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
