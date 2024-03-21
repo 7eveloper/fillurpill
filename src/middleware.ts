@@ -20,9 +20,11 @@ export async function middleware(req: NextRequest) {
     !(req.nextUrl.pathname === "/")
   ) {
     return NextResponse.redirect(new URL("/login", req.url));
-  } else if (data.session && req.nextUrl.pathname.startsWith("/login")) {
+  }
+  if (data.session && req.nextUrl.pathname.startsWith("/login")) {
     return NextResponse.redirect(new URL("/", req.nextUrl.origin));
-  } else if (
+  }
+  if (
     data.session &&
     userResults?.length !== 0 &&
     req.nextUrl.pathname.startsWith("/survey")

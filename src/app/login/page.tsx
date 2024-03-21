@@ -11,6 +11,7 @@ const LoginPage = () => {
   const [loginMode, setLoginMode] = useState(true);
   const [email, setEmail, clearEmail] = useInput();
   const [password, setPassword, clearPassword] = useInput();
+  const [nickname, setNickname, clearNickname] = useInput();
   const [message, setMessage] = useState<string[]>([]);
   const router = useRouter();
   const supabase = createClientComponentClient();
@@ -23,6 +24,7 @@ const LoginPage = () => {
   const clearInput = () => {
     clearEmail();
     clearPassword();
+    clearNickname();
   };
 
   const handleSignUp = async () => {
@@ -36,8 +38,10 @@ const LoginPage = () => {
         email,
         password,
         options: {
-          // user가 이메일 확인 완료 후에는 "http://localhost:3000/auth/callback"(=백엔드 서버)로 세션 받으러가라 리디렉션 시키기
           emailRedirectTo: `${location.origin}/auth/callback`,
+          data: {
+            nickname,
+          },
         },
       });
       if (!error) {
@@ -47,7 +51,18 @@ const LoginPage = () => {
           "이메일에서 회원가입을 완료해주세요:)",
         ]);
       } else {
-        setMessage(["회원가입 과정에 오류가 발생했습니다."]);
+        if (
+          error.message ===
+          "Password should be at least 6 characters. Password should contain at least one character of each: abcdefghijklmnopqrstuvwxyz, ABCDEFGHIJKLMNOPQRSTUVWXYZ, 0123456789, !@#$%^&*()_+-=[]{};\\'\\:\"|<>?,./`~."
+        ) {
+          setMessage([
+            "비밀번호는 최소 6자의 대/소문자, 숫자와 특수문자를 포함해야 합니다.",
+          ]);
+        } else if (
+          error.message === "Unable to validate email address: invalid format"
+        ) {
+          setMessage(["올바른 이메일 형식이 아닙니다."]);
+        }
       }
       return message;
     });
@@ -67,11 +82,9 @@ const LoginPage = () => {
       if (data?.session) {
         router.refresh();
         changeLoggedIn(!!data.session);
-        // return message;
       }
-      if (error) {
-        setMessage(["로그인 과정에 오류가 발생하였습니다."]);
-        // return message;
+      if (error && error.message === "Invalid login credentials") {
+        setMessage(["이메일 또는 비밀번호가 올바르지 않습니다."]);
       }
       return message;
     });
@@ -82,12 +95,27 @@ const LoginPage = () => {
       <div>
         <div>
           LoginPage
-          <input type="email" value={email} onChange={setEmail}></input>
+          <input
+            type="email"
+            value={email}
+            onChange={setEmail}
+            placeholder="이메일을 입력해주세요"
+            required
+          ></input>
           <input
             type="password"
             value={password}
             onChange={setPassword}
+            placeholder="비밀번호를 입력해주세요"
           ></input>
+          {loginMode ? null : (
+            <input
+              type="text"
+              value={nickname}
+              onChange={setNickname}
+              placeholder="닉네임을 입력해주세요"
+            ></input>
+          )}
         </div>
         <div>
           {loginMode ? (
