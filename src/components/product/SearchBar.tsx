@@ -1,18 +1,13 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { Input } from "../ui/input";
-import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
-const SearchBar = ({ keyword }: { keyword: string }) => {
+const SearchBar = () => {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    queryClient.invalidateQueries({ queryKey: ["search"] });
-    router.replace(`/product/${e.currentTarget.search.value}`);
+    router.push(`/search?q=${e.currentTarget.search.value}`);
   };
 
   return (

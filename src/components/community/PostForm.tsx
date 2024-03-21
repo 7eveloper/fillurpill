@@ -2,6 +2,7 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { Post } from "@/lib/types";
 import usePostStore from "@/store/postStore";
+import { supabase } from "@/lib/supabase";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -19,25 +20,10 @@ const PostForm = () => {
   const [ingredient, setIngredient] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
-  const [userId, setUserId] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const addPost = usePostStore((state) => state.addPost);
-
-  // user 정보와 연결
-  //   const getUserData = async () => {
-  //     try {
-  //       const auth = await supabase.auth.getUser();
-  //       if (auth.data.user.id) {
-  //         setUserId(auth.data.user.id);
-  //       }
-  //     } catch (error) {
-  //       console.error("유저 데이터를 불러오는 데에 오류가 생겼습니다.");
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     getUserData();
-  //   }, []);
 
   const onSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
@@ -73,6 +59,28 @@ const PostForm = () => {
     setRating("");
   };
 
+  const searchHandler = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("product")
+        .select("*")
+        .like("function", `%${searchKeyword}`);
+      if (error) {
+        console.error("검색 오류:", error.message);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        setSearchResults(data);
+      } else {
+        console.log("검색 결과가 없습니다.");
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.error("검색 오류", error);
+    }
+  };
+
   return (
     <form
       className="flex-column border-2 p-4 w-2/3 m-2"
@@ -102,8 +110,26 @@ const PostForm = () => {
           className="w-96"
         />
 
-        <Button>검색</Button>
+        <Button onClick={searchHandler}>검색</Button>
+        <section>
+          {searchResults.length > 0 ? (
+            <div>
+              <h2>검색 결과</h2>
+              <ul>
+                {searchResults.map((result, index) => (
+                  <li key={index}>
+                    <span>제품명: {result.product_name}</span>
+                    <span>기능: {result.function}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p>검색 결과가 없습니다.</p>
+          )}
+        </section>
       </section>
+
       <section className="flex">
         <Label htmlFor="내용" className="w-20">
           내용
