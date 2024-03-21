@@ -28,9 +28,7 @@ export function AlertAuthResult({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" onClick={handleClick}>
-          {text}
-        </Button>
+        <Button onClick={handleClick}>{text}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

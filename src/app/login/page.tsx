@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
@@ -107,7 +106,7 @@ const LoginPage = () => {
         <CardHeader>
           <CardTitle>로그인 / 회원가입</CardTitle>
           <CardDescription>
-            Fill ur Pill의 회원이 되어 건강을 관리해보세요!
+            Fill ur Pill의 회원이 되어 건강을 채워보세요!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -115,12 +114,36 @@ const LoginPage = () => {
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" placeholder="이메일을 입력해주세요" />
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={setEmail}
+                  placeholder="이메일을 입력해주세요"
+                  required
+                  autoFocus
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="password">비밀번호</Label>
-                <Input id="password" placeholder="비밀번호를 입력해주세요" />
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={setPassword}
+                  placeholder="비밀번호를 입력해주세요"
+                  required
+                />
               </div>
+              {loginMode ? null : (
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="nickname">닉네임</Label>
+                  <Input
+                    type="text"
+                    value={nickname}
+                    onChange={setNickname}
+                    placeholder="닉네임을 입력해주세요"
+                  />
+                </div>
+              )}
             </div>
           </form>
         </CardContent>
