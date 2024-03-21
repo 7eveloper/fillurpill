@@ -35,7 +35,7 @@ export function AlertAuthResult({
           <AlertDialogTitle>
             {isPending ? (
               <div className="flex justify-center">
-                {text === "로그인" ? "로그인 시도 중" : "회원가입 시도 중"}
+                {text === "로그인" ? "로그인 중" : "회원가입 중"}
                 <ClipLoader color="#36d7b7" className="mx-1" />
               </div>
             ) : (
