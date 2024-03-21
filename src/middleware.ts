@@ -12,8 +12,7 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient({ req, res });
 
   const { data } = await supabase.auth.getSession();
-  // console.log(data.session?.user.id);
-  console.log(data.session);
+  // console.log(data.session);
   const { data: userResults, error } = await supabase
     .from("survey")
     .select("*")
@@ -26,10 +25,12 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
-  if (data.session && req.nextUrl.pathname.startsWith("/login")) {
+  // if (!data.session && !(req.nextUrl.pathname === "/")) {
+  //   return NextResponse.redirect(new URL("/login", req.url));
+  // }
+  else if (data.session && req.nextUrl.pathname.startsWith("/login")) {
     return NextResponse.redirect(new URL("/", req.nextUrl.origin));
-  }
-  if (
+  } else if (
     data.session &&
     userResults?.length !== 0 &&
     req.nextUrl.pathname.startsWith("/survey")
@@ -38,6 +39,7 @@ export async function middleware(req: NextRequest) {
   } else {
     return res;
   }
+  // return res;
 }
 
 export const config = {
@@ -48,6 +50,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.png$).*)",
   ],
 };
