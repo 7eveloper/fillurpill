@@ -118,7 +118,7 @@ const LoginPage = () => {
                   type="email"
                   value={email}
                   onChange={setEmail}
-                  placeholder="이메일을 입력해주세요"
+                  placeholder="Email"
                   required
                   autoFocus
                 />
