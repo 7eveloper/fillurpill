@@ -2,11 +2,11 @@ import { produce } from "immer";
 import { create } from "zustand";
 
 export type User = {
-  // email: string;
   gender: string;
   age: string;
   weight: string;
   height: string;
+  nickname: string;
 };
 
 type State = {

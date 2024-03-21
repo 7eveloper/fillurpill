@@ -101,8 +101,8 @@ const LoginPage = () => {
   };
 
   return (
-    <main>
-      <Card className="w-[350px]">
+    <>
+      <Card className="w-[350px] mx-auto mt-20">
         <CardHeader>
           <CardTitle>로그인 / 회원가입</CardTitle>
           <CardDescription>
@@ -173,7 +173,7 @@ const LoginPage = () => {
           )}
         </CardFooter>
       </Card>
-    </main>
+    </>
   );
 };
 

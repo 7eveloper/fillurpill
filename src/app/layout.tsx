@@ -29,22 +29,22 @@ export default async function RootLayout({
             fontSans.variable,
             "flex",
             "flex-col",
-
             "bg-lime-400"
           )}
         >
-          <div className="w-[1500px] mx-auto"></div>
-          <nav>
-            <NavBar />
-          </nav>
-          <Link href="/" className="m-2">
-            로고
-          </Link>
-          <Link href="/community" className="m-2">
-            커뮤니티
-          </Link>
+          <div className="w-[1500px] mx-auto">
+            <nav>
+              <NavBar />
+            </nav>
+            <Link href="/" className="m-2">
+              로고
+            </Link>
+            <Link href="/community" className="m-2">
+              커뮤니티
+            </Link>
 
-          {children}
+            {children}
+          </div>
         </body>
       </html>
     </QueryProvider>
