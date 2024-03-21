@@ -17,7 +17,7 @@ const PostList = () => {
     fetchPostData();
   }, [fetchPostData]);
 
-  const editHandler = async (updatedPost: Partial<Post>) => {
+  const handleEdit = async (updatedPost: Partial<Post>) => {
     try {
       if (selectedPost) {
         await editPost(selectedPost.id, updatedPost);
@@ -29,7 +29,7 @@ const PostList = () => {
     }
   };
 
-  const deleteHandler = async (postId: number) => {
+  const handleDelete = async (postId: number) => {
     try {
       await deletePost(postId);
       fetchPostData();
@@ -68,7 +68,7 @@ const PostList = () => {
           </Button>
           <Button
             onClick={() => {
-              deleteHandler(post.id);
+              handleDelete(post.id);
             }}
           >
             삭제
@@ -79,7 +79,7 @@ const PostList = () => {
         <EditModal
           initialPost={selectedPost}
           onSave={(editedPost) => {
-            editHandler(editedPost);
+            handleEdit(editedPost);
           }}
           onClose={() => setEditModalOpen(false)}
         />

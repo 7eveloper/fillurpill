@@ -1,5 +1,6 @@
 "use client";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import { Post } from "@/lib/types";
 import usePostStore from "@/store/postStore";
 import { Label } from "@/components/ui/label";
@@ -13,17 +14,19 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import SearchProductFunction from "./SearchProductFunction";
 
 const PostForm = () => {
   const [title, setTitle] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState("");
 
   const addPost = usePostStore((state) => state.addPost);
 
-  const onSubmitHandler = async (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (!title) {
@@ -57,10 +60,41 @@ const PostForm = () => {
     setRating("");
   };
 
+  const handleProductClick = (productName: string) => {
+    setIngredient(productName);
+    setSelectedProduct(productName);
+  };
+
+  const handleSearch = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const { data, error } = await supabase
+        .from("product")
+        .select("*")
+        .like("function", `%${searchKeyword}%`);
+      if (error) {
+        console.error("검색 오류:", error.message);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        const filteredResult = data.filter((result) =>
+          result.function?.includes(searchKeyword)
+        );
+        setSearchResults(filteredResult);
+      } else {
+        console.log("검색 결과가 없습니다.");
+        setSearchResults([]);
+      }
+    } catch (error) {
+      console.error("검색 오류", error);
+    }
+  };
+
   return (
     <form
-      className="flex-column border-2 p-4 w-2/3 m-2 bg-white"
-      onSubmit={onSubmitHandler}
+      className="flex-column border-2 p-10 w-2/3 m-4 bg-white"
+      onSubmit={handleSubmit}
     >
       <section className="flex">
         <Label htmlFor="제목" className="w-24">
@@ -86,9 +120,44 @@ const PostForm = () => {
           className="w-96"
         />
       </section>
+
+      <section className="flex">
+        <Label htmlFor="추천 영양제" className="w-24">
+          영양제 검색하기
+        </Label>
+        <Input
+          type="text"
+          value={searchKeyword}
+          onChange={(event) => setSearchKeyword(event.target.value)}
+          placeholder="검색할 성분명을 입력해주세요."
+          className="w-96"
+        />
+        <Button onClick={handleSearch}>검색</Button>
+      </section>
+      <section>
+        {searchResults.length > 0 ? (
+          <div>
+            <h2>검색 결과</h2>
+            <ul>
+              {searchResults.map((result, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleProductClick(result.name)}
+                  className="border-2 m-2 hover:scale-110 cursor-pointer"
+                >
+                  <p className="m-2">제품명 : {result.name}</p>
+                  <p className="m-2">기능 : {result.function}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p>{searchKeyword}에 대한 검색 결과가 없습니다.</p>
+        )}
+      </section>
       <section className="flex">
         <Label htmlFor="내용" className="w-24">
-          내용
+          추천 이유
         </Label>
         <Input
           type="text"
@@ -98,7 +167,6 @@ const PostForm = () => {
           className="w-96"
         />
       </section>
-      <SearchProductFunction />
       <section className="flex">
         <Label htmlFor="별점" className="w-24">
           별점
