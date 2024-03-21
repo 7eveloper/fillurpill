@@ -1,34 +1,20 @@
 "use client";
-import { addSurvey } from "@/app/server-actions/addSurvey";
+import { addSurvey } from "@/app/survey/survey-action/addSurvey";
 import { User } from "@/store/zustandStore";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Survey = () => {
   const [userResult, setUserResult] = useState<User>({
-    // email: "",
     gender: "",
     age: "",
     weight: "",
     height: "",
   });
-  // console.log(userResult);
   const [clickList, setClickList] = useState([false, false, false, false]);
-  const router = useRouter();
   const genderList = ["남성", "여성"];
   const ageList = ["10대", "2-30대", "3-40대", "4-50대", "5-60대", "70대 이상"];
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
-
-  //   useEffect(() => {
-  //     const fetch = async () => {
-  //       const { data } = await supabase.auth.getUser();
-  //       if (data) {
-  //         setUserResult({ ...userResult, email: data.user?.email as string });
-  //       }
-  //     };
-  //     fetch();
-  //   }, []);
 
   const handleClick = (idx: number, value: string) => {
     setClickList((prev) => {

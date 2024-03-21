@@ -27,9 +27,14 @@ export default async function RootLayout({
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable
+            fontSans.variable,
+            "flex",
+            "flex-col",
+
+            "bg-lime-400"
           )}
         >
+          <div className="w-[1500px] mx-auto"></div>
           <nav>
             <NavBar />
           </nav>
