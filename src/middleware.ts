@@ -17,6 +17,7 @@ export async function middleware(req: NextRequest) {
   if (
     !data.session &&
     !req.nextUrl.pathname.startsWith("/login") &&
+    !req.nextUrl.pathname.startsWith("/product") &&
     !(req.nextUrl.pathname === "/")
   ) {
     return NextResponse.redirect(new URL("/login", req.url));

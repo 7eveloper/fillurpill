@@ -9,6 +9,7 @@ const Survey = () => {
     age: "",
     weight: "",
     height: "",
+    nickname: "",
   });
   const [clickList, setClickList] = useState([false, false, false, false]);
   const genderList = ["남성", "여성"];
