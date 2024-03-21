@@ -30,9 +30,11 @@ export default async function RootLayout({
             fontSans.variable,
             "flex",
             "flex-col",
-            "w-[1500px]"
+
+            "bg-lime-400"
           )}
         >
+          <div className="w-[1500px] mx-auto"></div>
           <nav>
             <NavBar />
           </nav>
