@@ -43,17 +43,31 @@ const Survey = () => {
     }
   };
 
+  return (
+    <>
+      <DrawerDemo
+        clickList={clickList}
+        genderList={genderList}
+        handleClick={handleClick}
+      />
+    </>
+  );
+
   if (!clickList[0]) {
-    return genderList.map((gender, idx) => (
-      <button
-        key={idx}
-        onClick={() => {
-          handleClick(0, gender);
-        }}
-      >
-        {gender}
-      </button>
-    ));
+    return (
+      <>
+        {genderList.map((gender, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              handleClick(0, gender);
+            }}
+          >
+            {gender}
+          </button>
+        ))}
+      </>
+    );
   }
   if (clickList[0] && !clickList[1]) {
     return ageList.map((age, idx) => (
@@ -123,3 +137,60 @@ const Survey = () => {
 };
 
 export default Survey;
+
+import { Button } from "@/components/ui/button";
+import {
+  SurveyDrawer,
+  SurveyDrawerContent,
+  SurveyDrawerDescription,
+  SurveyDrawerFooter,
+  SurveyDrawerHeader,
+  SurveyDrawerTitle,
+  SurveyDrawerTrigger,
+} from "@/components/ui/drawer";
+
+export function DrawerDemo({
+  clickList,
+  genderList,
+  handleClick,
+}: {
+  clickList: boolean[];
+  genderList: string[];
+  handleClick: (idx: number, value: string) => void;
+}) {
+  return (
+    <SurveyDrawer>
+      <SurveyDrawerTrigger asChild>
+        <Button variant="outline">Open Drawer</Button>
+      </SurveyDrawerTrigger>
+      <SurveyDrawerContent>
+        <>
+          <SurveyDrawerHeader>
+            <SurveyDrawerTitle>성별</SurveyDrawerTitle>
+            <SurveyDrawerDescription>
+              당신의 성별을 알려주세요.
+            </SurveyDrawerDescription>
+          </SurveyDrawerHeader>
+          <div className="flex">
+            {!clickList[0]
+              ? genderList.map((gender, idx) => (
+                  <div className="mx-auto w-full max-w-sm" key={idx}>
+                    <SurveyDrawerFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          handleClick(0, gender);
+                        }}
+                      >
+                        {gender}
+                      </Button>
+                    </SurveyDrawerFooter>
+                  </div>
+                ))
+              : null}
+          </div>
+        </>
+      </SurveyDrawerContent>
+    </SurveyDrawer>
+  );
+}

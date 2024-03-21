@@ -41,8 +41,21 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex px-2 h-16 w-full items-center justify-end">
-      <nav className="flex gap-8 mr-10 text-[19px]">
+    // <div className="flex     ">
+    <nav className="flex px-2 h-16 text-[19px] items-center justify-between mx-4">
+      <div className="flex gap-8">
+        <button className="hover:text-gray-600" onClick={goToHomePage}>
+          로고
+        </button>
+        <button className="hover:text-gray-600" onClick={goToCommunity}>
+          Community
+        </button>
+        <button className="hover:text-gray-600" onClick={goToMypagePage}>
+          Mypage
+        </button>
+        <button className="hover:text-gray-600">About</button>
+      </div>
+      <div>
         {loggedIn ? (
           <button className="hover:text-gray-600" onClick={handleSignOut}>
             Logout
@@ -52,37 +65,10 @@ const NavBar = () => {
             Login
           </button>
         )}
-        <button className="hover:text-gray-600" onClick={goToCommunity}>
-          Community
-        </button>
-        <button className="hover:text-gray-600" onClick={goToMypagePage}>
-          Mypage
-        </button>
-        <button className="hover:text-gray-600" onClick={goToHomePage}>
-          로고
-        </button>
-      </nav>
-    </div>
+      </div>
+    </nav>
+    // </div>
   );
 };
 
 export default NavBar;
-
-// export function MenubarDemo() {
-//   return (
-//     <Menubar>
-//       <MenubarMenu>
-//         <MenubarTrigger>File</MenubarTrigger>
-//       </MenubarMenu>
-//       <MenubarMenu>
-//         <MenubarTrigger>Edit</MenubarTrigger>
-//       </MenubarMenu>
-//       <MenubarMenu>
-//         <MenubarTrigger>View</MenubarTrigger>
-//       </MenubarMenu>
-//       <MenubarMenu>
-//         <MenubarTrigger>Profiles</MenubarTrigger>
-//       </MenubarMenu>
-//     </Menubar>
-//   )
-// }
