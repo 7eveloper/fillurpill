@@ -5,14 +5,16 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { IntakeDiary } from "@/store/Intake";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addIntake } from "@/lib/mypage/mutation";
-import { supabase } from "@/lib/supabase";
+import { addIntake, deleteIntake } from "@/lib/mypage/mutation";
+import { isThereClientSession } from "@/hooks/clientSession";
 
 // 시간대 설정
 
 const localizer = momentLocalizer(moment);
 
 const MyIntakeHistory = () => {
+  const [view, setView] = useState(Views.MONTH);
+  const [date, setDate] = useState(new Date());
   const [modalOpen, setModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -25,7 +27,12 @@ const MyIntakeHistory = () => {
 
   const fetchIntakeList = async () => {
     //supabase intake테이블을 전부 가져오는거
-    const { data, error } = await supabase.from("intake").select("*");
+    const { supabase, user } = await isThereClientSession();
+    const { data, error } = await supabase
+      .from("intake")
+      .select("*")
+      .eq("user_id", user?.id);
+    console.log(data);
     if (error) {
       throw new Error(error.message);
     }
@@ -49,6 +56,7 @@ const MyIntakeHistory = () => {
   });
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
+    console.log("12");
     const nextDay = new Date(start);
     const endDay = new Date(end);
     endDay.setDate(endDay.getDate() + 1);
@@ -61,7 +69,7 @@ const MyIntakeHistory = () => {
     if (title && contents && selectedSlot) {
       try {
         await addIntakeMutation.mutateAsync({
-          intake_id: crypto.randomUUID(),
+          id: crypto.randomUUID(),
           start: selectedSlot.start,
           end: selectedSlot.end,
           title,
@@ -78,9 +86,29 @@ const MyIntakeHistory = () => {
     }
   };
 
-  const handleSelectEvent = (event: IntakeDiary) => {
-    window.alert(event.title);
-    window.alert(event.contents);
+  const deleteIntakeMutation = useMutation({
+    mutationFn: deleteIntake,
+    onSuccess: () => {
+      console.log("성공");
+      queryClient.invalidateQueries({ queryKey: ["intake"] });
+    },
+  });
+  const handleSelectEvent = async (event: IntakeDiary) => {
+    const isConfirmed = window.confirm("선택한 항목을 삭제하시겠습니까?");
+
+    if (isConfirmed) {
+      try {
+        // 클릭된 이벤트의 id를 가져옵니다.
+        const intakeId = event.id;
+        console.log("제발", intakeId);
+        // 해당 id를 사용하여 삭제를 시도합니다.
+        deleteIntakeMutation.mutate(intakeId);
+        console.log("왜안됨", intakeId);
+        console.log("Intake deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting intake", error);
+      }
+    }
   };
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
@@ -93,8 +121,10 @@ const MyIntakeHistory = () => {
   return (
     <div>
       나의 섭취 이력
-      <div style={{ height: "500px", margin: "50px" }}>
+      <div style={{ width: "800px", height: "800px", margin: "50px" }}>
         <Calendar
+          views={[Views.MONTH, Views.AGENDA]}
+          defaultDate={defaultDate}
           selectable
           localizer={localizer}
           events={intake} // 여기서 myEvents를 사용합니다.
@@ -103,6 +133,12 @@ const MyIntakeHistory = () => {
           onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
           scrollToTime={scrollToTime}
+          view={view} // Include the view prop
+          date={date} // Include the date prop
+          onView={(view) => setView(view)}
+          onNavigate={(date) => {
+            setDate(new Date(date));
+          }}
         />
       </div>
       {modalOpen && (

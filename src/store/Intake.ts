@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export interface IntakeDiary {
-  intake_id: string;
+  id: string;
   title: string;
   contents: string;
   start: Date;

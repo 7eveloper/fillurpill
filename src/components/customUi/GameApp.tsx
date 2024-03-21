@@ -242,7 +242,7 @@ const GameApp = () => {
 
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col items-center justify-center bg-lime-400 p-10 w-fit h-screen">
+      <div className="flex flex-col items-center justify-center p-10 w-fit h-screen">
         <div className="flex flex-row items-center justify-center w-[500px] my-3 border border-black border-solid rounded-lg p-10 bg-white">
           <Button className="mx-3" onClick={() => setState("pause")}>
             PAUSE
