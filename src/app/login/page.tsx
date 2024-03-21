@@ -1,8 +1,7 @@
 "use client";
-
-import { AlertAuthResult } from "@/components/shadcn/AlertAuthResult";
+import { AlertAuthResult } from "@/components/customUi/AlertAuthResult";
 import { useInput } from "@/hooks/customhook";
-import { zustandStore } from "@/lib/zustandStore";
+import { zustandStore } from "@/store/zustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -66,12 +65,12 @@ const LoginPage = () => {
       message = "로그인에 성공했습니다.";
       changeLoggedIn(!!data.session);
       router.push("/");
-      // return message;
+      return message;
     }
     if (error) {
       message = "로그인 과정에 오류가 발생하였습니다.";
+      return message;
     }
-    return message;
   };
 
   return (

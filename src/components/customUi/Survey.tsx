@@ -1,6 +1,6 @@
 "use client";
 import { addSurvey } from "@/app/server-actions/addSurvey";
-import { User } from "@/lib/zustandStore";
+import { User } from "@/store/zustandStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
