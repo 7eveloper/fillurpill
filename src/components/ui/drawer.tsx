@@ -76,7 +76,7 @@ const SurveyDrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 flex h-[300px] flex-col rounded-t-[10px] border bg-background",
+        "fixed inset-x-0 bottom-0 z-50 flex h-[400px] flex-col rounded-t-[10px] border bg-background",
         className
       )}
       {...props}
@@ -123,7 +123,7 @@ const SurveyDrawerFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+    className={cn("mt-auto flex flex-col gap-2 p-4 w-full", className)}
     {...props}
   />
 );
