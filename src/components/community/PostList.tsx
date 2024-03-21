@@ -5,7 +5,7 @@ import usePostStore from "@/store/postStore";
 import type { Post } from "@/lib/types";
 
 import Image from "next/image";
-import EditModal from "./EditModal";
+import EditModal from "../customUi/EditModal";
 import { Button } from "../ui/button";
 
 const PostList = () => {

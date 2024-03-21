@@ -4,15 +4,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  // console.log(req.url);
-  // console.log(req.nextUrl);
-  // console.log(req.nextUrl.origin);
   const res = NextResponse.next();
 
   const supabase = createMiddlewareClient({ req, res });
 
   const { data } = await supabase.auth.getSession();
-  // console.log(data.session?.user.id);
   console.log(data.session);
   const { data: userResults, error } = await supabase
     .from("survey")
