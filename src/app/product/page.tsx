@@ -1,19 +1,36 @@
 "use client";
 
-import SearchResult from "@/components/search/SearchResult";
+import ProductList from "@/components/product/ProductList";
+import SearchBar from "@/components/product/SearchBar";
+import { useQueryProduct } from "@/hooks/useQueryProduct";
 import { useSearchParams } from "next/navigation";
+import { ChangeEvent, useState } from "react";
 
-const SearchPage = () => {
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("q") ?? "";
+const ProductListPage = ({}) => {
+  const params = useSearchParams();
+  const query = params.get("q") ?? "";
+  const [searchType, setSearchType] = useState(
+    params.get("type") ?? "function"
+  );
+
+  const handleChangeType = (e: ChangeEvent<HTMLSelectElement>): void => {
+    setSearchType(e.target.value);
+  };
+
+  const { data, isFetchingNextPage, pageEnd } = useQueryProduct(
+    query,
+    searchType
+  );
 
   return (
-    <>
-      <h1>{keyword} 검색 결과</h1>
-      <div>SearchPage</div>
-      <SearchResult keyword={keyword} />
-    </>
+    <section>
+      <h1>전체 제품</h1>
+      <SearchBar searchType={searchType} handleChangeType={handleChangeType} />
+      <ProductList data={data} />
+      <div ref={pageEnd}>더보기</div>
+      {isFetchingNextPage ? <div>loading</div> : null}
+    </section>
   );
 };
 
-export default SearchPage;
+export default ProductListPage;
