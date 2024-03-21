@@ -6,7 +6,6 @@ import NavBar from "../components/customUi/NavBar";
 import "./globals.css";
 import QueryProvider from "./provider";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -44,7 +43,7 @@ export default async function RootLayout({
           <Link href="/community" className="m-2">
             커뮤니티
           </Link>
-          <Button>로그아웃</Button>
+
           {children}
         </body>
       </html>
