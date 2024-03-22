@@ -9,6 +9,7 @@ import {
   SurveyDrawerHeader,
   SurveyDrawerTitle,
 } from "@/components/ui/drawer";
+import { toast } from "sonner";
 
 export const Survey = () => {
   const [userResult, setUserResult] = useState<User>({
@@ -212,7 +213,15 @@ export const Survey = () => {
             >
               뒤로가기
             </Button>
-            <Button onClick={handleSubmit} className="w-52 h-10 text-base">
+            <Button
+              className="w-52 h-10 text-base"
+              onClick={() => {
+                // handleSubmit();
+                toast("설문조사 완료", {
+                  description: "마이페이지에서 확인하세요",
+                });
+              }}
+            >
               제출하기
             </Button>
           </div>
