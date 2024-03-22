@@ -27,11 +27,10 @@ export default async function RootLayout({
             fontSans.variable,
             "flex",
             "flex-col"
-            // "bg-lime-400"
           )}
         >
           <NavBar />
-          <div className="w-[1500px] mx-auto">{children}</div>
+          {children}
         </body>
       </html>
     </QueryProvider>
