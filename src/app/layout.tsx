@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
-
 import "./globals.css";
 import QueryProvider from "./provider";
-import Link from "next/link";
+import NavBar from "@/components/customUi/navUi/NavBar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,21 +29,8 @@ export default async function RootLayout({
             "flex-col"
           )}
         >
-          <div className="w-[1500px] mx-auto">
-            <nav>
-              <Link href="/" className="m-2">
-                Home
-              </Link>
-              <NavBar />
-              <Link href="/community" className="m-2">
-                커뮤니티
-              </Link>
-              <Link href="/mypage" className="m-2">
-                마이페이지
-              </Link>
-            </nav>
-            {children}
-          </div>
+          <NavBar />
+          {children}
         </body>
       </html>
     </QueryProvider>
