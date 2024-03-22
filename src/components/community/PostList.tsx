@@ -17,7 +17,7 @@ const PostList = () => {
     fetchPostData();
   }, [fetchPostData]);
 
-  const editHandler = async (updatedPost: Partial<Post>) => {
+  const handleEdit = async (updatedPost: Partial<Post>) => {
     try {
       if (selectedPost) {
         await editPost(selectedPost.id, updatedPost);
@@ -29,7 +29,7 @@ const PostList = () => {
     }
   };
 
-  const deleteHandler = async (postId: number) => {
+  const handleDelete = async (postId: number) => {
     try {
       await deletePost(postId);
       fetchPostData();
@@ -49,12 +49,14 @@ const PostList = () => {
   return (
     <section className="m-2">
       {posts.map((post) => (
-        <div key={post.id} className="border-2 m-4">
-          <Image src="" alt="이미지"></Image>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-          <p>평점: {post.rating}</p>
-          <p>성분명: {post.ingredient}</p>
+        <div key={post.id} className=" border-2 m-4 bg-white">
+          <div className="">
+            <Image src="" alt="이미지"></Image>
+            <p>{post.title}</p>
+            <p>{post.content}</p>
+            <p>평점: {post.rating}</p>
+            <p>성분명: {post.ingredient}</p>
+          </div>
           <Button
             onClick={() => {
               setSelectedPost(post);
@@ -66,7 +68,7 @@ const PostList = () => {
           </Button>
           <Button
             onClick={() => {
-              deleteHandler(post.id);
+              handleDelete(post.id);
             }}
           >
             삭제
@@ -77,7 +79,7 @@ const PostList = () => {
         <EditModal
           initialPost={selectedPost}
           onSave={(editedPost) => {
-            editHandler(editedPost);
+            handleEdit(editedPost);
           }}
           onClose={() => setEditModalOpen(false)}
         />
