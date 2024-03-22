@@ -180,7 +180,7 @@ export default function SurveyDrawerDemo() {
   return (
     <SurveyDrawer>
       <SurveyDrawerTrigger asChild>
-        <Button variant="outline">설문조사 하러가기</Button>
+        <Button variant="outline" className="w-[500px]">설문조사 하러가기</Button>
       </SurveyDrawerTrigger>
 
       <SurveyDrawerContent>
