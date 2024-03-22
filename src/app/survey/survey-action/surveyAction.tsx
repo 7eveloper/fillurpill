@@ -2,13 +2,13 @@ import { isThereClientSession } from "@/hooks/clientSession";
 import { User } from "@/store/zustandStore";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   SurveyDrawerDescription,
   SurveyDrawerFooter,
   SurveyDrawerHeader,
   SurveyDrawerTitle,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
 
 export const Survey = () => {
   const [userResult, setUserResult] = useState<User>({
@@ -30,7 +30,7 @@ export const Survey = () => {
       setUserResult({ ...userResult, nickname: user?.user_metadata.nickname });
     };
     fetchUser();
-    // 처음에만 User 정보 가져오길 원해서 의존성 배열 비워둠
+    // 처음에만 User 정보 가져오길 원해서 의존성 배열 비워 둠
   }, []);
 
   const handleClick = (idx: number, value: string) => {

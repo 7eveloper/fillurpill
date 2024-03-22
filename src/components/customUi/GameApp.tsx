@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -268,7 +267,7 @@ const GameApp = () => {
         />
       </div>
       <div className="flex flex-col items-center justify-center p-10 w-screen">
-        <img src="/images/logo.png" alt="logo" className="mb-10"/>
+        <img src="/images/logo.png" alt="logo" className="mb-10" />
         <div className="flex w-full max-w-sm items-center space-x-2 my-5">
           <Input
             className="bg-white w-[350px]"
