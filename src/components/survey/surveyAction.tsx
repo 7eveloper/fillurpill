@@ -1,5 +1,5 @@
 import { isThereClientSession } from "@/hooks/clientSession";
-import { User } from "@/store/zustandStore";
+import { User, zustandStore } from "@/store/zustandStore";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ export const Survey = () => {
   const ageList = ["10대", "2-30대", "3-40대", "4-50대", "5-60대", "70대 이상"];
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
+  const changeSurveyDone = zustandStore((state) => state.changeSurveyDone);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -217,6 +218,7 @@ export const Survey = () => {
               className="w-52 h-10 text-base"
               onClick={() => {
                 handleSubmit();
+                changeSurveyDone();
                 toast("설문조사 완료", {
                   description: "마이페이지에서 확인하세요",
                 });

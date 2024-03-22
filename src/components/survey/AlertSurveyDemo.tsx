@@ -1,12 +1,9 @@
+"use client";
 import { RocketIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { isThereServerSession } from "@/hooks/serverSession";
-import SurveyDrawerBtn from "@/app/survey/survey-action/SurveyDrawerBtn";
+import SurveyDrawerBtn from "@/components/survey/SurveyDrawerBtn";
 
-export async function AlertDemo() {
-  const { session } = await isThereServerSession();
-  const nickname = session?.user.user_metadata.nickname;
-
+export function AlertSurveyDemo({ nickname }: { nickname: string }) {
   return (
     <Alert className="flex justify-between">
       <RocketIcon className="h-4 w-4" />
@@ -19,7 +16,6 @@ export async function AlertDemo() {
       <div>
         <SurveyDrawerBtn />
       </div>
-      {/* <SurveyDrawerBt /> */}
     </Alert>
   );
 }
