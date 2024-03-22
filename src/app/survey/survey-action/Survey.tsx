@@ -1,5 +1,5 @@
 "use client";
-import { addSurvey } from "@/app/survey/survey-action/addSurvey";
+import { addSurvey } from "./surveyAction";
 import { User } from "@/store/zustandStore";
 import { useState } from "react";
 
@@ -44,70 +44,112 @@ const Survey = () => {
   };
 
   if (!clickList[0]) {
-    return genderList.map((gender, idx) => (
-      <button
-        key={idx}
-        onClick={() => {
-          handleClick(0, gender);
-        }}
-      >
-        {gender}
-      </button>
-    ));
+    return (
+      <>
+        <Header text="성별" />
+        <div className="mx-auto w-full flex gap-4 justify-center">
+          {genderList.map((gender, idx) => (
+            <SurveyDrawerFooter key={idx}>
+              <Button
+                onClick={() => {
+                  handleClick(0, gender);
+                }}
+                variant="outline"
+              >
+                {gender}
+              </Button>
+            </SurveyDrawerFooter>
+          ))}
+        </div>
+      </>
+    );
   }
   if (clickList[0] && !clickList[1]) {
-    return ageList.map((age, idx) => (
-      <button
-        key={idx}
-        onClick={() => {
-          handleClick(1, age);
-        }}
-      >
-        {age}
-      </button>
-    ));
+    return (
+      <>
+        <Header text="나이" />
+        <div className="mx-auto w-full flex gap-6 justify-center">
+          {ageList.map((age, idx) => (
+            <Button
+              key={idx}
+              onClick={() => {
+                handleClick(1, age);
+              }}
+              variant="outline"
+            >
+              {age}
+            </Button>
+          ))}
+        </div>
+      </>
+    );
   }
+
   if (clickList[0] && clickList[1] && !clickList[2]) {
     return (
       <>
-        <p>당신의 몸무게를 입력해주세요</p>
-        <input
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-        ></input>
-        <button
-          onClick={() => {
-            if (isNaN(Number(weight))) {
-              alert("숫자만 입력 가능합니다");
-            } else {
-              handleClick(2, weight);
-            }
-          }}
-        >
-          클릭
-        </button>
+        <Header text="몸무게" />
+        <div className="mx-auto w-full flex justify-center">
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className="flex flex-row w-[500px]"
+          >
+            <Input
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              className="mr-4"
+              placeholder="kg"
+            ></Input>
+            <Button
+              onClick={() => {
+                if (isNaN(Number(weight))) {
+                  alert("숫자만 입력 가능합니다");
+                } else if (!weight.length) {
+                  alert("몸무게를 입력해주세요");
+                } else {
+                  handleClick(2, weight);
+                }
+              }}
+              variant="outline"
+            >
+              클릭
+            </Button>
+          </form>
+        </div>
       </>
     );
   }
   if (clickList[0] && clickList[1] && clickList[2] && !clickList[3]) {
     return (
       <>
-        <p>당신의 키를 입력해주세요</p>
-        <input
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
-        ></input>
-        <button
-          onClick={() => {
-            if (isNaN(Number(height))) {
-              alert("숫자만 입력 가능합니다");
-            } else {
-              handleClick(3, height);
-            }
-          }}
-        >
-          클릭
-        </button>
+        <Header text="키" />
+        <div className="mx-auto w-full flex justify-center">
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className="flex flex-row w-[500px]"
+          >
+            <Input
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+              className="mr-4"
+              placeholder="cm"
+            ></Input>
+            <Button
+              onClick={() => {
+                if (isNaN(Number(height))) {
+                  alert("숫자만 입력 가능합니다");
+                } else if (!height.length) {
+                  alert("키를 입력해주세요");
+                } else {
+                  handleClick(3, height);
+                }
+              }}
+              variant="outline"
+            >
+              클릭
+            </Button>
+          </form>
+        </div>
       </>
     );
   }
@@ -122,4 +164,41 @@ const Survey = () => {
   }
 };
 
-export default Survey;
+import { Button } from "@/components/ui/button";
+import {
+  SurveyDrawer,
+  SurveyDrawerContent,
+  SurveyDrawerDescription,
+  SurveyDrawerFooter,
+  SurveyDrawerHeader,
+  SurveyDrawerTitle,
+  SurveyDrawerTrigger,
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+
+export default function SurveyDrawerDemo() {
+  return (
+    <SurveyDrawer>
+      <SurveyDrawerTrigger asChild>
+        <Button variant="outline" className="w-[500px]">
+          설문조사 하러가기
+        </Button>
+      </SurveyDrawerTrigger>
+
+      <SurveyDrawerContent>
+        <Survey />
+      </SurveyDrawerContent>
+    </SurveyDrawer>
+  );
+}
+
+export const Header = ({ text }: { text: string }) => {
+  return (
+    <SurveyDrawerHeader>
+      <SurveyDrawerTitle>{text}</SurveyDrawerTitle>
+      <SurveyDrawerDescription>
+        당신의 {text}을/를 알려주세요.
+      </SurveyDrawerDescription>
+    </SurveyDrawerHeader>
+  );
+};
