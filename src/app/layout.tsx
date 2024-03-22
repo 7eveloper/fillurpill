@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
-import NavBar from "../components/customUi/navUi/NavBar";
+
 import "./globals.css";
 import QueryProvider from "./provider";
+import NavBar from "@/components/customUi/navUi/NavBar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,11 +28,11 @@ export default async function RootLayout({
             fontSans.variable,
             "flex",
             "flex-col"
-            // "bg-lime-400"
           )}
         >
           <NavBar />
           <div className="max-w-[1500px] mx-auto">{children}</div>
+          {children}
         </body>
       </html>
     </QueryProvider>

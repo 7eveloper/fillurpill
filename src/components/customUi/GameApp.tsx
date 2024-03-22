@@ -242,7 +242,7 @@ const GameApp = () => {
 
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col items-center justify-center p-10 w-fit h-screen">
+      <div className="flex flex-col items-center justify-center px-8 w-fit h-fit">
         <div className="flex flex-row items-center justify-center w-[500px] my-3 border border-black border-solid rounded-lg p-10 bg-white">
           <Button className="mx-3" onClick={() => setState("pause")}>
             PAUSE
@@ -267,8 +267,8 @@ const GameApp = () => {
           height={H}
         />
       </div>
-      <div className="flex flex-col items-center justify-center bg-lime-400 p-10 w-screen h-screen">
-        <img src="/images/logo.png" alt="logo" />
+      <div className="flex flex-col items-center justify-center p-10 w-screen">
+        <img src="/images/logo.png" alt="logo" className="mb-10"/>
         <div className="flex w-full max-w-sm items-center space-x-2 my-5">
           <Input
             className="bg-white w-[350px]"

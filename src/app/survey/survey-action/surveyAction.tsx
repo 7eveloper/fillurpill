@@ -135,7 +135,7 @@ export const Survey = () => {
             <Input
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="mr-4 text-xl h-20"
+              className="mr-4 text-xl h-12"
               placeholder="kg"
               autoFocus
             ></Input>
@@ -150,9 +150,9 @@ export const Survey = () => {
                 }
               }}
               variant="outline"
-              className="text-lg w-40 h-20"
+              className="text-lg w-40 h-12"
             >
-              <img src="/images/logo.png" alt="버튼 이미지" className="w-24" />
+              Next
             </Button>
           </form>
         </div>
@@ -171,7 +171,7 @@ export const Survey = () => {
             <Input
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              className="mr-4 text-lg h-20"
+              className="mr-4 text-lg h-12"
               placeholder="cm"
               autoFocus
             ></Input>
@@ -186,9 +186,9 @@ export const Survey = () => {
                 }
               }}
               variant="outline"
-              className="w-40 h-20"
+              className="w-40 h-12 text-lg"
             >
-              <img src="/images/logo.png" alt="버튼 이미지" className="w-24" />
+              Next
             </Button>
           </form>
         </div>
