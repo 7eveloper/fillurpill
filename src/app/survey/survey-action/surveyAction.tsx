@@ -1,9 +1,16 @@
-"use client";
-import { addSurvey } from "@/app/survey/survey-action/addSurvey";
+import { isThereClientSession } from "@/hooks/clientSession";
 import { User } from "@/store/zustandStore";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  SurveyDrawerDescription,
+  SurveyDrawerFooter,
+  SurveyDrawerHeader,
+  SurveyDrawerTitle,
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
 
-const Survey = () => {
+export const Survey = () => {
   const [userResult, setUserResult] = useState<User>({
     gender: "",
     age: "",
@@ -157,38 +164,11 @@ const Survey = () => {
   if (clickList.every((click) => click === true)) {
     return (
       <>
-        당신은{userResult.age}입니다
         <button onClick={handleSubmit}>제출하기</button>
       </>
     );
   }
 };
-
-import { Button } from "@/components/ui/button";
-import {
-  SurveyDrawer,
-  SurveyDrawerContent,
-  SurveyDrawerDescription,
-  SurveyDrawerFooter,
-  SurveyDrawerHeader,
-  SurveyDrawerTitle,
-  SurveyDrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-
-export default function SurveyDrawerDemo() {
-  return (
-    <SurveyDrawer>
-      <SurveyDrawerTrigger asChild>
-        <Button variant="outline">설문조사 하러가기</Button>
-      </SurveyDrawerTrigger>
-
-      <SurveyDrawerContent>
-        <Survey />
-      </SurveyDrawerContent>
-    </SurveyDrawer>
-  );
-}
 
 export const Header = ({ text }: { text: string }) => {
   return (
@@ -199,4 +179,23 @@ export const Header = ({ text }: { text: string }) => {
       </SurveyDrawerDescription>
     </SurveyDrawerHeader>
   );
+};
+
+export const addSurvey = async (userResult: User) => {
+  const { supabase, user } = await isThereClientSession();
+  const nickname = user?.user_metadata.nickname;
+
+  if (!user) {
+    console.error("로그인하지 않은 사용자는 설문조사에 참여할 수 없습니다.");
+  }
+
+  const { error } = await supabase
+    .from("survey")
+    .insert([{ user_id: user?.id, ...userResult, nickname }]);
+
+  if (error) {
+    console.error("사용자 설문조사 결과 저장 실패", error);
+  }
+
+  return { message: "Success" };
 };
