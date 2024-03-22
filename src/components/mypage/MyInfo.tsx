@@ -13,32 +13,51 @@ const MyInfo = () => {
   const [formData, setFormData] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
 
+  // useEffect(() => {
+  //   const fetchIntakeList = async () => {
+  //     const { supabase, user } = await isThereClientSession();
+  //     console.log(user);
+  //     // 사용자 정보를 받아온 후, formData에 설정할 수 있도록 email을 formData에 추가한다.
+  //     if (!user) {
+  //       // 사용자가 로그인되어 있지 않은 경우
+  //       // 여기에서 적절한 처리를 해야 합니다.
+  //       return;
+  //     }
+  //     setFormData((prevState) => ({
+  //       ...prevState!,
+  //       // 여기서 email을 formData에 추가함
+  //     }));
+  //     const { data, error } = await supabase
+  //       .from("survey")
+  //       .select("*")
+  //       .eq("user_id", user?.id)
+  //       .single();
+  //     console.log(data);
+  //     if (error) {
+  //       throw new Error(error.message);
+  //     }
+  //     setUser(data);
+  //     setFormData(data);
+  //   };
+  //   fetchIntakeList();
+  // }, [id]);
+  const fetchIntakeList = async () => {
+    //supabase survey테이블을 전부 가져오는거
+    const { supabase, user } = await isThereClientSession();
+    console.log(user);
+    const { data, error } = await supabase
+      .from("survey")
+      .select("*")
+      .eq("user_id", user?.id)
+      .single();
+    console.log(data);
+    if (error) {
+      throw new Error(error.message);
+    }
+    setUser(data);
+    setFormData(data);
+  };
   useEffect(() => {
-    const fetchIntakeList = async () => {
-      const { supabase, user } = await isThereClientSession();
-      console.log(user);
-      // 사용자 정보를 받아온 후, formData에 설정할 수 있도록 email을 formData에 추가한다.
-      if (!user) {
-        // 사용자가 로그인되어 있지 않은 경우
-        // 여기에서 적절한 처리를 해야 합니다.
-        return;
-      }
-      setFormData((prevState) => ({
-        ...prevState!,
-        email: user.email, // 여기서 email을 formData에 추가함
-      }));
-      const { data, error } = await supabase
-        .from("survey")
-        .select("*")
-        .eq("user_id", user?.id)
-        .single();
-      console.log(data);
-      if (error) {
-        throw new Error(error.message);
-      }
-      setUser(data);
-      setFormData(data);
-    };
     fetchIntakeList();
   }, [id]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +101,7 @@ const MyInfo = () => {
           type="text"
           id="email"
           name="email"
-          value={formData?.nickname || ""}
+          value={formData?.email || ""}
           onChange={handleInputChange}
           className={`p-2 border rounded-md ${!editMode ? "opacity-30" : ""}`} // 수정 모드에 따라 흐리게 표시
         />
@@ -115,6 +134,7 @@ const MyInfo = () => {
             readOnly={!editMode}
             className={`p-2 border rounded-md ${!editMode ? "opacity-30" : ""}`} // 수정 모드에 따라 흐리게 표시
           />
+          cm
         </div>
         <div className="my-5 pl-5 pb-5 border-b-2 border-gray">
           <label className="w-[120px] inline-block" htmlFor="weight">
@@ -129,6 +149,7 @@ const MyInfo = () => {
             readOnly={!editMode}
             className={`p-2 border rounded-md ${!editMode ? "opacity-30" : ""}`} // 수정 모드에 따라 흐리게 표시
           />
+          kg
         </div>
         <div className="my-5 pl-5 pb-5 border-b-2 border-gray">
           <label className="w-[120px] inline-block" htmlFor="gender">

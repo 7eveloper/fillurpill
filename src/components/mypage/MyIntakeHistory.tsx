@@ -24,7 +24,7 @@ const MyIntakeHistory = () => {
     start: Date;
     end: Date;
   } | null>(null);
-
+  const [selectedEvent, setSelectedEvent] = useState<IntakeDiary | null>(null);
   const queryClient = useQueryClient();
 
   const fetchIntakeList = async () => {
@@ -94,6 +94,7 @@ const MyIntakeHistory = () => {
   });
   const handleSelectEvent = async (event: IntakeDiary) => {
     setSideModalOpen(true);
+    setSelectedEvent(event);
     console.log("123");
     // const isConfirmed = window.confirm("선택한 항목을 삭제하시겠습니까?");
 
@@ -126,14 +127,7 @@ const MyIntakeHistory = () => {
       <h1 className="text-[28px] pl-5 border-b-4 border-black">
         나의 섭취 이력
       </h1>
-      <div
-        style={{
-          width: "800px",
-          height: "600px",
-          marginLeft: "20px",
-          marginTop: "30px",
-        }}
-      >
+      <div className="w-[1000px] h-[600px] mx-auto mt-5">
         <Calendar
           views={[Views.MONTH, Views.AGENDA]}
           defaultDate={defaultDate}
@@ -190,25 +184,31 @@ const MyIntakeHistory = () => {
         </div>
       )}
       {sideModalOpen && (
-        <div className="w-[400px] h-full flex flex-col justify-center items-center bg-white rounded-l-[18px] rounded-r-[18px] shadow">
+        <div className="fixed top-0 right-0 z-50 h-full w-[400px] flex flex-col justify-center items-center bg-white rounded-l-[18px] rounded-r-[18px] shadow">
           <div className="w-4/5 flex justify-end">
-            <button className="w-[55px] h-[55px] text-[30px] rounded-[50%] border-none text-30 text-gray-600 cursor-pointer hover:text-black">
+            <button
+              className="w-[55px] h-[55px] text-[30px] rounded-[50%] border-none text-30 text-gray-600 cursor-pointer hover:text-black"
+              onClick={() => setSideModalOpen(false)}
+            >
               x
             </button>
           </div>
-          <div className="w-80 h-60p flex flex-col justify-center items-center">
-            <div className="w-full h-64 flex items-center text-34 bg-blue-500 text-white rounded-10 px-10">
-              11
+          <div className="w-4/5 h-4/5 flex flex-col justify-center items-center">
+            <div className="w-full h-[64px] flex items-center text-34 bg-green-900 text-white rounded-[10px] pl-[10px]">
+              {selectedEvent?.title}
             </div>
-            <div className="w-full flex justify-between border-b-1 border-blue-500">
-              <div className="w-140 h-50 flex justify-center items-center">
-                22
+            <div className="w-full flex justify-between border-b-2 border-green-900">
+              <div className=" h-[50px]  flex justify-center items-center">
+                시작일: {selectedEvent?.start.toLocaleString()}
               </div>
-              <div className="w-140 h-50 flex justify-center items-center">
-                33
+              <div className=" h-[50px]  flex justify-center items-center">
+                종료일: {selectedEvent?.end.toLocaleString()}
               </div>
             </div>
-            <div className="w-full mt-20">44</div>
+            <div className="w-full mt-[20px] h-4/5">
+              {selectedEvent?.contents}
+            </div>
+            <button className="bg-red-100">삭제</button>
           </div>
         </div>
       )}

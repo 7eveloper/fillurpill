@@ -7,6 +7,7 @@ export type User = {
   weight: string;
   height: string;
   nickname: string;
+  email: string;
 };
 
 type State = {
