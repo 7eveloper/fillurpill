@@ -216,7 +216,7 @@ export const Survey = () => {
             <Button
               className="w-52 h-10 text-base"
               onClick={() => {
-                // handleSubmit();
+                handleSubmit();
                 toast("설문조사 완료", {
                   description: "마이페이지에서 확인하세요",
                 });

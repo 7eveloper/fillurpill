@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import { ClipLoader } from "react-spinners";
+import { toast } from "sonner";
 
 export function AlertAuthResult({
   func,
@@ -28,7 +29,20 @@ export function AlertAuthResult({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button onClick={handleClick}>{text}</Button>
+        <Button
+          onClick={() => {
+            handleClick();
+            toast(text === "로그인" ? "로그인" : "회원가입", {
+              description: new Date().toLocaleString(),
+              action: {
+                label: "Undo",
+                onClick: () => console.log("Undo"),
+              },
+            });
+          }}
+        >
+          {text}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

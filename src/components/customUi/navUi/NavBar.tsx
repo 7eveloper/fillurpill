@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import SurveyDrawerBtn from "@/app/survey/survey-action/SurveyDrawerBtn";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { toast } from "sonner";
 
 const NavBar = () => {
   const router = useRouter();
@@ -62,7 +63,19 @@ const NavBar = () => {
 
       <div className="flex gap-4">
         {loggedIn ? (
-          <button className="hover:text-gray-600" onClick={handleSignOut}>
+          <button
+            className="hover:text-gray-600"
+            onClick={() => {
+              handleSignOut();
+              toast("로그아웃", {
+                description: new Date().toLocaleString(),
+                action: {
+                  label: "Undo",
+                  onClick: () => console.log("Undo"),
+                },
+              });
+            }}
+          >
             Logout
           </button>
         ) : (

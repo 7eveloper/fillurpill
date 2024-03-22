@@ -28,7 +28,7 @@ const LoginPage = () => {
   const supabase = createClientComponentClient();
   const changeLoggedIn = zustandStore((state) => state.changeLoggedIn);
 
-  const handlerLoginMode = () => {
+  const handleLoginMode = () => {
     setLoginMode(!loginMode);
   };
 
@@ -155,9 +155,7 @@ const LoginPage = () => {
         <CardFooter className="flex justify-between">
           {loginMode ? (
             <>
-              <button onClick={handlerLoginMode}>
-                아직 회원이 아니신가요?
-              </button>
+              <button onClick={handleLoginMode}>아직 회원이 아니신가요?</button>
               <AlertAuthResult
                 func={handleSignIn}
                 text="로그인"
@@ -167,7 +165,7 @@ const LoginPage = () => {
             </>
           ) : (
             <>
-              <button onClick={handlerLoginMode}>로그인하러 가기</button>
+              <button onClick={handleLoginMode}>로그인하러 가기</button>
               <AlertAuthResult
                 func={handleSignUp}
                 text="회원가입"
