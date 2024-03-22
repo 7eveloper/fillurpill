@@ -27,6 +27,8 @@ type ItemPosition = {
 const GameApp = () => {
   const [state, setState] = useState<"play" | "pause" | "stop">("stop");
   const [score, setScore] = useState(0);
+  const [abandoned, setAbandoned] = useState(0);
+
   const ref = useRef<HTMLCanvasElement>(null);
   const basketRef = useRef<HTMLImageElement>(null);
   const pillRef = useRef<HTMLImageElement>(null);
@@ -147,7 +149,6 @@ const GameApp = () => {
     };
     keyRef.current.isLeft = false;
     keyRef.current.isRight = false;
-    setScore(0);
   }, []);
 
   useEffect(() => {
@@ -169,6 +170,7 @@ const GameApp = () => {
           h,
         };
       });
+
     !pillRef.current &&
       loadImage("/images/pill.png").then((img) => {
         (pillRef as any).current = img;
@@ -178,6 +180,7 @@ const GameApp = () => {
 
     let timer: number | undefined;
     let rafTimer: number | undefined;
+
     const position = positionRef.current;
     const animate = () => {
       const basket = basketRef.current;
@@ -197,6 +200,7 @@ const GameApp = () => {
         position.pills.forEach((pillPosition, index) => {
           if (pillPosition.y >= H) {
             deletePill(index);
+            setAbandoned((prevAbandoned) => prevAbandoned + 1);
           } else {
             catchPill(pillPosition, index);
           }
@@ -204,8 +208,8 @@ const GameApp = () => {
       }
       rafTimer = requestAnimationFrame(animate);
     };
-    rafTimer = requestAnimationFrame(animate);
 
+    rafTimer = requestAnimationFrame(animate);
     timer = window.setInterval(createPill, CREATE_PILL_TIME);
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -213,12 +217,18 @@ const GameApp = () => {
       keyRef.current.isLeft = key === "a" || key === "arrowleft";
       keyRef.current.isRight = key === "d" || key === "arrowright";
     };
+
     const onKeyUp = () => {
       keyRef.current.isLeft = false;
       keyRef.current.isRight = false;
     };
+
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
+
+    if (abandoned === 10) {
+      setState("stop");
+    }
 
     return () => {
       window.removeEventListener("keydown", onKeyDown);
@@ -238,16 +248,25 @@ const GameApp = () => {
     catchPill,
     state,
     initialGame,
+    abandoned,
+    score,
   ]);
 
   return (
     <div className="flex flex-row">
       <div className="flex flex-col items-center justify-center px-8 w-fit h-fit">
-        <div className="flex flex-row items-center justify-center w-[500px] my-3 border border-black border-solid rounded-lg p-10 bg-white">
+        <div className="flex flex-row items-center justify-center w-[500px] my-3 border border-black border-solid rounded-lg p-6 bg-white">
           <Button className="mx-3" onClick={() => setState("pause")}>
             PAUSE
           </Button>
-          <Button className="mx-3" onClick={() => setState("play")}>
+          <Button
+            className="mx-3"
+            onClick={() => {
+              setState("play");
+              setScore(0);
+              setAbandoned(0);
+            }}
+          >
             PLAY
           </Button>
           <Button className="mx-3" onClick={() => setState("stop")}>
@@ -257,7 +276,10 @@ const GameApp = () => {
         <Card className="w-[500px] border border-black border-solid rounded-lg p-5 my-3 bg-white">
           <CardTitle className="text-center">Current Score</CardTitle>
           <CardContent>
-            <p className="text-center">{score}</p>
+            <p className="text-right mr-[150px] mt-5">점수 : {score}</p>
+            <p className="text-right mr-[150px]">
+              버려진 알약 수 : {abandoned}
+            </p>
           </CardContent>
         </Card>
         <canvas
@@ -268,7 +290,12 @@ const GameApp = () => {
         />
       </div>
       <div className="flex flex-col items-center justify-center p-10 w-screen">
-        <img src="/images/logo.png" alt="logo" className="mb-10"/>
+        {abandoned === 10 ? (
+          <img src="/images/gameover.png" alt="logo" className="mb-10 w-[30vw]" />
+        ) : (
+          <img src="/images/logo.png" alt="logo" className="mb-10 w-[30vw]" />
+        )}
+
         <div className="flex w-full max-w-sm items-center space-x-2 my-5">
           <Input
             className="bg-white w-[350px]"
