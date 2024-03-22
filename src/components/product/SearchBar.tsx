@@ -1,11 +1,26 @@
 import { ChangeEvent, FormEvent } from "react";
-import { Input } from "../ui/input";
 import { useRouter } from "next/navigation";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 type SearchBarType = {
   searchType: string;
   handleChangeType: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
+
+const searchTypes = [
+  {
+    value: "function",
+    label: "기능",
+  },
+  {
+    value: "name",
+    label: "이름",
+  },
+  {
+    value: "composition",
+    label: "성분",
+  },
+];
 
 const SearchBar = ({ searchType, handleChangeType }: SearchBarType) => {
   const router = useRouter();
@@ -20,14 +35,24 @@ const SearchBar = ({ searchType, handleChangeType }: SearchBarType) => {
   return (
     <form
       onSubmit={handleSearch}
-      className="flex flex-wrap justify-center my-10"
+      className="flex items-center text-slate-500 gap-3 h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors my-10 "
     >
+      <MagnifyingGlassIcon className="w-5 h-5" />
       <select onChange={handleChangeType}>
-        <option value="function">기능으로 검색</option>
-        <option value="name">이름으로 검색</option>
+        {searchTypes.map((type) => {
+          return (
+            <option key={type.value} value={type.value}>
+              {type.label}
+            </option>
+          );
+        })}
       </select>
-      <Input name="search" placeholder="검색내용" />
-      <button>검색</button>
+      <input
+        name="search"
+        placeholder="검색어를 입력해주세요"
+        className="flex-1 placeholder:text-muted-foreground outline-none"
+      />
+      <button>Search</button>
     </form>
   );
 };

@@ -1,4 +1,4 @@
-import SurveyDrawerDemo from "@/app/survey/survey-action/Survey";
+import SurveyDrawerDemo from "@/app/survey/survey-action/SurveyDrawerBtn";
 import { isThereServerSession } from "@/hooks/session";
 
 const SurveyPage = async () => {
