@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { zustandStore } from "@/store/zustandStore";
 import { useEffect } from "react";
-import SurveyDrawerDemo from "@/app/survey/survey-action/Survey";
+import SurveyDrawerBtn from "@/app/survey/survey-action/SurveyDrawerBtn";
 
 const NavBar = () => {
   const router = useRouter();
@@ -58,7 +58,7 @@ const NavBar = () => {
         <button className="hover:text-gray-600">About</button>
       </div>
 
-      <SurveyDrawerDemo />
+      <SurveyDrawerBtn />
 
       <div>
         {loggedIn ? (
