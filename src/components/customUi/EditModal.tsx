@@ -17,14 +17,14 @@ const EditModal: React.FC<EditModalProps> = ({
 }) => {
   const [editedPost, setEditedPost] = useState(initialPost);
 
-  const changeHandler = (
+  const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
     setEditedPost((prev) => ({ ...prev, [name]: value }));
   };
 
-  const submitHandler = () => {
+  const handleSubmit = () => {
     onSave(editedPost);
     onClose();
   };
@@ -39,16 +39,16 @@ const EditModal: React.FC<EditModalProps> = ({
           id="title"
           name="title"
           value={editedPost.title}
-          onChange={changeHandler}
+          onChange={handleChange}
         />
         <Label htmlFor="content">내용</Label>
         <textarea
           id="content"
           name="content"
           value={editedPost.content}
-          onChange={changeHandler}
+          onChange={handleChange}
         />
-        <Button onClick={submitHandler}>저장</Button>
+        <Button onClick={handleSubmit}>저장</Button>
         <Button onClick={onClose}>취소</Button>
       </div>
     </div>

@@ -1,5 +1,3 @@
-export {};
-
 export type Json =
   | string
   | number
@@ -33,5 +31,6 @@ export interface Post {
   rating: string;
   ingredient: string;
   userId: string;
+  image: string;
   data: Json | null;
 }
