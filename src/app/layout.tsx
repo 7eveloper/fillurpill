@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import QueryProvider from "./provider";
 import NavBar from "@/components/customUi/navUi/NavBar";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -29,8 +31,17 @@ export default async function RootLayout({
             "flex-col"
           )}
         >
-          <NavBar />
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            themes={["green", "yellow", "orange", "rose", "light", "dark"]}
+            disableTransitionOnChange
+          >
+            <NavBar />
+            <div className="max-w-[1500px] mx-auto">{children}</div>
+            <Toaster />
+          </ThemeProvider>
         </body>
       </html>
     </QueryProvider>

@@ -6,5 +6,5 @@ export const isThereClientSession = async () => {
     data: { session },
   } = await supabase.auth.getSession();
   const user = session?.user;
-  return { supabase, user };
+  return { supabase, session, user };
 };

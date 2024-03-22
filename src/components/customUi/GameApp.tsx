@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -291,7 +290,11 @@ const GameApp = () => {
       </div>
       <div className="flex flex-col items-center justify-center p-10 w-screen">
         {abandoned === 10 ? (
-          <img src="/images/gameover.png" alt="logo" className="mb-10 w-[30vw]" />
+          <img
+            src="/images/gameover.png"
+            alt="logo"
+            className="mb-10 w-[30vw]"
+          />
         ) : (
           <img src="/images/logo.png" alt="logo" className="mb-10 w-[30vw]" />
         )}
