@@ -6,6 +6,7 @@ import QueryProvider from "./provider";
 import NavBar from "@/components/customUi/navUi/NavBar";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { AlertDemo } from "@/components/customUi/AlertDemo";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -39,6 +40,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <NavBar />
+            <AlertDemo />
             <div className="max-w-[1500px] mx-auto">{children}</div>
             <Toaster />
           </ThemeProvider>

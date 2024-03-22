@@ -59,8 +59,6 @@ const NavBar = () => {
         </Link>
       </div>
 
-      <SurveyDrawerBtn />
-
       <div className="flex gap-4">
         {loggedIn ? (
           <button

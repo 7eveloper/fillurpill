@@ -1,7 +1,7 @@
 "use client";
 import SurveyDrawerDemo from "@/app/survey/survey-action/SurveyDrawerBtn";
 import { Button } from "@/components/ui/button";
-import { isThereServerSession } from "@/hooks/session";
+import { isThereServerSession } from "@/hooks/serverSession";
 import { toast } from "sonner";
 
 const SurveyPage = () => {
