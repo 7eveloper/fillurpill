@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { isThereServerSession } from "@/hooks/session";
-import NavBar from "../components/customUi/NavBar";
+
 import "./globals.css";
 import QueryProvider from "./provider";
 import Link from "next/link";
@@ -28,8 +27,7 @@ export default async function RootLayout({
             "min-h-screen bg-background font-sans antialiased",
             fontSans.variable,
             "flex",
-            "flex-col",
-            "bg-lime-400"
+            "flex-col"
           )}
         >
           <div className="w-[1500px] mx-auto">
