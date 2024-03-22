@@ -1,14 +1,15 @@
 import { isThereClientSession } from "@/hooks/clientSession";
-import { User } from "@/store/zustandStore";
+import { User, zustandStore } from "@/store/zustandStore";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   SurveyDrawerDescription,
   SurveyDrawerFooter,
   SurveyDrawerHeader,
   SurveyDrawerTitle,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
+import { alertMsg } from "@/lib/utils";
 
 export const Survey = () => {
   const [userResult, setUserResult] = useState<User>({
@@ -17,12 +18,14 @@ export const Survey = () => {
     weight: "",
     height: "",
     nickname: "",
+    email: "",
   });
   const [clickList, setClickList] = useState([false, false, false, false]);
   const genderList = ["남성", "여성"];
   const ageList = ["10대", "2-30대", "3-40대", "4-50대", "5-60대", "70대 이상"];
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
+  const changeSurveyDone = zustandStore((state) => state.changeSurveyDone);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,7 +33,7 @@ export const Survey = () => {
       setUserResult({ ...userResult, nickname: user?.user_metadata.nickname });
     };
     fetchUser();
-    // 처음에만 User 정보 가져오길 원해서 의존성 배열 비워둠
+    // 처음에만 User 정보 가져오길 원해서 의존성 배열 비워 둠
   }, []);
 
   const handleClick = (idx: number, value: string) => {
@@ -142,9 +145,16 @@ export const Survey = () => {
             <Button
               onClick={() => {
                 if (isNaN(Number(weight))) {
-                  alert("숫자만 입력 가능합니다");
+                  alertMsg("숫자만 입력 가능합니다", "");
+                  setWeight("");
                 } else if (!weight.length) {
-                  alert("몸무게를 입력해주세요");
+                  alertMsg("몸무게를 입력해주세요", "");
+                } else if (Number(weight) <= 0 || Number(weight) > 200) {
+                  alertMsg(
+                    "범위 오류",
+                    "몸무게의 범위는 0 ~ 200kg여야 합니다!"
+                  );
+                  setWeight("");
                 } else {
                   handleClick(2, weight);
                 }
@@ -178,11 +188,15 @@ export const Survey = () => {
             <Button
               onClick={() => {
                 if (isNaN(Number(height))) {
-                  alert("숫자만 입력 가능합니다");
+                  alertMsg("숫자만 입력 가능합니다", "");
+                  setHeight("");
                 } else if (!height.length) {
-                  alert("키를 입력해주세요");
+                  alertMsg("키를 입력해주세요", "");
+                } else if (Number(height) <= 0 || Number(height) > 300) {
+                  alertMsg("범위 오류", "키의 범위는 0 ~ 300cm여야 합니다!");
                 } else {
                   handleClick(3, height);
+                  setHeight("");
                 }
               }}
               variant="outline"
@@ -212,7 +226,17 @@ export const Survey = () => {
             >
               뒤로가기
             </Button>
-            <Button onClick={handleSubmit} className="w-52 h-10 text-base">
+            <Button
+              className="w-52 h-10 text-base"
+              onClick={() => {
+                handleSubmit();
+                changeSurveyDone(true);
+                alertMsg(
+                  "설문조사 완료!",
+                  "마이페이지에서 맞춤형 건강관리를 시작해보세요:)"
+                );
+              }}
+            >
               제출하기
             </Button>
           </div>
@@ -264,15 +288,10 @@ export const Header = ({
 
 export const addSurvey = async (userResult: User) => {
   const { supabase, user } = await isThereClientSession();
-  // const nickname = user?.user_metadata.nickname;
-
-  // if (!user) {
-  //   console.error("로그인하지 않은 사용자는 설문조사에 참여할 수 없습니다.");
-  // }
 
   const { error } = await supabase
     .from("survey")
-    .insert([{ user_id: user?.id, ...userResult }]);
+    .insert([{ user_id: user?.id, ...userResult, email: user?.email }]);
 
   if (error) {
     console.error("사용자 설문조사 결과 저장 실패", error);

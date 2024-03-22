@@ -4,10 +4,9 @@ import { useInput } from "@/hooks/customhook";
 import { zustandStore } from "@/store/zustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
 import {
   Card,
   CardContent,
@@ -23,12 +22,39 @@ const LoginPage = () => {
   const [email, setEmail, clearEmail] = useInput();
   const [password, setPassword, clearPassword] = useInput();
   const [nickname, setNickname, clearNickname] = useInput();
+  const [emailCorrectMsg, setEmailCorrectMsg] =
+    useState("올바른 이메일 형식이 아닙니다.");
+  const [pwCorrectMsg, setPwCorrectMsg] =
+    useState("올바른 비밀번호 형식이 아닙니다.");
   const [message, setMessage] = useState<string[]>([]);
   const router = useRouter();
   const supabase = createClientComponentClient();
   const changeLoggedIn = zustandStore((state) => state.changeLoggedIn);
+  const numbers = "0123456789".split("");
+  const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+  const Capital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const specialCh = "!@#$%^&*()_+-=[]{};\\'\\:\"|<>?,./`~.".split("");
 
-  const handlerLoginMode = () => {
+  useEffect(() => {
+    if (email.length !== 0 && email.includes("@")) {
+      setEmailCorrectMsg("");
+    } else {
+      setEmailCorrectMsg("올바른 이메일 형식이 아닙니다.");
+    }
+    const hasLowerCase = password.split("").some((p) => alphabet.includes(p));
+    const hasUpperCase = password.split("").some((p) => Capital.includes(p));
+    const hasNumber = password.split("").some((p) => numbers.includes(p));
+    const hasSpecialChar = password
+      .split("")
+      .some((p) => specialCh.includes(p));
+    if (hasLowerCase && hasUpperCase && hasNumber && hasSpecialChar) {
+      setPwCorrectMsg("");
+    } else {
+      setPwCorrectMsg("올바른 비밀번호 형식이 아닙니다.");
+    }
+  }, [email, password]);
+
+  const handleLoginMode = () => {
     setLoginMode(!loginMode);
   };
 
@@ -127,6 +153,7 @@ const LoginPage = () => {
                   required
                   autoFocus
                 />
+                <p>{emailCorrectMsg}</p>
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="password">비밀번호</Label>
@@ -137,6 +164,7 @@ const LoginPage = () => {
                   placeholder="비밀번호를 입력해주세요"
                   required
                 />
+                <p>{pwCorrectMsg}</p>
               </div>
               {loginMode ? null : (
                 <div className="flex flex-col space-y-1.5">
@@ -155,9 +183,7 @@ const LoginPage = () => {
         <CardFooter className="flex justify-between">
           {loginMode ? (
             <>
-              <button onClick={handlerLoginMode}>
-                아직 회원이 아니신가요?
-              </button>
+              <button onClick={handleLoginMode}>아직 회원이 아니신가요?</button>
               <AlertAuthResult
                 func={handleSignIn}
                 text="로그인"
@@ -167,7 +193,7 @@ const LoginPage = () => {
             </>
           ) : (
             <>
-              <button onClick={handlerLoginMode}>로그인하러 가기</button>
+              <button onClick={handleLoginMode}>로그인하러 가기</button>
               <AlertAuthResult
                 func={handleSignUp}
                 text="회원가입"
