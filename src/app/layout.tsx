@@ -39,9 +39,6 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <NavBar />
-
-            {/* <HasDoneSurveyAlert /> */}
-
             <div className="max-w-[1500px] mx-auto">{children}</div>
             <Toaster />
           </ThemeProvider>

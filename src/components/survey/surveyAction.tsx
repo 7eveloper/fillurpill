@@ -218,7 +218,7 @@ export const Survey = () => {
               className="w-52 h-10 text-base"
               onClick={() => {
                 handleSubmit();
-                changeSurveyDone();
+                changeSurveyDone(true);
                 toast("설문조사 완료", {
                   description: "마이페이지에서 확인하세요",
                 });
@@ -275,11 +275,6 @@ export const Header = ({
 
 export const addSurvey = async (userResult: User) => {
   const { supabase, user } = await isThereClientSession();
-  // const nickname = user?.user_metadata.nickname;
-
-  // if (!user) {
-  //   console.error("로그인하지 않은 사용자는 설문조사에 참여할 수 없습니다.");
-  // }
 
   const { error } = await supabase
     .from("survey")

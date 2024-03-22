@@ -21,12 +21,15 @@ const NavBar = () => {
     const fetchSession = async () => {
       const { data } = await supabase.auth.getSession();
       changeLoggedIn(!!data.session);
-      const { data: surveyResult, error } = await supabase
-        .from("survey")
-        .select("*")
-        .eq("user_id", data.session?.user.id);
-      surveyResult && changeSurveyDone();
-      data.session && setNickname(data.session.user.user_metadata.nickname);
+      if (data.session) {
+        const { data: surveyResult, error } = await supabase
+          .from("survey")
+          .select("*")
+          .eq("user_id", data.session?.user.id);
+        console.log(surveyResult);
+        surveyResult?.length !== 0 && changeSurveyDone(true);
+        setNickname(data.session?.user.user_metadata.nickname);
+      }
     };
     fetchSession();
   }, [supabase.auth, changeLoggedIn, changeSurveyDone]);
@@ -63,11 +66,11 @@ const NavBar = () => {
             <Link className="hover:text-gray-600" href="/community">
               Community
             </Link>
-            <Link className="hover:text-gray-600" href="/mypage">
-              MyPage
-            </Link>
             <Link className="hover:text-gray-600" href="/about">
               About
+            </Link>
+            <Link className="hover:text-gray-600" href="/mypage">
+              MyPage
             </Link>
           </div>
 

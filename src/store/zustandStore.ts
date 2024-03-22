@@ -17,7 +17,7 @@ type State = {
 
 type Actions = {
   changeLoggedIn: (isSession: boolean) => void;
-  changeSurveyDone: () => void;
+  changeSurveyDone: (isDone: boolean) => void;
   addUser: (user: User) => void;
 };
 
@@ -26,8 +26,8 @@ export const zustandStore = create<State & Actions>((set) => ({
   surveyDone: false,
   users: [],
   changeLoggedIn: (isSession) => set({ loggedIn: isSession }),
-  changeSurveyDone: () =>
-    set((prev) => ({ ...prev, surveyDone: !prev.surveyDone })),
+  changeSurveyDone: (isDone) =>
+    set((prev) => ({ ...prev, surveyDone: isDone })),
   addUser: (user) =>
     set(
       produce((state) => {
