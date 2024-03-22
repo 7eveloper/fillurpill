@@ -80,6 +80,12 @@ export const Survey = () => {
     }
   };
 
+  const alertWrongInput = (msg: string, addMsg: string) => {
+    toast(msg, {
+      description: addMsg,
+    });
+  };
+
   if (!clickList[0]) {
     return (
       <>
@@ -144,9 +150,16 @@ export const Survey = () => {
             <Button
               onClick={() => {
                 if (isNaN(Number(weight))) {
-                  alert("숫자만 입력 가능합니다");
+                  alertWrongInput("숫자만 입력 가능합니다", "");
+                  setWeight("");
                 } else if (!weight.length) {
-                  alert("몸무게를 입력해주세요");
+                  alertWrongInput("몸무게를 입력해주세요", "");
+                } else if (Number(weight) <= 0 || Number(weight) > 200) {
+                  alertWrongInput(
+                    "범위 오류",
+                    "몸무게의 범위는 0 ~ 200kg여야 합니다!"
+                  );
+                  setWeight("");
                 } else {
                   handleClick(2, weight);
                 }
@@ -180,11 +193,18 @@ export const Survey = () => {
             <Button
               onClick={() => {
                 if (isNaN(Number(height))) {
-                  alert("숫자만 입력 가능합니다");
+                  alertWrongInput("숫자만 입력 가능합니다", "");
+                  setHeight("");
                 } else if (!height.length) {
-                  alert("키를 입력해주세요");
+                  alertWrongInput("키를 입력해주세요", "");
+                } else if (Number(height) <= 0 || Number(height) > 300) {
+                  alertWrongInput(
+                    "범위 오류",
+                    "키의 범위는 0 ~ 300cm여야 합니다!"
+                  );
                 } else {
                   handleClick(3, height);
+                  setHeight("");
                 }
               }}
               variant="outline"
