@@ -17,7 +17,7 @@ const searchTypes = [
     label: "이름",
   },
   {
-    value: "composition",
+    value: "raw_materials",
     label: "성분",
   },
 ];
