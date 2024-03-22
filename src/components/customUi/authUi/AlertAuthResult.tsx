@@ -8,9 +8,9 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { alertMsgWithAction } from "@/lib/utils";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import { ClipLoader } from "react-spinners";
-import { toast } from "sonner";
 
 export function AlertAuthResult({
   func,
@@ -32,13 +32,10 @@ export function AlertAuthResult({
         <Button
           onClick={() => {
             handleClick();
-            toast(text === "로그인" ? "로그인" : "회원가입", {
-              description: new Date().toLocaleString(),
-              action: {
-                label: "Undo",
-                onClick: () => console.log("Undo"),
-              },
-            });
+            alertMsgWithAction(
+              text === "로그인" ? "로그인" : "회원가입",
+              new Date().toLocaleString()
+            );
           }}
         >
           {text}

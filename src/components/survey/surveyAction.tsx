@@ -9,7 +9,7 @@ import {
   SurveyDrawerHeader,
   SurveyDrawerTitle,
 } from "@/components/ui/drawer";
-import { toast } from "sonner";
+import { alertMsg } from "@/lib/utils";
 
 export const Survey = () => {
   const [userResult, setUserResult] = useState<User>({
@@ -80,12 +80,6 @@ export const Survey = () => {
     }
   };
 
-  const alertWrongInput = (msg: string, addMsg: string) => {
-    toast(msg, {
-      description: addMsg,
-    });
-  };
-
   if (!clickList[0]) {
     return (
       <>
@@ -150,12 +144,12 @@ export const Survey = () => {
             <Button
               onClick={() => {
                 if (isNaN(Number(weight))) {
-                  alertWrongInput("숫자만 입력 가능합니다", "");
+                  alertMsg("숫자만 입력 가능합니다", "");
                   setWeight("");
                 } else if (!weight.length) {
-                  alertWrongInput("몸무게를 입력해주세요", "");
+                  alertMsg("몸무게를 입력해주세요", "");
                 } else if (Number(weight) <= 0 || Number(weight) > 200) {
-                  alertWrongInput(
+                  alertMsg(
                     "범위 오류",
                     "몸무게의 범위는 0 ~ 200kg여야 합니다!"
                   );
@@ -193,15 +187,12 @@ export const Survey = () => {
             <Button
               onClick={() => {
                 if (isNaN(Number(height))) {
-                  alertWrongInput("숫자만 입력 가능합니다", "");
+                  alertMsg("숫자만 입력 가능합니다", "");
                   setHeight("");
                 } else if (!height.length) {
-                  alertWrongInput("키를 입력해주세요", "");
+                  alertMsg("키를 입력해주세요", "");
                 } else if (Number(height) <= 0 || Number(height) > 300) {
-                  alertWrongInput(
-                    "범위 오류",
-                    "키의 범위는 0 ~ 300cm여야 합니다!"
-                  );
+                  alertMsg("범위 오류", "키의 범위는 0 ~ 300cm여야 합니다!");
                 } else {
                   handleClick(3, height);
                   setHeight("");
@@ -239,9 +230,10 @@ export const Survey = () => {
               onClick={() => {
                 handleSubmit();
                 changeSurveyDone(true);
-                toast("설문조사 완료", {
-                  description: "마이페이지에서 확인하세요",
-                });
+                alertMsg(
+                  "설문조사 완료!",
+                  "마이페이지에서 맞춤형 건강관리를 시작해보세요:)"
+                );
               }}
             >
               제출하기

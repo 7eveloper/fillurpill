@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { toast } from "sonner";
 import { AlertSurveyDemo } from "../../survey/AlertSurveyDemo";
+import { alertMsgWithAction } from "@/lib/utils";
 
 const NavBar = () => {
   const router = useRouter();
@@ -80,13 +81,7 @@ const NavBar = () => {
                 className="hover:text-gray-600"
                 onClick={() => {
                   handleSignOut();
-                  toast("로그아웃", {
-                    description: new Date().toLocaleString(),
-                    action: {
-                      label: "Undo",
-                      onClick: () => console.log("Undo"),
-                    },
-                  });
+                  alertMsgWithAction("로그아웃", new Date().toLocaleString());
                 }}
               >
                 Logout
