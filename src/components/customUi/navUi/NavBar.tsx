@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { zustandStore } from "@/store/zustandStore";
 import { useEffect } from "react";
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 
 const NavBar = () => {
   const router = useRouter();
@@ -41,7 +40,6 @@ const NavBar = () => {
   };
 
   return (
-    // <div className="flex     ">
     <nav className="flex px-2 h-16 text-[19px] items-center justify-between ml-4 mr-6">
       <div className="flex gap-8">
         <button className="hover:text-gray-600" onClick={goToHomePage}>
@@ -67,7 +65,6 @@ const NavBar = () => {
         )}
       </div>
     </nav>
-    // </div>
   );
 };
 
