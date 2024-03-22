@@ -4,6 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { zustandStore } from "@/store/zustandStore";
 import { useEffect } from "react";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
+import Link from "next/link";
 
 const NavBar = () => {
   const router = useRouter();
@@ -25,35 +26,29 @@ const NavBar = () => {
     router.refresh();
   };
 
-  const goToHomePage = () => {
-    router.push("/");
-  };
-
   const goToLoginPage = () => {
     router.push("/login");
-  };
-  const goToCommunity = () => {
-    router.push("/community");
-  };
-
-  const goToMypagePage = () => {
-    router.push("/mypage");
   };
 
   return (
     // <div className="flex     ">
     <nav className="flex px-2 h-16 text-[19px] items-center justify-between ml-4 mr-6">
       <div className="flex gap-8">
-        <button className="hover:text-gray-600" onClick={goToHomePage}>
+        <Link className="hover:text-gray-600" href="/">
           로고
-        </button>
-        <button className="hover:text-gray-600" onClick={goToCommunity}>
+        </Link>
+        <Link className="hover:text-gray-600" href="/product">
+          Product
+        </Link>
+        <Link className="hover:text-gray-600" href="/community">
           Community
-        </button>
-        <button className="hover:text-gray-600" onClick={goToMypagePage}>
-          Mypage
-        </button>
-        <button className="hover:text-gray-600">About</button>
+        </Link>
+        <Link className="hover:text-gray-600" href="/mypage">
+          MyPage
+        </Link>
+        <Link className="hover:text-gray-600" href="/about">
+          About
+        </Link>
       </div>
       <div>
         {loggedIn ? (
