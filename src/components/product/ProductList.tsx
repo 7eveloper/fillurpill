@@ -16,15 +16,22 @@ const ProductList = ({ data = [] }: { data: SearchData }) => {
       {data.map((item) => (
         <Card
           key={item.id}
-          className="w-80 border rounded-md min-h-[500px]"
+          className="w-80 min-h-[500px] cursor-pointer overflow-hidden"
           onClick={() => handleClickDetail(item.id)}
         >
-          {item.image && <img src={item.image} />}
+          {item.image ? (
+            <img
+              src={item.image as string}
+              className="w-80 h-[300px] border-b-2"
+            />
+          ) : (
+            <div className="w-80 min-h-[300px] bg-slate-50 border-b-2"></div>
+          )}
+
           <CardHeader>
             <CardTitle>{item.name}</CardTitle>
           </CardHeader>
           <CardContent>{item.company}</CardContent>
-          <CardContent>{item.function}</CardContent>
         </Card>
       ))}
     </ul>

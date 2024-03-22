@@ -23,8 +23,7 @@ const ProductListPage = ({}) => {
   );
 
   return (
-    <section>
-      <h1>전체 제품</h1>
+    <section className="max-w-[1360px] mx-auto">
       <SearchBar searchType={searchType} handleChangeType={handleChangeType} />
       <ProductList data={data} />
       <div ref={pageEnd}>더보기</div>
