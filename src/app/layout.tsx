@@ -31,7 +31,7 @@ export default async function RootLayout({
           )}
         >
           <NavBar />
-          <div className="max-w-[1500px] mx-auto">{children}</div>
+
           {children}
         </body>
       </html>
