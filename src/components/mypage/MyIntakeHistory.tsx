@@ -1,21 +1,23 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import { Calendar, Views, momentLocalizer } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+
+import React, { useMemo, useState } from "react";
 import moment from "moment";
+import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import { IntakeDiary } from "@/store/Intake";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addIntake, deleteIntake } from "@/lib/mypage/mutation";
 import { isThereClientSession } from "@/hooks/clientSession";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
-// 시간대 설정
+import type { View } from "react-big-calendar";
 
 const localizer = momentLocalizer(moment);
 
 const MyIntakeHistory = () => {
-  const [view, setView] = useState(Views.MONTH);
+  const [view, setView] = useState<View>(Views.MONTH);
   const [date, setDate] = useState(new Date());
   const [modalOpen, setModalOpen] = useState(false);
+  const [sideModalOpen, setSideModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [selectedSlot, setSelectedSlot] = useState<{
@@ -56,7 +58,6 @@ const MyIntakeHistory = () => {
   });
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-    console.log("12");
     const nextDay = new Date(start);
     const endDay = new Date(end);
     endDay.setDate(endDay.getDate() + 1);
@@ -75,7 +76,6 @@ const MyIntakeHistory = () => {
           title,
           contents,
         });
-        console.log(title, contents, selectedSlot);
         setModalOpen(false);
         setSelectedSlot(null);
         setTitle("");
@@ -89,26 +89,23 @@ const MyIntakeHistory = () => {
   const deleteIntakeMutation = useMutation({
     mutationFn: deleteIntake,
     onSuccess: () => {
-      console.log("성공");
       queryClient.invalidateQueries({ queryKey: ["intake"] });
     },
   });
   const handleSelectEvent = async (event: IntakeDiary) => {
-    const isConfirmed = window.confirm("선택한 항목을 삭제하시겠습니까?");
+    setSideModalOpen(true);
+    console.log("123");
+    // const isConfirmed = window.confirm("선택한 항목을 삭제하시겠습니까?");
 
-    if (isConfirmed) {
-      try {
-        // 클릭된 이벤트의 id를 가져옵니다.
-        const intakeId = event.id;
-        console.log("제발", intakeId);
-        // 해당 id를 사용하여 삭제를 시도합니다.
-        deleteIntakeMutation.mutate(intakeId);
-        console.log("왜안됨", intakeId);
-        console.log("Intake deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting intake", error);
-      }
-    }
+    // if (isConfirmed) {
+    //   try {
+    //     // 클릭된 이벤트의 id를 가져옵니다.
+    //     const intakeId = event.id;
+    //     deleteIntakeMutation.mutate(intakeId);
+    //   } catch (error) {
+    //     console.error("Error deleting intake", error);
+    //   }
+    // }
   };
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
@@ -118,10 +115,25 @@ const MyIntakeHistory = () => {
     []
   );
 
+  if (isPending) {
+    return <div>로딩중입니다...</div>;
+  }
+  if (isError) {
+    return <div>데이터를 불러올수 없습니다.</div>;
+  }
   return (
     <div>
-      나의 섭취 이력
-      <div style={{ width: "800px", height: "800px", margin: "50px" }}>
+      <h1 className="text-[28px] pl-5 border-b-4 border-black">
+        나의 섭취 이력
+      </h1>
+      <div
+        style={{
+          width: "800px",
+          height: "600px",
+          marginLeft: "20px",
+          marginTop: "30px",
+        }}
+      >
         <Calendar
           views={[Views.MONTH, Views.AGENDA]}
           defaultDate={defaultDate}
@@ -133,8 +145,8 @@ const MyIntakeHistory = () => {
           onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
           scrollToTime={scrollToTime}
-          view={view} // Include the view prop
-          date={date} // Include the date prop
+          view={view}
+          date={date}
           onView={(view) => setView(view)}
           onNavigate={(date) => {
             setDate(new Date(date));
@@ -142,20 +154,62 @@ const MyIntakeHistory = () => {
         />
       </div>
       {modalOpen && (
-        <div className="bg-red-100 p-10">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-          />
-          <input
-            type="text"
-            value={contents}
-            onChange={(e) => setContents(e.target.value)}
-            placeholder="Contents"
-          />
-          <button onClick={handleModalSubmit}>Save</button>
+        <div className="fixed top-24 w-96 z-50 flex flex-col justify-between items-center bg-white rounded-2xl shadow-xl  transition-transform duration-300 ease-out">
+          <div className="flex w-full h-10 bg-gray-200 rounded-t-2xl justify-end">
+            <button
+              className="mr-2 font-semibold text-gray-600 border-none border-r border-gray-400 hover:text-black cursor-pointer focus:outline-none"
+              onClick={() => setModalOpen(false)}
+            >
+              닫기
+            </button>
+          </div>
+          <div className="w-full h-80 flex flex-col justify-between items-center">
+            <input
+              type="text"
+              className="w-11/12 h-10 my-2 border-b border-gray-300 outline-none text-lg"
+              placeholder="제목을 입력하세요"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+
+            <textarea
+              className="w-11/12 h-36 my-2 border border-gray-300 rounded-md resize-none outline-none text-sm"
+              placeholder="내용을 입력하세요"
+              value={contents}
+              onChange={(e) => setContents(e.target.value)}
+            ></textarea>
+          </div>
+          <div className="w-full h-16 bg-gray-200 rounded-b-2xl flex justify-center items-center">
+            <button
+              className="w-20 h-10 mr-4 bg-green-900 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none"
+              onClick={handleModalSubmit}
+            >
+              저장
+            </button>
+          </div>
+        </div>
+      )}
+      {sideModalOpen && (
+        <div className="w-[400px] h-full flex flex-col justify-center items-center bg-white rounded-l-[18px] rounded-r-[18px] shadow">
+          <div className="w-4/5 flex justify-end">
+            <button className="w-[55px] h-[55px] text-[30px] rounded-[50%] border-none text-30 text-gray-600 cursor-pointer hover:text-black">
+              x
+            </button>
+          </div>
+          <div className="w-80 h-60p flex flex-col justify-center items-center">
+            <div className="w-full h-64 flex items-center text-34 bg-blue-500 text-white rounded-10 px-10">
+              11
+            </div>
+            <div className="w-full flex justify-between border-b-1 border-blue-500">
+              <div className="w-140 h-50 flex justify-center items-center">
+                22
+              </div>
+              <div className="w-140 h-50 flex justify-center items-center">
+                33
+              </div>
+            </div>
+            <div className="w-full mt-20">44</div>
+          </div>
         </div>
       )}
     </div>
