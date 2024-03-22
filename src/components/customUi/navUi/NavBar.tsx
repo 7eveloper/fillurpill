@@ -4,6 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { zustandStore } from "@/store/zustandStore";
 import { useEffect } from "react";
 import SurveyDrawerBtn from "@/app/survey/survey-action/SurveyDrawerBtn";
+import Link from "next/link";
 
 const NavBar = () => {
   const router = useRouter();
@@ -25,37 +26,32 @@ const NavBar = () => {
     router.refresh();
   };
 
-  const goToHomePage = () => {
-    router.push("/");
-  };
-
   const goToLoginPage = () => {
     router.push("/login");
-  };
-  const goToCommunity = () => {
-    router.push("/community");
-  };
-
-  const goToMypagePage = () => {
-    router.push("/mypage");
   };
 
   return (
     <nav className="flex px-2 py-5 h-fit text-[19px] items-center justify-between mx-8">
-      <div className="flex gap-8">
-        <img
-          src="/images/logo-small.png"
-          alt="logo"
-          onClick={goToHomePage}
-          className="w-[50px] cursor-pointer"
-        />
-        <button className="hover:text-gray-600" onClick={goToCommunity}>
+      <div className="flex gap-8 items-center">
+        <Link className="hover:text-gray-600" href="/">
+          <img
+            src="/images/logo-small.png"
+            alt="logo"
+            className="w-[50px] cursor-pointer"
+          />
+        </Link>
+        <Link className="hover:text-gray-600" href="/product">
+          Product
+        </Link>
+        <Link className="hover:text-gray-600" href="/community">
           Community
-        </button>
-        <button className="hover:text-gray-600" onClick={goToMypagePage}>
-          Mypage
-        </button>
-        <button className="hover:text-gray-600">About</button>
+        </Link>
+        <Link className="hover:text-gray-600" href="/mypage">
+          MyPage
+        </Link>
+        <Link className="hover:text-gray-600" href="/about">
+          About
+        </Link>
       </div>
 
       <SurveyDrawerBtn />

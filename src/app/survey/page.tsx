@@ -15,7 +15,6 @@ const SurveyPage = async () => {
   return (
     <div>
       SurveyPage
-      {/* <Survey /> */}
       <SurveyDrawerDemo />
     </div>
   );
