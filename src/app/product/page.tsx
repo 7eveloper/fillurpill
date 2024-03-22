@@ -1,5 +1,6 @@
 "use client";
 
+import GoTopBtn from "@/components/product/GoTopBtn";
 import ProductList from "@/components/product/ProductList";
 import SearchBar from "@/components/product/SearchBar";
 import { useQueryProduct } from "@/hooks/useQueryProduct";
@@ -23,12 +24,18 @@ const ProductListPage = ({}) => {
   );
 
   return (
-    <section className="max-w-[1360px] mx-auto">
-      <SearchBar searchType={searchType} handleChangeType={handleChangeType} />
-      <ProductList data={data} />
-      <div ref={pageEnd}>더보기</div>
-      {isFetchingNextPage ? <div>loading</div> : null}
-    </section>
+    <>
+      <section className="max-w-[1360px] mx-auto">
+        <SearchBar
+          searchType={searchType}
+          handleChangeType={handleChangeType}
+        />
+        <ProductList data={data} />
+        <div ref={pageEnd}>더보기</div>
+        {isFetchingNextPage ? <div>loading</div> : null}
+      </section>
+      <GoTopBtn />
+    </>
   );
 };
 
