@@ -39,8 +39,12 @@ const LoginPage = () => {
 
   const handleSignUp = async () => {
     clearInput();
-    if (email.length === 0 || password.length === 0) {
-      setMessage(["이메일과 비밀번호를 모두 입력해주세요."]);
+    if (email.length === 0) {
+      setMessage(["이메일을 입력해주세요."]);
+      return message;
+    }
+    if (password.length === 0) {
+      setMessage(["비밀번호를 입력해주세요."]);
       return message;
     }
     startTransition(async () => {
@@ -94,7 +98,7 @@ const LoginPage = () => {
         changeLoggedIn(!!data.session);
       }
       if (error && error.message === "Invalid login credentials") {
-        setMessage(["이메일 또는 비밀번호가 올바르지 않습니다."]);
+        setMessage(["로그인 정보가 올바르지 않습니다."]);
       }
       return message;
     });
