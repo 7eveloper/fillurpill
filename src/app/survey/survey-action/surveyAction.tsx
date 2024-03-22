@@ -1,6 +1,6 @@
 import { isThereClientSession } from "@/hooks/clientSession";
 import { User } from "@/store/zustandStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   SurveyDrawerDescription,
@@ -24,6 +24,15 @@ export const Survey = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { user } = await isThereClientSession();
+      setUserResult({ ...userResult, nickname: user?.user_metadata.nickname });
+    };
+    fetchUser();
+    // 처음에만 User 정보 가져오길 원해서 의존성 배열 비워둠
+  }, []);
+
   const handleClick = (idx: number, value: string) => {
     setClickList((prev) => {
       const newClickList = [...prev];
@@ -42,6 +51,25 @@ export const Survey = () => {
     });
   };
 
+  const handleGoBack = (idx: number) => {
+    const resetIdx = idx - 1;
+    setClickList((prev) => {
+      const newClickList = [...prev];
+      newClickList[resetIdx] = false;
+      return newClickList;
+    });
+    setUserResult({
+      ...userResult,
+      [resetIdx === 0
+        ? "gender"
+        : resetIdx === 1
+        ? "age"
+        : resetIdx === 2
+        ? "weight"
+        : "height"]: "",
+    });
+  };
+
   const handleSubmit = async () => {
     try {
       await addSurvey(userResult);
@@ -53,8 +81,8 @@ export const Survey = () => {
   if (!clickList[0]) {
     return (
       <>
-        <Header text="성별" />
-        <div className="mx-auto w-full flex gap-4 justify-center">
+        <Header text="성별" idx={0} handleGoBack={handleGoBack} />
+        <div className="mx-auto w-full flex gap-4 justify-center h-56 px-14">
           {genderList.map((gender, idx) => (
             <SurveyDrawerFooter key={idx}>
               <Button
@@ -62,6 +90,7 @@ export const Survey = () => {
                   handleClick(0, gender);
                 }}
                 variant="outline"
+                className="h-44 text-2xl"
               >
                 {gender}
               </Button>
@@ -74,18 +103,20 @@ export const Survey = () => {
   if (clickList[0] && !clickList[1]) {
     return (
       <>
-        <Header text="나이" />
-        <div className="mx-auto w-full flex gap-6 justify-center">
+        <Header text="나이" idx={1} handleGoBack={handleGoBack} />
+        <div className="mx-auto w-full flex gap-6 justify-center h-56 px-14">
           {ageList.map((age, idx) => (
-            <Button
-              key={idx}
-              onClick={() => {
-                handleClick(1, age);
-              }}
-              variant="outline"
-            >
-              {age}
-            </Button>
+            <SurveyDrawerFooter key={idx}>
+              <Button
+                onClick={() => {
+                  handleClick(1, age);
+                }}
+                variant="outline"
+                className="h-40 text-2xl"
+              >
+                {age}
+              </Button>
+            </SurveyDrawerFooter>
           ))}
         </div>
       </>
@@ -95,17 +126,18 @@ export const Survey = () => {
   if (clickList[0] && clickList[1] && !clickList[2]) {
     return (
       <>
-        <Header text="몸무게" />
-        <div className="mx-auto w-full flex justify-center">
+        <Header text="몸무게" idx={2} handleGoBack={handleGoBack} />
+        <div className="mx-auto w-full flex justify-center h-56 pt-20">
           <form
             onSubmit={(e) => e.preventDefault()}
-            className="flex flex-row w-[500px]"
+            className="flex flex-row w-[700px]"
           >
             <Input
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="mr-4"
+              className="mr-4 text-xl h-20"
               placeholder="kg"
+              autoFocus
             ></Input>
             <Button
               onClick={() => {
@@ -118,8 +150,9 @@ export const Survey = () => {
                 }
               }}
               variant="outline"
+              className="text-lg w-40 h-20"
             >
-              클릭
+              <img src="/images/logo.png" alt="버튼 이미지" className="w-24" />
             </Button>
           </form>
         </div>
@@ -129,17 +162,18 @@ export const Survey = () => {
   if (clickList[0] && clickList[1] && clickList[2] && !clickList[3]) {
     return (
       <>
-        <Header text="키" />
-        <div className="mx-auto w-full flex justify-center">
+        <Header text="키" idx={3} handleGoBack={handleGoBack} />
+        <div className="mx-auto w-full flex justify-center h-56 pt-20">
           <form
             onSubmit={(e) => e.preventDefault()}
-            className="flex flex-row w-[500px]"
+            className="flex flex-row w-[700px]"
           >
             <Input
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              className="mr-4"
+              className="mr-4 text-lg h-20"
               placeholder="cm"
+              autoFocus
             ></Input>
             <Button
               onClick={() => {
@@ -152,8 +186,9 @@ export const Survey = () => {
                 }
               }}
               variant="outline"
+              className="w-40 h-20"
             >
-              클릭
+              <img src="/images/logo.png" alt="버튼 이미지" className="w-24" />
             </Button>
           </form>
         </div>
@@ -163,35 +198,81 @@ export const Survey = () => {
 
   if (clickList.every((click) => click === true)) {
     return (
-      <>
-        <button onClick={handleSubmit}>제출하기</button>
-      </>
+      <div>
+        <div className="flex w-full items-center">
+          <SurveyDrawerHeader>
+            <SurveyDrawerTitle>
+              {userResult.nickname}님의 건강정보
+            </SurveyDrawerTitle>
+          </SurveyDrawerHeader>
+          <div className="mr-16 flex gap-4">
+            <Button
+              className="w-52 h-10 text-base"
+              onClick={() => handleGoBack(3)}
+            >
+              뒤로가기
+            </Button>
+            <Button onClick={handleSubmit} className="w-52 h-10 text-base">
+              제출하기
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex w-full justify-center text-lg h-56 pt-28">
+          <p className="text-2xl">
+            <span className="font-bold">{userResult.nickname}님</span>은 몸무게{" "}
+            {userResult.weight}kg, 키 {userResult.height}cm의 {userResult.age}{" "}
+            {userResult.gender}
+            입니다.
+          </p>
+        </div>
+      </div>
     );
   }
 };
 
-export const Header = ({ text }: { text: string }) => {
+export const Header = ({
+  text,
+  idx,
+  handleGoBack,
+}: {
+  text: string;
+  idx: number;
+  handleGoBack: (idx: number) => void;
+}) => {
   return (
-    <SurveyDrawerHeader>
-      <SurveyDrawerTitle>{text}</SurveyDrawerTitle>
-      <SurveyDrawerDescription>
-        당신의 {text}을/를 알려주세요.
-      </SurveyDrawerDescription>
-    </SurveyDrawerHeader>
+    <div className="flex items-center">
+      <SurveyDrawerHeader>
+        <SurveyDrawerTitle>{text}</SurveyDrawerTitle>
+        <SurveyDrawerDescription>
+          당신의 {text}을/를 알려주세요.
+        </SurveyDrawerDescription>
+      </SurveyDrawerHeader>
+      {text === "성별" ? null : (
+        <div className="mr-16">
+          <Button
+            onClick={() => handleGoBack(idx)}
+            className="w-52 h-10 text-base"
+          >
+            뒤로가기
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 
 export const addSurvey = async (userResult: User) => {
   const { supabase, user } = await isThereClientSession();
-  const nickname = user?.user_metadata.nickname;
+  // const nickname = user?.user_metadata.nickname;
 
-  if (!user) {
-    console.error("로그인하지 않은 사용자는 설문조사에 참여할 수 없습니다.");
-  }
+  // if (!user) {
+  //   console.error("로그인하지 않은 사용자는 설문조사에 참여할 수 없습니다.");
+  // }
 
   const { error } = await supabase
     .from("survey")
-    .insert([{ user_id: user?.id, ...userResult, nickname }]);
+    .insert([{ user_id: user?.id, ...userResult }]);
 
   if (error) {
     console.error("사용자 설문조사 결과 저장 실패", error);
