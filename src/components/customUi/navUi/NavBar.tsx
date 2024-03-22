@@ -5,6 +5,7 @@ import { zustandStore } from "@/store/zustandStore";
 import { useEffect } from "react";
 import SurveyDrawerBtn from "@/app/survey/survey-action/SurveyDrawerBtn";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const NavBar = () => {
   const router = useRouter();
@@ -40,6 +41,9 @@ const NavBar = () => {
             className="w-[50px] cursor-pointer"
           />
         </Link>
+        <Link className="hover:text-gray-600" href="/">
+          Home
+        </Link>
         <Link className="hover:text-gray-600" href="/product">
           Product
         </Link>
@@ -56,7 +60,7 @@ const NavBar = () => {
 
       <SurveyDrawerBtn />
 
-      <div>
+      <div className="flex gap-4">
         {loggedIn ? (
           <button className="hover:text-gray-600" onClick={handleSignOut}>
             Logout
@@ -66,6 +70,7 @@ const NavBar = () => {
             Login
           </button>
         )}
+        <ThemeToggle />
       </div>
     </nav>
   );
