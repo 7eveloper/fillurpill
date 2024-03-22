@@ -17,7 +17,7 @@ const searchTypes = [
     label: "이름",
   },
   {
-    value: "composition",
+    value: "raw_materials",
     label: "성분",
   },
 ];
@@ -51,6 +51,7 @@ const SearchBar = ({ searchType, handleChangeType }: SearchBarType) => {
         name="search"
         placeholder="검색어를 입력해주세요"
         className="flex-1 placeholder:text-muted-foreground outline-none"
+        autoFocus={true}
       />
       <button>Search</button>
     </form>
