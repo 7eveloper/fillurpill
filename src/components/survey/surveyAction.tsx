@@ -18,6 +18,7 @@ export const Survey = () => {
     weight: "",
     height: "",
     nickname: "",
+    email: "",
   });
   const [clickList, setClickList] = useState([false, false, false, false]);
   const genderList = ["남성", "여성"];
@@ -290,7 +291,7 @@ export const addSurvey = async (userResult: User) => {
 
   const { error } = await supabase
     .from("survey")
-    .insert([{ user_id: user?.id, ...userResult }]);
+    .insert([{ user_id: user?.id, ...userResult, email: user?.email }]);
 
   if (error) {
     console.error("사용자 설문조사 결과 저장 실패", error);

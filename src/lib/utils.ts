@@ -13,7 +13,7 @@ export const alertMsg = (msg: string, addMsg: string) => {
 };
 
 export const alertMsgWithAction = (msg: string, addMsg: string) => {
-  toast(msg, {
+  toast(`💊 ${msg}`, {
     description: addMsg,
     action: {
       label: "Undo",
