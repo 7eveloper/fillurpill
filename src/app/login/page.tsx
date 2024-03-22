@@ -5,6 +5,9 @@ import { zustandStore } from "@/store/zustandStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
 import {
   Card,
   CardContent,
@@ -13,8 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 
 const LoginPage = () => {
   const [isPending, startTransition] = useTransition();
