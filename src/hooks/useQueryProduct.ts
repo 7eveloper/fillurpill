@@ -24,7 +24,7 @@ export const useQueryProduct = (query: string, searchType: string) => {
   }, [query, searchType]);
 
   const pageEnd = useInfiniteScroll(hasNextPage, fetchNextPage);
-  return { data, isFetchingNextPage, pageEnd };
+  return { data, isFetchingNextPage, hasNextPage, pageEnd };
 };
 
 export type SearchData = ReturnType<typeof useQueryProduct>["data"];
