@@ -1,4 +1,5 @@
 "use client";
+
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Post } from "@/lib/types";
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const PostForm = () => {
   const [title, setTitle] = useState("");
@@ -26,11 +28,9 @@ const PostForm = () => {
   const [selectedProductImage, setSelectedProductImage] = useState<
     string | undefined
   >("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const addPost = usePostStore((state) => state.addPost);
-
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
@@ -43,11 +43,16 @@ const PostForm = () => {
       return;
     }
     if (!content) {
-      alert("내용을 입력해주세요.");
+      alert("추천하시는 이유를 입력해주세요.");
       return;
     }
     if (!rating) {
       alert("별점을 입력해주세요.");
+      return;
+    }
+
+    if (!selectedProductImage) {
+      alert("검색을 통해 이미지를 추가해주세요.");
       return;
     }
 
@@ -56,6 +61,7 @@ const PostForm = () => {
       ingredient,
       content,
       rating,
+      image: selectedProductImage,
     };
 
     setTitle("");
@@ -66,16 +72,34 @@ const PostForm = () => {
     addPost(newPost);
   };
 
-  const handleProductClick = (productName: string, productImage: string) => {
+  const handleProductClick = async (productName: string) => {
+    try {
+      const { data, error } = await supabase
+        .from("hfood")
+        .select("image")
+        .eq("name", productName)
+        .single();
+
+      if (error) {
+        console.error("이미지 가져오기 오류", error.message);
+        return;
+      }
+
+      if (data) {
+        setSelectedProduct(productName);
+        setSelectedProductImage(data.image);
+      }
+    } catch (error) {}
+
     setIngredient(productName);
-    setSelectedProduct(productName);
-    setSelectedProductImage(productImage);
+    setIsModalOpen(false);
   };
+
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const { data, error } = await supabase
-        .from("product")
+        .from("hfood")
         .select("*")
         .like("function", `%${searchKeyword}%`);
       if (error) {
@@ -92,26 +116,19 @@ const PostForm = () => {
         console.log("검색 결과가 없습니다.");
         setSearchResults([]);
       }
+      setIsModalOpen(true);
     } catch (error) {
       console.error("검색 오류", error);
     }
   };
 
-  const handleImageChange = (event: ChangeEvent) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImageFile(file);
-      const imageUrl = URL.createObjectURL(file);
-    }
-  };
-
   return (
     <form
-      className="flex-column border-2 p-10 w-2/3 m-4 bg-white"
+      className="flex flex-col items-center border-2 p-10 w-full h-full max-w-[1200px] max-h-[600px] m-4 bg-white"
       onSubmit={handleSubmit}
     >
-      <section className="flex m-2">
-        <Label htmlFor="제목" className="w-24">
+      <section className="flex items-center m-2">
+        <Label htmlFor="제목" className="text-lg w-28">
           제목
         </Label>
         <Input
@@ -122,8 +139,8 @@ const PostForm = () => {
           className="w-96"
         />
       </section>
-      <section className="flex m-2">
-        <Label htmlFor="추천 영양제" className="w-24">
+      <section className="flex items-center m-2">
+        <Label htmlFor="추천 영양제" className="text-lg w-28">
           추천 영양제
         </Label>
         <Input
@@ -134,55 +151,106 @@ const PostForm = () => {
           className="w-96"
         />
       </section>
-      <section className="flex m-2">
-        <Label htmlFor="추천 영양제" className="w-24">
-          영양제 검색하기
+      {selectedProductImage && (
+        <section className="flex items-center m-2">
+          <Label htmlFor="이미지" className="text-lg w-28">
+            제품 이미지
+          </Label>
+          <img
+            src={selectedProductImage}
+            alt="선택한 제품 이미지"
+            className="w-24"
+          />
+        </section>
+      )}
+      <section className="flex items-center m-2">
+        <Label htmlFor="영양제 검색" className="text-lg w-28">
+          영양제 검색
         </Label>
         <Input
           type="text"
           value={searchKeyword}
           onChange={(event) => setSearchKeyword(event.target.value)}
           placeholder="검색어를 입력해주세요."
-          className="w-96"
+          className="w-80"
         />
-        <Button onClick={handleSearch} className="mx-2">
-          검색
-        </Button>
-      </section>
-      <section className="flex mx-36">
-        {searchResults.length > 0 ? (
-          <div>
-            <Label>&quot;{searchKeyword}&quot;에 대한 검색 결과입니다.</Label>
-            <ul>
-              {searchResults.map((result, index) => (
-                <li
+        <Dialog
+          open={isModalOpen}
+          onOpenChange={(isOpen) => setIsModalOpen(isOpen)}
+        >
+          <DialogTrigger asChild>
+            <Button onClick={handleSearch} className="m-2">
+              검색
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-[800px] max-h-[1000px] overflow-y-auto">
+            {searchResults.length > 0 ? (
+              searchResults.map((result, index) => (
+                <div
                   key={index}
                   onClick={() => handleProductClick(result.name, result.image)}
-                  className="border-2 m-2 hover:scale-110 cursor-pointer"
+                  className="w-full border-2 m-2 cursor-pointer relative"
+                  style={{ aspectRatio: "1 / 1" }}
                 >
-                  <p className="m-2">제품명 : {result.name}</p>
-                  <p className="m-2">기능 : {result.function}</p>
-                  {result.image && (
+                  <div className="relative overflow-hidden">
                     <img
                       src={result.image}
                       alt={result.name}
-                      className="w-24 h-24"
+                      className="w-full h-full object-cover transition duration-300 filter brightness-100 hover:brightness-50"
                     />
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <p>
-            {searchResults.length === 0 &&
-              searchKeyword &&
-              `"${searchKeyword}"에 대한 검색 결과를 확인해보세요.`}
-          </p>
-        )}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50">
+                      <div className="text-center text-white">
+                        <Label className="text-2xl mb-2">제품 기능</Label>
+                        <p
+                          className="overflow-hidden"
+                          style={{ maxHeight: "4rem" }}
+                        >
+                          {result.function}
+                        </p>
+                        {result.function.split("\n").length > 4 && (
+                          <>
+                            <p
+                              className="text-blue-500 cursor-pointer hover:underline mt-2"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                event.currentTarget.previousSibling.style.maxHeight =
+                                  "none";
+                                event.currentTarget.style.display = "none";
+                                event.currentTarget.nextSibling.style.display =
+                                  "block";
+                              }}
+                            >
+                              [더보기]
+                            </p>
+                            <p
+                              className="text-blue-500 cursor-pointer hover:underline mt-2 hidden"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                event.currentTarget.previousSibling.previousSibling.style.maxHeight =
+                                  "4rem";
+                                event.currentTarget.style.display = "none";
+                              }}
+                            >
+                              [닫기]
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-2">
+                    <p className="text-lg font-semibold">{result.name}</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>검색 결과가 없습니다.</p>
+            )}
+          </DialogContent>
+        </Dialog>
       </section>
-      <section className="flex m-2">
-        <Label htmlFor="내용" className="w-24">
+      <section className="flex items-center m-2">
+        <Label htmlFor="내용" className="text-lg w-28">
           추천 이유
         </Label>
         <Input
@@ -193,8 +261,8 @@ const PostForm = () => {
           className="w-96"
         />
       </section>
-      <section className="flex m-2">
-        <Label htmlFor="별점" className="w-24">
+      <section className="flex items-center m-2">
+        <Label htmlFor="별점" className="text-lg w-28">
           별점
         </Label>
         <Select
@@ -215,18 +283,12 @@ const PostForm = () => {
           </SelectContent>
         </Select>
       </section>
-      <section className="flex m-2">
-        <Label htmlFor="이미지" className="w-24">
-          이미지
-        </Label>
-        <input
-          type="file"
-          onChange={(event) => handleImageChange(event)}
-          accept="image/*"
-          className="w-96"
-        />
-      </section>
-      <Button type="submit">등록하기</Button>
+      <Button
+        type="submit"
+        className="flex justify-center items-center w-24 mt-4"
+      >
+        등록하기
+      </Button>
     </form>
   );
 };
