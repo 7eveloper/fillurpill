@@ -26,7 +26,7 @@ const ProductListPage = () => {
         <ProductList data={data} />
         <div className="py-10 text-center" ref={pageEnd}>
           {isFetching ? (
-            <ClipLoader color="#36d7b7" className="mx-1" />
+            <ClipLoader color="#36d7b7" className="mx-1 w-8 h-8" />
           ) : hasNextPage ? (
             "더보기"
           ) : (
