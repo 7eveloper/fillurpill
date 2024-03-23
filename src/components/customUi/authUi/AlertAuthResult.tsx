@@ -8,7 +8,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { alertMsgWithAction } from "@/lib/utils";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import { ClipLoader } from "react-spinners";
 
