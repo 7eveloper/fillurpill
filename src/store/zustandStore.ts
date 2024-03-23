@@ -7,7 +7,7 @@ export type User = {
   age: string | null;
   weight: string | null;
   height: string | null;
-  nickname: string;
+  nickname: string | null;
   email: string | null;
 };
 

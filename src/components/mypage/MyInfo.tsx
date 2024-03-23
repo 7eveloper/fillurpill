@@ -46,15 +46,14 @@ const MyInfo = () => {
   useEffect(() => {
     fetchSurveyList();
   }, [id]);
-  console.log("formData", formData);
 
-  // const handleUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setUser((prevState) => ({
-  //     ...prevState!,
-  //     [name]: value,
-  //   }));
-  // };
+  const handleUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUser((prevState) => ({
+      ...prevState!,
+      [name]: value,
+    }));
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,10 +65,6 @@ const MyInfo = () => {
       }
     }
     setFormData((prevState) => ({
-      ...prevState!,
-      [name]: value,
-    }));
-    setUser((prevState) => ({
       ...prevState!,
       [name]: value,
     }));
@@ -85,6 +80,21 @@ const MyInfo = () => {
       [name]: value,
     }));
     setFormModified(true); // 선택이 변경되었을 때 양식을 수정된 상태로 표시
+  };
+  const handleUserSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { supabase, user } = await isThereClientSession();
+    if (!user) {
+      throw new Error("user 정보를 찾을수 없습니다");
+    }
+    const { data, error } = await supabase
+      .from("users")
+      .update(user)
+      .eq("user_id", user?.id || "");
+    if (error) {
+      throw new Error(error.message);
+    }
+    setUser(data);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -108,7 +118,7 @@ const MyInfo = () => {
     if (error) {
       throw new Error(error.message);
     }
-    setUser(data);
+    setFormData(data);
     setEditMode(false);
     setFormModified(false); // 제출 후 양식 수정 상태 재설정
   };
@@ -126,21 +136,21 @@ const MyInfo = () => {
   return (
     <div className="rounded-lg w-full min-h-[700px] bg-white relative">
       <h1 className="text-[28px] pl-5 border-b-4 border-black">기본 정보</h1>
-      <div className="my-5 pl-5 pb-5 border-b-2 border-gray">
-        <label className="w-[120px] inline-block" htmlFor="email">
-          이메일
-        </label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          value={user?.email || ""}
-          onChange={handleInputChange}
-          className="p-2 border rounded-md opacity-30" // 수정 모드에 따라 흐리게 표시
-          readOnly
-        />
-      </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleUserSubmit}>
+        <div className="my-5 pl-5 pb-5 border-b-2 border-gray">
+          <label className="w-[120px] inline-block" htmlFor="email">
+            이메일
+          </label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value={user?.email || ""}
+            onChange={handleInputChange}
+            className="p-2 border rounded-md opacity-30" // 수정 모드에 따라 흐리게 표시
+            readOnly
+          />
+        </div>
         <div className="my-5 pl-5 pb-5 border-b-2 border-gray">
           <label className="w-[120px] inline-block" htmlFor="nickname">
             닉네임
@@ -150,11 +160,13 @@ const MyInfo = () => {
             id="nickname"
             name="nickname"
             value={user?.nickname || ""}
-            onChange={handleInputChange}
-            readOnly={!editMode}
-            className={`p-2 border rounded-md ${!editMode ? "opacity-30" : ""}`} // 수정 모드에 따라 흐리게 표시
+            onChange={handleUserInputChange}
+            className="p-2 border rounded-md" // 수정 모드에 따라 흐리게 표시
           />
+          <button type="submit">저장</button>
         </div>
+      </form>
+      <form onSubmit={handleSubmit}>
         <div className="my-5 pl-5 pb-5 border-b-2 border-gray">
           <label className="w-[120px] inline-block" htmlFor="height">
             키
