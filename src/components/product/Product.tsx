@@ -1,18 +1,24 @@
 import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import type { Product } from "@/lib/types";
 
 const Product = ({ product }: { product: Product }) => {
+  console.log(product);
   return (
     <>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 sm:min-w-[320px]">
         {product.image && (
-          <img src={product.image} className="w-[320px] h-fit rounded-xl" />
+          <img
+            src={product.image}
+            className="h-fit rounded-xl border shadow-sm"
+          />
         )}
         {product.link && (
           <Link
-            className="text-center border p-4 rounded-xl"
+            className="text-center border p-4 rounded-xl shadow-sm"
             href={product.link}
+            target="_blank"
           >
             구매 링크
           </Link>
@@ -20,11 +26,16 @@ const Product = ({ product }: { product: Product }) => {
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="font-bold text-2xl">{product.name}</h2>
-        <p>제조/수입사: {product.company}</p>
-        <p>유통기한: {product.expiration_date}</p>
-        <p>섭취방법 : {product.taking_guide}</p>
-        <p>주의사항 : {product.caution}</p>
-        <p>주요 기능 : {product.function}</p>
+        <Tabs defaultValue="function" className="">
+          <TabsList>
+            <TabsTrigger value="function">주요기능</TabsTrigger>
+            <TabsTrigger value="taking_guide">섭취방법</TabsTrigger>
+            <TabsTrigger value="caution">주의사항</TabsTrigger>
+          </TabsList>
+          <TabsContent value="function">{product.function}</TabsContent>
+          <TabsContent value="taking_guide">{product.taking_guide}</TabsContent>
+          <TabsContent value="caution">{product.caution}</TabsContent>
+        </Tabs>
         <p>성분/함량: {product.raw_materials}</p>
       </div>
     </>
