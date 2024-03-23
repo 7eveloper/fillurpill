@@ -11,7 +11,10 @@ export const useQueryProduct = () => {
   const [searchType, setSearchType] = useState(
     params.get("type") ?? "function"
   );
-  const { ref: pageEnd, inView } = useInView();
+
+  const { ref: pageEnd, inView } = useInView({
+    threshold: 1,
+  });
 
   const { data, hasNextPage, isFetching, fetchNextPage, refetch } =
     useInfiniteQuery({
