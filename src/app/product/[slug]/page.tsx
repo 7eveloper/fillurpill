@@ -1,6 +1,17 @@
 import { getProduct } from "@/lib/fetchData";
 import Link from "next/link";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const [data] = await getProduct(params.slug);
+  return {
+    title: data.name,
+  };
+}
+
 const ProductPage = async ({ params }: { params: { slug: string } }) => {
   const [data] = await getProduct(params.slug);
 
