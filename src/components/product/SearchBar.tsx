@@ -35,10 +35,10 @@ const SearchBar = ({ searchType, handleChangeType }: SearchBarType) => {
   return (
     <form
       onSubmit={handleSearch}
-      className="flex items-center text-slate-500 gap-3 h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors my-10 "
+      className="flex items-center gap-2 h-10 max-w-[600px] text-muted-foreground rounded-xl border border-input bg-transparent px-4 py-6 shadow-sm transition-colors my-10 "
     >
       <MagnifyingGlassIcon className="w-5 h-5" />
-      <select onChange={handleChangeType}>
+      <select onChange={handleChangeType} className="bg-transparent">
         {searchTypes.map((type) => {
           return (
             <option key={type.value} value={type.value}>
@@ -50,7 +50,7 @@ const SearchBar = ({ searchType, handleChangeType }: SearchBarType) => {
       <input
         name="search"
         placeholder="검색어를 입력해주세요"
-        className="flex-1 placeholder:text-muted-foreground outline-none"
+        className="flex-1 outline-none bg-transparent"
         autoFocus={true}
       />
       <button>Search</button>
