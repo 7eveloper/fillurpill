@@ -51,5 +51,3 @@ export const useQueryProduct = () => {
     handleChangeType,
   };
 };
-
-export type SearchData = ReturnType<typeof useQueryProduct>["data"];
