@@ -1,5 +1,6 @@
-import { Product } from "@/lib/types";
 import Link from "next/link";
+
+import type { Product } from "@/lib/types";
 
 const Product = ({ product }: { product: Product }) => {
   return (
