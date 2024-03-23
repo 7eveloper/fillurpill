@@ -1,7 +1,7 @@
 "use client";
 import { isThereClientSession } from "@/hooks/clientSession";
 import { supabase } from "@/lib/supabase";
-import { User, zustandStore } from "@/store/zustandStore";
+import { User, UserData, zustandStore } from "@/store/zustandStore";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { alertMsg } from "@/lib/utils";
 
 const MyInfo = () => {
   const { id } = useParams();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [formData, setFormData] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [formModified, setFormModified] = useState(false); // 양식이 수정되었는지 추적
@@ -18,21 +18,43 @@ const MyInfo = () => {
   const fetchIntakeList = async () => {
     const { supabase, user } = await isThereClientSession();
     const { data, error } = await supabase
-      .from("survey")
+      .from("users")
       .select("*")
-      .eq("user_id", user?.id)
+      .eq("user_id", user?.id || "")
       .single();
-    console.log(data);
     if (error) {
       throw new Error(error.message);
     }
     setUser(data);
-    setFormData(data);
   };
-
   useEffect(() => {
     fetchIntakeList();
   }, [id]);
+
+  const fetchSurveyList = async () => {
+    const { supabase, user } = await isThereClientSession();
+    const { data, error } = await supabase
+      .from("survey")
+      .select("*")
+      .eq("user_id", user?.id || "")
+      .single();
+    if (error) {
+      throw new Error(error.message);
+    }
+    setFormData(data);
+  };
+  useEffect(() => {
+    fetchSurveyList();
+  }, [id]);
+  console.log("formData", formData);
+
+  // const handleUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setUser((prevState) => ({
+  //     ...prevState!,
+  //     [name]: value,
+  //   }));
+  // };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,6 +66,10 @@ const MyInfo = () => {
       }
     }
     setFormData((prevState) => ({
+      ...prevState!,
+      [name]: value,
+    }));
+    setUser((prevState) => ({
       ...prevState!,
       [name]: value,
     }));
@@ -78,7 +104,7 @@ const MyInfo = () => {
     const { data, error } = await supabase
       .from("survey")
       .update(formData)
-      .eq("user_id", user?.id);
+      .eq("user_id", user?.id || "");
     if (error) {
       throw new Error(error.message);
     }
@@ -87,14 +113,14 @@ const MyInfo = () => {
     setFormModified(false); // 제출 후 양식 수정 상태 재설정
   };
   const handleCancelEdit = () => {
-    setFormData(user);
+    setFormData(formData);
     setEditMode(false);
     setFormModified(false);
   };
   const isFormModified = () => {
     if (!formData || !user) return false;
     return Object.keys(formData).some(
-      (key) => formData[key as keyof User] !== user[key as keyof User]
+      (key) => formData[key as keyof User] !== user[key as keyof UserData]
     );
   };
   return (
@@ -108,7 +134,7 @@ const MyInfo = () => {
           type="text"
           id="email"
           name="email"
-          value={formData?.email || ""}
+          value={user?.email || ""}
           onChange={handleInputChange}
           className="p-2 border rounded-md opacity-30" // 수정 모드에 따라 흐리게 표시
           readOnly
@@ -123,7 +149,7 @@ const MyInfo = () => {
             type="text"
             id="nickname"
             name="nickname"
-            value={formData?.nickname || ""}
+            value={user?.nickname || ""}
             onChange={handleInputChange}
             readOnly={!editMode}
             className={`p-2 border rounded-md ${!editMode ? "opacity-30" : ""}`} // 수정 모드에 따라 흐리게 표시

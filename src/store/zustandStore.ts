@@ -1,13 +1,20 @@
+import { Survey } from "./../components/survey/surveyAction";
 import { produce } from "immer";
 import { create } from "zustand";
 
 export type User = {
-  gender: string;
-  age: string;
-  weight: string;
-  height: string;
+  gender: string | null;
+  age: string | null;
+  weight: string | null;
+  height: string | null;
   nickname: string;
-  email: string;
+  email: string | null;
+};
+
+export type UserData = {
+  email: string | null;
+  nickname: string | null;
+  user_id: string;
 };
 
 type State = {
