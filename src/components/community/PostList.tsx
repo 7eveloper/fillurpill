@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { isThereClientSession } from "@/hooks/clientSession";
 
 const PostList = () => {
   const { posts, isLoading, isError, fetchPostData, deletePost, editPost } =
@@ -27,9 +28,15 @@ const PostList = () => {
     content: "",
     rating: "",
   });
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     fetchPostData();
+    const fetchCurrentUser = async () => {
+      const { supabase, user } = await isThereClientSession();
+      setCurrentUser(user);
+    };
+    fetchCurrentUser();
   }, [fetchPostData]);
 
   const handleEdit: MouseEventHandler<HTMLButtonElement> = async (event) => {
@@ -83,28 +90,32 @@ const PostList = () => {
             <p className="mt-2">{post.content}</p>
             <p className="mt-2">⭐️ {post.rating}</p>
             <div className="flex mt-4">
-              <Button
-                onClick={() => {
-                  setSelectedPost(post);
-                  setEditedPost({
-                    title: post.title,
-                    ingredient: post.ingredient,
-                    content: post.content,
-                    rating: post.rating,
-                  });
-                  setEditModalOpen(true);
-                }}
-                className="mr-2"
-              >
-                수정
-              </Button>
-              <Button
-                onClick={() => {
-                  handleDelete(post.id);
-                }}
-              >
-                삭제
-              </Button>
+              {currentUser && currentUser.id === post.user_id && (
+                <>
+                  <Button
+                    onClick={() => {
+                      setSelectedPost(post);
+                      setEditedPost({
+                        title: post.title,
+                        ingredient: post.ingredient,
+                        content: post.content,
+                        rating: post.rating,
+                      });
+                      setEditModalOpen(true);
+                    }}
+                    className="mr-2"
+                  >
+                    수정
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleDelete(post.id);
+                    }}
+                  >
+                    삭제
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
