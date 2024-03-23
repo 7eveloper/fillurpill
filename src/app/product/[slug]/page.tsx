@@ -12,8 +12,6 @@ export async function generateMetadata({
   };
 }
 
-export type ProductsData = ReturnType<typeof getProduct>;
-
 const ProductPage = async ({ params }: { params: { slug: string } }) => {
   const [data] = await getProduct(params.slug);
 
