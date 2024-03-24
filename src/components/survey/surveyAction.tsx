@@ -222,7 +222,7 @@ export const Survey = () => {
           <div className="mr-16 flex gap-4">
             <Button
               className="w-52 h-10 text-base"
-              onClick={() => handleGoBack(3)}
+              onClick={() => handleGoBack(4)}
             >
               뒤로가기
             </Button>
