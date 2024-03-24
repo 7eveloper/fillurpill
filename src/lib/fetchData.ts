@@ -41,7 +41,7 @@ export const searchProduct = async (
   const { data, error } = await supabase
     .from(DB_TABLE)
     .select("*")
-    .textSearch(searchType, keyword)
+    .ilike(searchType, `%${keyword}%`)
     .range(
       (pageParam - 1) * PAGINATE,
       (pageParam - 1) * PAGINATE + (PAGINATE - 1)

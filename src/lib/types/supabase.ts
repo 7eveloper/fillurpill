@@ -85,6 +85,7 @@ export type Database = {
         Row: {
           content: string | null
           id: string
+          image: string | null
           ingredient: string | null
           rating: string | null
           title: string | null
@@ -93,6 +94,7 @@ export type Database = {
         Insert: {
           content?: string | null
           id?: string
+          image?: string | null
           ingredient?: string | null
           rating?: string | null
           title?: string | null
@@ -101,6 +103,7 @@ export type Database = {
         Update: {
           content?: string | null
           id?: string
+          image?: string | null
           ingredient?: string | null
           rating?: string | null
           title?: string | null
@@ -160,7 +163,6 @@ export type Database = {
           email: string | null
           gender: string | null
           height: string | null
-          isDone: boolean
           nickname: string
           user_id: string
           weight: string | null
@@ -171,7 +173,6 @@ export type Database = {
           email?: string | null
           gender?: string | null
           height?: string | null
-          isDone: boolean
           nickname?: string
           user_id?: string
           weight?: string | null
@@ -182,7 +183,6 @@ export type Database = {
           email?: string | null
           gender?: string | null
           height?: string | null
-          isDone?: boolean
           nickname?: string
           user_id?: string
           weight?: string | null

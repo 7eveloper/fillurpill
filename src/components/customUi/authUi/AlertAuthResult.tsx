@@ -17,7 +17,7 @@ export function AlertAuthResult({
   isPending,
   message,
 }: {
-  func: () => Promise<string[] | undefined>;
+  func: () => Promise<void>;
   text: string;
   isPending: boolean;
   message: string[];
