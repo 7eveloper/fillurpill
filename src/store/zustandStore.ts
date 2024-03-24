@@ -11,12 +11,6 @@ export type User = {
   email: string | null;
 };
 
-export type UserData = {
-  email: string | null;
-  nickname: string | null;
-  user_id: string;
-};
-
 type State = {
   loggedIn: boolean;
   surveyDone: boolean;

@@ -51,38 +51,38 @@ const MyBmi = () => {
     if (ctx) {
       // 차트 생성
       const chart = new Chart(ctx, {
-        type: "bar", // 차트 유형: 막대 그래프
+        type: "bar",
         data: {
-          labels: ["나의 BMI"], // 라벨 설정
+          labels: ["나의 BMI"],
           datasets: [
             {
-              label: "BMI", // 데이터셋 라벨 설정
-              data: [myBmi], // 데이터 설정
-              backgroundColor: ["rgba(255, 99, 132, 0.2)"], // 막대 색상 설정
-              borderColor: ["rgba(255, 99, 132, 1)"], // 막대 테두리 색상 설정
-              borderWidth: 1, // 막대 테두리 두께 설정
+              label: "BMI",
+              data: [myBmi],
+              backgroundColor: ["rgba(75, 192, 192, 0.2)"],
+              borderColor: ["rgba(75, 192, 192, 1)"],
+              borderWidth: 1,
             },
           ],
         },
         options: {
           scales: {
             y: {
-              beginAtZero: true, // y 축이 0부터 시작하도록 설정
+              beginAtZero: true,
             },
           },
         },
       });
-      setBmiChart(chart); // 생성된 차트를 상태에 저장
+      setBmiChart(chart);
     }
   };
   return (
     <div>
       <h1 className="text-[28px] pl-5 border-b-4 border-black">나의 BMI계산</h1>
-      {/* BMI 값이 있는 경우에만 화면에 표시 */}
+
       {myBmi !== null && (
         <div>
           <p>나의 BMI: {myBmi.toFixed(2)}</p>
-          {/* BMI 범주에 따라 적절한 메시지 표시 */}
+
           <p>
             {myBmi < 18.5
               ? "저체중"

@@ -1,16 +1,17 @@
 "use client";
 import { isThereClientSession } from "@/hooks/clientSession";
 import { supabase } from "@/lib/supabase";
-import { User, UserData, zustandStore } from "@/store/zustandStore";
+import { User } from "@/store/zustandStore";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { alertMsg } from "@/lib/utils";
+import { UserData } from "@/lib/types";
 
 const MyInfo = () => {
   const { id } = useParams();
-  const [user, setUser] = useState<UserData | null>(null);
+  const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [formData, setFormData] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [formModified, setFormModified] = useState(false); // 양식이 수정되었는지 추적
@@ -25,7 +26,7 @@ const MyInfo = () => {
     if (error) {
       throw new Error(error.message);
     }
-    setUser(data);
+    setUserInfo(data);
   };
   useEffect(() => {
     fetchIntakeList();
@@ -43,13 +44,14 @@ const MyInfo = () => {
     }
     setFormData(data);
   };
+
   useEffect(() => {
     fetchSurveyList();
   }, [id]);
 
   const handleUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUser((prevState) => ({
+    setUserInfo((prevState) => ({
       ...prevState!,
       [name]: value,
     }));
@@ -89,12 +91,14 @@ const MyInfo = () => {
     }
     const { data, error } = await supabase
       .from("users")
-      .update(user)
-      .eq("user_id", user?.id || "");
+      .update({
+        nickname: userInfo?.nickname,
+      })
+      .match({ user_id: user?.id || "" });
     if (error) {
       throw new Error(error.message);
     }
-    setUser(data);
+    setUserInfo(data);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -128,9 +132,9 @@ const MyInfo = () => {
     setFormModified(false);
   };
   const isFormModified = () => {
-    if (!formData || !user) return false;
+    if (!formData || !userInfo) return false;
     return Object.keys(formData).some(
-      (key) => formData[key as keyof User] !== user[key as keyof UserData]
+      (key) => formData[key as keyof User] !== userInfo[key as keyof UserData]
     );
   };
   return (
@@ -145,7 +149,7 @@ const MyInfo = () => {
             type="text"
             id="email"
             name="email"
-            value={user?.email || ""}
+            value={userInfo?.email || ""}
             onChange={handleInputChange}
             className="p-2 border rounded-md opacity-30" // 수정 모드에 따라 흐리게 표시
             readOnly
@@ -159,7 +163,7 @@ const MyInfo = () => {
             type="text"
             id="nickname"
             name="nickname"
-            value={user?.nickname || ""}
+            value={userInfo?.nickname || ""}
             onChange={handleUserInputChange}
             className="p-2 border rounded-md" // 수정 모드에 따라 흐리게 표시
           />
