@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { isThereClientSession } from "@/hooks/clientSession";
 
-const PostList = () => {
+const ReviewList = () => {
   const { posts, isLoading, isError, fetchPostData, deletePost, editPost } =
     usePostStore();
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -84,10 +84,10 @@ const PostList = () => {
               />
             </div>
           )}
-          <div className="p-4">
+          <div className="p-4 h-auto">
             <h2 className="text-xl font-semibold">{post.title}</h2>
-            <p className="mt-2">"{post.ingredient}"를(을) 추천합니다.</p>
-            <p className="mt-2">{post.content}</p>
+            <p className="mt-2 h-12">"{post.ingredient}"를(을) 추천합니다.</p>
+            <p className="mt-2 h-12">{post.content}</p>
             <p className="mt-2">⭐️ {post.rating}</p>
             <div className="flex mt-4">
               {currentUser && currentUser.id === post.user_id && (
@@ -189,4 +189,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default ReviewList;
