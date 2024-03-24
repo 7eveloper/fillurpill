@@ -8,7 +8,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { alertMsgWithAction } from "@/lib/utils";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import { ClipLoader } from "react-spinners";
 
@@ -32,10 +31,6 @@ export function AlertAuthResult({
         <Button
           onClick={() => {
             handleClick();
-            alertMsgWithAction(
-              text === "로그인" ? "로그인" : "회원가입",
-              new Date().toLocaleString()
-            );
           }}
         >
           {text}

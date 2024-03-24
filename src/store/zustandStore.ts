@@ -1,5 +1,5 @@
-import { produce } from "immer";
 import { create } from "zustand";
+import { produce } from "immer";
 
 export type User = {
   gender: string;
@@ -10,29 +10,42 @@ export type User = {
   email: string;
 };
 
-type State = {
-  loggedIn: boolean;
-  surveyDone: boolean;
-  users: User[];
+type UserState = {
+  user: {
+    loggedIn: boolean;
+    surveyDone: boolean;
+    nickname: string;
+  };
 };
 
 type Actions = {
   changeLoggedIn: (isSession: boolean) => void;
   changeSurveyDone: (isDone: boolean) => void;
-  addUser: (user: User) => void;
+  changeNickname: (nickname: string) => void;
 };
 
-export const zustandStore = create<State & Actions>((set) => ({
-  loggedIn: false,
-  surveyDone: false,
-  users: [],
-  changeLoggedIn: (isSession) => set({ loggedIn: isSession }),
-  changeSurveyDone: (isDone) =>
-    set((prev) => ({ ...prev, surveyDone: isDone })),
-  addUser: (user) =>
+export const zustandStore = create<UserState & Actions>((set) => ({
+  user: {
+    loggedIn: false,
+    surveyDone: false,
+    nickname: "",
+  },
+  changeLoggedIn: (isSession) =>
     set(
       produce((state) => {
-        state.users.push(user);
+        state.user.loggedIn = isSession;
+      })
+    ),
+  changeSurveyDone: (isDone) =>
+    set(
+      produce((state) => {
+        state.user.surveyDone = isDone;
+      })
+    ),
+  changeNickname: (nickname) =>
+    set(
+      produce((state) => {
+        state.user.nickname = nickname;
       })
     ),
 }));

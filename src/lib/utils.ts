@@ -21,3 +21,8 @@ export const alertMsgWithAction = (msg: string, addMsg: string) => {
     },
   });
 };
+
+export const numbers = "0123456789".split("");
+export const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+export const Capital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+export const specialCh = "!@#$%^&*()_+-=[]{};\\'\\:\"|<>?,./`~.".split("");
