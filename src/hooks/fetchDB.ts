@@ -20,6 +20,5 @@ export const fetchUser = async () => {
     .from("users")
     .select("*")
     .eq("user_id", session?.user.id);
-  console.log(userData);
   return userData;
 };
