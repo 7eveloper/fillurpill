@@ -2,36 +2,37 @@
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { zustandStore } from "@/store/zustandStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { toast } from "sonner";
 import { AlertSurveyDemo } from "../../survey/AlertSurveyDemo";
 import { alertMsgWithAction } from "@/lib/utils";
+import { fetchSurvey, fetchUser } from "@/hooks/fetchDB";
 
 const NavBar = () => {
   const router = useRouter();
   const supabase = createClientComponentClient();
-  const loggedIn = zustandStore((state) => state.loggedIn);
+  const loggedIn = zustandStore((state) => state.user.loggedIn);
+  const surveyDone = zustandStore((state) => state.user.surveyDone);
+  const nickname = zustandStore((state) => state.user.nickname);
   const changeLoggedIn = zustandStore((state) => state.changeLoggedIn);
   const changeSurveyDone = zustandStore((state) => state.changeSurveyDone);
-  const surveyDone = zustandStore((state) => state.surveyDone);
-  const [nickname, setNickname] = useState("");
+  const changeNickname = zustandStore((state) => state.changeNickname);
 
   useEffect(() => {
     const fetchSession = async () => {
       const { data } = await supabase.auth.getSession();
       changeLoggedIn(!!data.session);
+
       if (data.session) {
-        const { data: surveyResult, error } = await supabase
-          .from("survey")
-          .select("*")
-          .eq("user_id", data.session?.user.id);
-        console.log(surveyResult);
+        const surveyResult = await fetchSurvey();
         surveyResult?.length !== 0 && changeSurveyDone(true);
-        setNickname(data.session?.user.user_metadata.nickname);
+        const userData = await fetchUser();
+        console.log(userData);
+        changeNickname(userData && userData[0].nickname);
       }
     };
+
     fetchSession();
   }, [supabase.auth, changeLoggedIn, changeSurveyDone]);
 
