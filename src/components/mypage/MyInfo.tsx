@@ -1,9 +1,7 @@
 "use client";
 import { isThereClientSession } from "@/hooks/clientSession";
-import { supabase } from "@/lib/supabase";
 import { User } from "@/store/zustandStore";
-import { useQuery } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { alertMsg } from "@/lib/utils";
@@ -12,8 +10,14 @@ import { UserData } from "@/lib/types";
 const MyInfo = () => {
   const { id } = useParams();
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [originalUserInfo, setOriginalUserInfo] = useState<UserData | null>(
+    null
+  );
   const [formData, setFormData] = useState<User | null>(null);
+  const [originalFormData, setOriginalFormData] = useState<User | null>(null);
   const [editMode, setEditMode] = useState(false);
+  const [nicknameEdit, setNicknameEdit] = useState(false);
+  const [formNicknameModified, setFormNicknameModified] = useState(false);
   const [formModified, setFormModified] = useState(false); // 양식이 수정되었는지 추적
 
   const fetchIntakeList = async () => {
@@ -27,6 +31,7 @@ const MyInfo = () => {
       throw new Error(error.message);
     }
     setUserInfo(data);
+    setOriginalUserInfo(data);
   };
   useEffect(() => {
     fetchIntakeList();
@@ -43,6 +48,7 @@ const MyInfo = () => {
       throw new Error(error.message);
     }
     setFormData(data);
+    setOriginalFormData(data);
   };
 
   useEffect(() => {
@@ -55,6 +61,7 @@ const MyInfo = () => {
       ...prevState!,
       [name]: value,
     }));
+    setFormNicknameModified(true);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +106,9 @@ const MyInfo = () => {
       throw new Error(error.message);
     }
     setUserInfo(data);
+    fetchIntakeList();
+    setNicknameEdit(false);
+    setFormNicknameModified(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,24 +123,46 @@ const MyInfo = () => {
         "몸무게는 숫자이어야 하며, 범위는 0 ~ 200kg여야 합니다!"
       );
       return;
+    } else if (
+      isNaN(parseInt(formData?.height || "")) ||
+      parseInt(formData?.height || "0") < 0 ||
+      parseInt(formData?.height || "0") > 300
+    ) {
+      alertMsg(
+        "입력 오류",
+        "키는 숫자이어야 하며, 범위는 0 ~ 300cm여야 합니다!"
+      );
+      return;
+    }
+    // 성별과 나이 선택 여부 검증
+    else if (!formData?.gender) {
+      alertMsg("입력 오류", "성별을 선택해주세요!");
+      return;
+    } else if (!formData?.age) {
+      alertMsg("입력 오류", "나이를 선택해주세요!");
+      return;
     }
     const { supabase, user } = await isThereClientSession();
-    const { data, error } = await supabase
-      .from("survey")
-      .update(formData)
-      .eq("user_id", user?.id || "");
+    const { data, error } = await supabase.from("survey").insert([formData]);
     if (error) {
       throw new Error(error.message);
     }
     setFormData(data);
+    fetchSurveyList();
     setEditMode(false);
     setFormModified(false); // 제출 후 양식 수정 상태 재설정
   };
   const handleCancelEdit = () => {
-    setFormData(formData);
+    setFormData(originalFormData);
     setEditMode(false);
     setFormModified(false);
   };
+  const handleNicknameCancelEdit = () => {
+    setUserInfo(originalUserInfo);
+    setNicknameEdit(false);
+    setFormNicknameModified(false);
+  };
+
   const isFormModified = () => {
     if (!formData || !userInfo) return false;
     return Object.keys(formData).some(
@@ -165,9 +197,33 @@ const MyInfo = () => {
             name="nickname"
             value={userInfo?.nickname || ""}
             onChange={handleUserInputChange}
-            className="p-2 border rounded-md" // 수정 모드에 따라 흐리게 표시
+            className={`p-2 border rounded-md ${
+              !nicknameEdit ? "opacity-30" : ""
+            }`} // 수정 모드에 따라 흐리게 표시
+            disabled={!nicknameEdit}
           />
-          <button type="submit">저장</button>
+          {!nicknameEdit ? (
+            <Button type="button" onClick={() => setNicknameEdit(true)}>
+              닉네임 변경
+            </Button>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="ml-5"
+                onClick={handleNicknameCancelEdit}
+              >
+                취소
+              </button>
+              <button
+                type="submit"
+                className={`ml-5 ${formNicknameModified ? "" : "opacity-30"}`}
+                disabled={!formNicknameModified}
+              >
+                저장
+              </button>
+            </>
+          )}
         </div>
       </form>
       <form onSubmit={handleSubmit}>

@@ -8,15 +8,6 @@ const MyBmi = () => {
   const [myBmi, setMyBmi] = useState<number | null>(null); // BMI 값을 저장할 상태
   const [bmiChart, setBmiChart] = useState<Chart | null>(null); // Chart.js 객체를 저장할 상태
 
-  useEffect(() => {
-    fetchBmi(); // 컴포넌트가 마운트될 때 BMI를 가져오는 함수 호출
-  }, []);
-  useEffect(() => {
-    if (myBmi !== null) {
-      // BMI가 계산되면 차트 생성
-      createBmiChart();
-    }
-  }, [myBmi]);
   const fetchBmi = async () => {
     try {
       const { supabase, user } = await isThereClientSession(); // 클라이언트 세션 가져오기
@@ -36,6 +27,15 @@ const MyBmi = () => {
       console.error("Error fetching BMI:", error);
     }
   };
+  useEffect(() => {
+    fetchBmi(); // 컴포넌트가 마운트될 때 BMI를 가져오는 함수 호출
+  }, []);
+  useEffect(() => {
+    if (myBmi !== null) {
+      // BMI가 계산되면 차트 생성
+      createBmiChart();
+    }
+  }, []);
 
   const calculateBmi = (userData: User) => {
     // 키와 몸무게가 있는 경우에만 BMI 계산 수행

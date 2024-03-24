@@ -1,20 +1,8 @@
-import { create } from "zustand";
-
 export interface IntakeDiary {
   id: string;
   title: string;
   contents: string;
   start: Date;
   end: Date;
+  user_id?: string;
 }
-
-// interface IntakeDiaryState {
-//   intake: IntakeDiary[];
-//   addIntake: (newIntake: IntakeDiary) => void;
-// }
-
-// export const useIntakeStore = create<IntakeDiaryState>((set) => ({
-//   intake: [],
-//   addIntake: (newIntake) =>
-//     set((state) => ({ intake: [...state.intake, newIntake] })),
-// }));
