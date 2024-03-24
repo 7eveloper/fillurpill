@@ -39,7 +39,9 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <NavBar />
-            <div className="max-w-[1500px] mx-auto px-10">{children}</div>
+            <div className="max-w-[1500px] w-full mx-auto px-10">
+              {children}
+            </div>
             <Toaster />
           </ThemeProvider>
         </body>
