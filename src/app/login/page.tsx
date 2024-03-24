@@ -99,6 +99,7 @@ const LoginPage = () => {
         ]);
         alertMsgWithAction("회원가입", new Date().toLocaleString());
         setLoginMode(true);
+        changeLoggedIn(true);
       } else {
         if (
           error.message ===
