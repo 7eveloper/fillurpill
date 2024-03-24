@@ -5,9 +5,9 @@ import SurveyDrawerBtn from "@/components/survey/SurveyDrawerBtn";
 
 export function AlertSurveyDemo({ nickname }: { nickname: string }) {
   return (
-    <Alert className="flex justify-between">
+    <Alert className="flex justify-between items-center">
       <RocketIcon className="h-4 w-4" />
-      <div>
+      <div className="mt-2">
         <AlertTitle>설문조사를 완료해주세요!</AlertTitle>
         <AlertDescription>
           {nickname}님 만의 맞춤형 건강관리가 시작됩니다.
