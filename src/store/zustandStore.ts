@@ -18,7 +18,7 @@ type Actions = {
 export const zustandStore = create<UserState & Actions>((set) => ({
   user: {
     loggedIn: false,
-    surveyDone: false,
+    surveyDone: true,
     nickname: "",
   },
   changeLoggedIn: (isSession) =>
