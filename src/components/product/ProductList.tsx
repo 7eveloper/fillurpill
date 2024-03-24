@@ -12,11 +12,11 @@ const ProductList = ({ data }: { data: Product[] }) => {
   };
 
   return (
-    <ul className="flex flex-wrap justify-center gap-6">
+    <div className="grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {data.map((item) => (
         <Card
           key={item.id}
-          className="w-80 min-h-[500px] cursor-pointer overflow-hidden hover:scale-105 transition-transform"
+          className="max-w-80 max-h-[500px] h-full cursor-pointer overflow-hidden hover:scale-105 transition-transform"
           onClick={() => handleClickDetail(item.id)}
         >
           {item.image ? (
@@ -34,7 +34,7 @@ const ProductList = ({ data }: { data: Product[] }) => {
           <CardContent>{item.company}</CardContent>
         </Card>
       ))}
-    </ul>
+    </div>
   );
 };
 

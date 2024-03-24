@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import type { Product } from "@/lib/types";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
 const Product = ({ product }: { product: Product }) => {
   return (
@@ -15,11 +16,11 @@ const Product = ({ product }: { product: Product }) => {
         )}
         {product.link && (
           <Link
-            className="text-center border p-4 rounded-xl shadow-sm hover:bg-muted"
+            className="flex items-center justify-center border p-4 rounded-xl shadow-sm hover:bg-muted"
             href={product.link}
             target="_blank"
           >
-            구매 링크
+            구매 링크 <ExternalLinkIcon className="ml-2" />
           </Link>
         )}
       </div>
