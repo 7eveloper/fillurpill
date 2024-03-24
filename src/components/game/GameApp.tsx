@@ -252,9 +252,21 @@ const GameApp = () => {
   ]);
 
   return (
-    <div className="flex flex-row">
-      <div className="flex flex-col items-center justify-center px-8 w-fit h-fit">
-        <div className="flex flex-row items-center justify-center w-[500px] my-3 border border-black border-solid rounded-lg p-6 bg-white">
+    <div className="flex flex-row mt-16">
+      <div className="flex flex-col items-center justify-center px-8">
+        <div className="w-[500px] rounded-xl shadow-sm">
+          <div className="flex justify-between">
+            <span className="">점수 {score}</span>
+            <span className="">버려진 알약 수 {abandoned}</span>
+          </div>
+          <canvas
+            className="block mx-auto my-3 border border-solid rounded-xl shadow-sm bg-background"
+            ref={ref}
+            width={W}
+            height={H}
+          />
+        </div>
+        <div className="flex flex-row items-center justify-center w-[500px] borde border-solid bg-background">
           <Button className="mx-3" onClick={() => setState("pause")}>
             PAUSE
           </Button>
@@ -272,23 +284,8 @@ const GameApp = () => {
             STOP
           </Button>
         </div>
-        <Card className="w-[500px] border border-black border-solid rounded-lg p-5 my-3 bg-white">
-          <CardTitle className="text-center">Current Score</CardTitle>
-          <CardContent>
-            <p className="text-right mr-[150px] mt-5">점수 : {score}</p>
-            <p className="text-right mr-[150px]">
-              버려진 알약 수 : {abandoned}
-            </p>
-          </CardContent>
-        </Card>
-        <canvas
-          className="block mx-auto my-3 border border-black border-solid rounded-lg bg-white"
-          ref={ref}
-          width={W}
-          height={H}
-        />
       </div>
-      <div className="flex flex-col items-center justify-center p-10 w-screen">
+      <div className="flex flex-col items-center justify-center p-10 w-full">
         {abandoned === 10 ? (
           <img
             src="/images/gameover.png"
