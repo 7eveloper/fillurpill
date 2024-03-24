@@ -4,10 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Product } from "@/lib/types";
 
 const Product = ({ product }: { product: Product }) => {
-  console.log(product);
   return (
     <>
-      <div className="flex flex-col gap-4 sm:min-w-[320px]">
+      <div className="flex flex-col gap-4 sm:min-w-[320px] md:max-w-[320px]">
         {product.image && (
           <img
             src={product.image}
@@ -16,7 +15,7 @@ const Product = ({ product }: { product: Product }) => {
         )}
         {product.link && (
           <Link
-            className="text-center border p-4 rounded-xl shadow-sm"
+            className="text-center border p-4 rounded-xl shadow-sm hover:bg-muted"
             href={product.link}
             target="_blank"
           >
@@ -24,10 +23,10 @@ const Product = ({ product }: { product: Product }) => {
           </Link>
         )}
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6 leading-relaxed">
         <h2 className="font-bold text-2xl">{product.name}</h2>
-        <Tabs defaultValue="function" className="">
-          <TabsList>
+        <Tabs defaultValue="function">
+          <TabsList className="mb-4">
             <TabsTrigger value="function">주요기능</TabsTrigger>
             <TabsTrigger value="taking_guide">섭취방법</TabsTrigger>
             <TabsTrigger value="caution">주의사항</TabsTrigger>
