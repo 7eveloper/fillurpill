@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Post } from "@/lib/types";
+import { Post, Product } from "@/lib/types";
 import usePostStore from "@/store/postStore";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useNavigation } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const ReviewForm = () => {
   const [title, setTitle] = useState("");
@@ -24,13 +24,14 @@ const ReviewForm = () => {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [selectedProductImage, setSelectedProductImage] = useState<
     string | undefined
   >("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitted, setIsSumitted] = useState(false);
+  const router = useRouter();
 
   const addPost = usePostStore((state) => state.addPost);
   const handleSubmit = async (event: FormEvent) => {
@@ -73,15 +74,15 @@ const ReviewForm = () => {
     setSelectedProductImage("");
     addPost(newPost);
     alert("등록이 완료되었습니다.");
-    navigation.navigate("/review");
+    router.push("/review");
   };
 
-  const handleProductClick = async (productName: string) => {
+  const handleProductClick = async (productName: string | null) => {
     try {
       const { data, error } = await supabase
         .from("hfood")
         .select("image")
-        .eq("name", productName)
+        .eq("name", productName!)
         .single();
 
       if (error) {
@@ -90,12 +91,12 @@ const ReviewForm = () => {
       }
 
       if (data) {
-        setSelectedProduct(productName);
-        setSelectedProductImage(data.image);
+        setSelectedProduct(productName!);
+        setSelectedProductImage(data.image!);
       }
     } catch (error) {}
 
-    setIngredient(productName);
+    setIngredient(productName!);
     setIsModalOpen(false);
   };
 
@@ -192,14 +193,14 @@ const ReviewForm = () => {
               searchResults.map((result, index) => (
                 <div
                   key={index}
-                  onClick={() => handleProductClick(result.name, result.image)}
+                  onClick={() => handleProductClick(result.name)}
                   className="w-full border-2 m-2 cursor-pointer relative"
                   style={{ aspectRatio: "1 / 1" }}
                 >
                   <div className="relative overflow-hidden">
                     <img
-                      src={result.image}
-                      alt={result.name}
+                      src={result.image!}
+                      alt={result.name!}
                       className="w-full h-full object-cover transition duration-300 filter brightness-100 hover:brightness-50"
                     />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50">
@@ -211,17 +212,21 @@ const ReviewForm = () => {
                         >
                           {result.function}
                         </p>
-                        {result.function.split("\n").length > 3 && (
+                        {result.function!.split("\n").length > 3 && (
                           <>
                             <p
                               className="text-white cursor-pointer hover:underline mt-2"
                               onClick={(event) => {
                                 event.stopPropagation();
-                                event.currentTarget.previousSibling.style.maxHeight =
-                                  "none";
+                                (
+                                  event.currentTarget
+                                    .previousSibling as HTMLElement
+                                ).style.maxHeight = "none";
                                 event.currentTarget.style.display = "none";
-                                event.currentTarget.nextSibling.style.display =
-                                  "block";
+                                (
+                                  event.currentTarget
+                                    .previousSibling as HTMLElement
+                                ).style.display = "block";
                               }}
                             >
                               [더보기]
@@ -230,8 +235,10 @@ const ReviewForm = () => {
                               className="text-white cursor-pointer hover:underline mt-2 hidden"
                               onClick={(event) => {
                                 event.stopPropagation();
-                                event.currentTarget.previousSibling.previousSibling.style.maxHeight =
-                                  "4rem";
+                                (
+                                  event.currentTarget
+                                    .previousSibling as HTMLElement
+                                ).style.maxHeight = "4rem";
                                 event.currentTarget.style.display = "none";
                               }}
                             >

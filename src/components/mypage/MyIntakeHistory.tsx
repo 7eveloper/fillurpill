@@ -3,13 +3,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import moment from "moment";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
-import { IntakeDiary } from "@/store/Intake";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addIntake, deleteIntake } from "@/lib/mypage/mutation";
 import { isThereClientSession } from "@/hooks/clientSession";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import type { View } from "react-big-calendar";
+import { IntakeDiary } from "@/lib/types";
 
 const localizer = momentLocalizer(moment);
 
@@ -63,7 +64,7 @@ const MyIntakeHistory = () => {
     const { data, error } = await supabase
       .from("intake")
       .select("*")
-      .eq("user_id", user?.id);
+      .eq("user_id", user?.id as string);
     console.log(data);
     if (error) {
       throw new Error(error.message);
@@ -102,8 +103,8 @@ const MyIntakeHistory = () => {
       try {
         await addIntakeMutation.mutateAsync({
           id: crypto.randomUUID(),
-          start: selectedSlot.start,
-          end: selectedSlot.end,
+          start: String(selectedSlot.start),
+          end: String(selectedSlot.end),
           title,
           contents,
         });

@@ -1,8 +1,7 @@
 "use client";
-
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import usePostStore from "@/store/postStore";
-import type { Post } from "@/lib/types";
+import { type Post } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { isThereClientSession } from "@/hooks/clientSession";
+import { User } from "@supabase/supabase-js";
 
 const ReviewList = () => {
   const { posts, isLoading, isError, fetchPostData, deletePost, editPost } =
@@ -28,7 +28,7 @@ const ReviewList = () => {
     content: "",
     rating: "",
   });
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
     fetchPostData();
@@ -51,7 +51,7 @@ const ReviewList = () => {
     }
   };
 
-  const handleDelete = async (postId: number) => {
+  const handleDelete = async (postId: string) => {
     try {
       await deletePost(postId);
       fetchPostData();
@@ -133,7 +133,7 @@ const ReviewList = () => {
             <Input
               type="text"
               id="title"
-              value={editedPost.title}
+              value={editedPost.title!}
               onChange={(e) =>
                 setEditedPost({ ...editedPost, title: e.target.value })
               }
@@ -144,7 +144,7 @@ const ReviewList = () => {
             <Input
               type="text"
               id="ingredient"
-              value={editedPost.ingredient}
+              value={editedPost.ingredient!}
               onChange={(e) =>
                 setEditedPost({ ...editedPost, ingredient: e.target.value })
               }
@@ -154,7 +154,7 @@ const ReviewList = () => {
             <Label htmlFor="content">내용</Label>
             <Input
               id="content"
-              value={editedPost.content}
+              value={editedPost.content!}
               onChange={(e) =>
                 setEditedPost({ ...editedPost, content: e.target.value })
               }
@@ -165,7 +165,7 @@ const ReviewList = () => {
               별점
             </Label>
             <Select
-              value={editedPost.rating}
+              value={editedPost.rating!}
               onValueChange={(newValue: string) =>
                 setEditedPost({ ...editedPost, rating: newValue })
               }
