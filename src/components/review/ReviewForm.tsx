@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useNavigation } from "next/navigation";
 
-const ReviewForm = ({ router }) => {
+const ReviewForm = () => {
   const [title, setTitle] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [content, setContent] = useState("");
