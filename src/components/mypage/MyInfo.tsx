@@ -1,9 +1,7 @@
 "use client";
 import { isThereClientSession } from "@/hooks/clientSession";
-import { supabase } from "@/lib/supabase";
 import { User } from "@/store/zustandStore";
-import { useQuery } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { alertMsg } from "@/lib/utils";
