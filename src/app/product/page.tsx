@@ -49,9 +49,11 @@ const ProductListPage = () => {
 };
 
 const SuspensedPage = () => {
-  <Suspense>
-    <ProductListPage />
-  </Suspense>;
+  return (
+    <Suspense>
+      <ProductListPage />
+    </Suspense>
+  );
 };
 
 export default SuspensedPage;
