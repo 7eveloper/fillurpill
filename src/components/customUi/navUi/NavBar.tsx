@@ -67,9 +67,6 @@ const NavBar = () => {
             <Link className="hover:text-gray-600" href="/review">
               Review
             </Link>
-            <Link className="hover:text-gray-600" href="/about">
-              About
-            </Link>
             <Link className="hover:text-gray-600" href="/mypage">
               MyPage
             </Link>
