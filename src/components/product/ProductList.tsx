@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useRouter } from "next/navigation";
 import type { Product } from "@/lib/types";
+import ProgressiveImg from "./ProgressiveImg";
 
 const ProductList = ({ data }: { data: Product[] }) => {
   const router = useRouter();
@@ -20,10 +21,7 @@ const ProductList = ({ data }: { data: Product[] }) => {
           onClick={() => handleClickDetail(item.id)}
         >
           {item.image ? (
-            <img
-              src={item.image as string}
-              className="w-80 h-[300px] border-b-2"
-            />
+            <ProgressiveImg src={item.image as string} />
           ) : (
             <div className="w-80 min-h-[300px] bg-slate-50 border-b-2"></div>
           )}
