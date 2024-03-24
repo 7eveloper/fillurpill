@@ -13,12 +13,13 @@ import { User } from "@/lib/types";
 import { zustandStore } from "@/store/zustandStore";
 
 export const Survey = () => {
+  const nickname = zustandStore((state) => state.user.nickname);
   const [userResult, setUserResult] = useState<User>({
     gender: "",
     age: "",
     weight: "",
     height: "",
-    nickname: "",
+    nickname,
     email: "",
   });
   const [clickList, setClickList] = useState([false, false, false, false]);
@@ -279,14 +280,11 @@ export const Header = ({
 };
 
 export const addSurvey = async (userResult: User) => {
-  const nickname = zustandStore((state) => state.user.nickname);
   const { supabase, user } = await isThereClientSession();
 
   const { error } = await supabase
     .from("survey")
-    .insert([
-      { user_id: user?.id, ...userResult, nickname, email: user?.email },
-    ]);
+    .insert([{ user_id: user?.id, ...userResult, email: user?.email }]);
 
   if (error) {
     console.error("사용자 설문조사 결과 저장 실패", error);

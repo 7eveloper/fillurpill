@@ -48,11 +48,9 @@ export function AlertAuthResult({
               message[0]
             )}
           </AlertDialogTitle>
-          {isPending ? (
-            <AlertDialogDescription>
-              {text === "회원가입" ? message[1] : <></>}
-            </AlertDialogDescription>
-          ) : null}
+          <AlertDialogDescription>
+            {isPending ? null : text === "회원가입" ? message[1] : <></>}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogAction>확인</AlertDialogAction>
