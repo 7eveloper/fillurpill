@@ -6,16 +6,16 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export interface Post {
-  id: number;
-  title: string;
-  content: string;
-  rating: string;
-  ingredient: string;
-  userId: string;
-  image: string;
-  data: Json | null;
-}
+export type Post = {
+  content: string | null;
+  id: string;
+  image: string | null;
+  ingredient: string | null;
+  rating: string | null;
+  title: string | null;
+  user_id: string | null;
+  // data: Json | null;
+};
 
 export type Product = {
   caution: string | null;

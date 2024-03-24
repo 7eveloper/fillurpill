@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import type { Post } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { isThereClientSession } from "@/hooks/clientSession";
+import { Post } from "@/lib/types";
 
 interface StoreState {
   posts: Post[];
@@ -9,8 +9,8 @@ interface StoreState {
   isError: string | null;
   fetchPostData: () => Promise<void>;
   addPost: (newPost: Partial<Post>) => Promise<void>;
-  deletePost: (postId: number) => Promise<void>;
-  editPost: (postId: number, updatedPost: Partial<Post>) => Promise<void>;
+  deletePost: (postId: string) => Promise<void>;
+  editPost: (postId: string, updatedPost: Partial<Post>) => Promise<void>;
 }
 
 const usePostStore = create<StoreState>((set) => ({
@@ -26,7 +26,7 @@ const usePostStore = create<StoreState>((set) => ({
       set({ posts, isLoading: false, isError: null });
     } catch (error) {
       console.error("Supabase에서 데이터 불러오기 오류", error);
-      set({ isLoading: false, isError: error });
+      set({ isLoading: false, isError: String(error) });
     }
   },
 
@@ -46,7 +46,7 @@ const usePostStore = create<StoreState>((set) => ({
     }
   },
 
-  deletePost: async (postId: number) => {
+  deletePost: async (postId: string) => {
     try {
       const { error } = await supabase.from("posts").delete().eq("id", postId);
       if (error) {
@@ -59,7 +59,7 @@ const usePostStore = create<StoreState>((set) => ({
     }
   },
 
-  editPost: async (postId: number, updatedPost: Partial<Post>) => {
+  editPost: async (postId: string, updatedPost: Partial<Post>) => {
     try {
       const { error } = await supabase
         .from("posts")

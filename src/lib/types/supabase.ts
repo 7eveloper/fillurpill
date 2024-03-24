@@ -4,234 +4,234 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
       hfood: {
         Row: {
-          caution: string | null
-          company: string | null
-          expiration_date: string | null
-          function: string | null
-          id: number
-          image: string | null
-          link: string | null
-          name: string | null
-          raw_materials: string | null
-          standard: string | null
-          sungsang: string | null
-          taking_guide: string | null
-        }
+          caution: string | null;
+          company: string | null;
+          expiration_date: string | null;
+          function: string | null;
+          id: number;
+          image: string | null;
+          link: string | null;
+          name: string | null;
+          raw_materials: string | null;
+          standard: string | null;
+          sungsang: string | null;
+          taking_guide: string | null;
+        };
         Insert: {
-          caution?: string | null
-          company?: string | null
-          expiration_date?: string | null
-          function?: string | null
-          id: number
-          image?: string | null
-          link?: string | null
-          name?: string | null
-          raw_materials?: string | null
-          standard?: string | null
-          sungsang?: string | null
-          taking_guide?: string | null
-        }
+          caution?: string | null;
+          company?: string | null;
+          expiration_date?: string | null;
+          function?: string | null;
+          id: number;
+          image?: string | null;
+          link?: string | null;
+          name?: string | null;
+          raw_materials?: string | null;
+          standard?: string | null;
+          sungsang?: string | null;
+          taking_guide?: string | null;
+        };
         Update: {
-          caution?: string | null
-          company?: string | null
-          expiration_date?: string | null
-          function?: string | null
-          id?: number
-          image?: string | null
-          link?: string | null
-          name?: string | null
-          raw_materials?: string | null
-          standard?: string | null
-          sungsang?: string | null
-          taking_guide?: string | null
-        }
-        Relationships: []
-      }
+          caution?: string | null;
+          company?: string | null;
+          expiration_date?: string | null;
+          function?: string | null;
+          id?: number;
+          image?: string | null;
+          link?: string | null;
+          name?: string | null;
+          raw_materials?: string | null;
+          standard?: string | null;
+          sungsang?: string | null;
+          taking_guide?: string | null;
+        };
+        Relationships: [];
+      };
       intake: {
         Row: {
-          contents: string | null
-          end: string | null
-          id: string
-          start: string | null
-          title: string | null
-          user_id: string
-        }
+          contents: string;
+          end: string;
+          id: string;
+          start: string;
+          title: string;
+          user_id: string;
+        };
         Insert: {
-          contents?: string | null
-          end?: string | null
-          id: string
-          start?: string | null
-          title?: string | null
-          user_id?: string
-        }
+          contents?: string | null;
+          end?: string | null;
+          id: string;
+          start?: string | null;
+          title?: string | null;
+          user_id?: string;
+        };
         Update: {
-          contents?: string | null
-          end?: string | null
-          id?: string
-          start?: string | null
-          title?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
+          contents?: string | null;
+          end?: string | null;
+          id?: string;
+          start?: string | null;
+          title?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       posts: {
         Row: {
-          content: string | null
-          id: string
-          image: string | null
-          ingredient: string | null
-          rating: string | null
-          title: string | null
-          user_id: string | null
-        }
+          content: string;
+          id: string;
+          image: string;
+          ingredient: string;
+          rating: string;
+          title: string;
+          user_id: string;
+        };
         Insert: {
-          content?: string | null
-          id?: string
-          image?: string | null
-          ingredient?: string | null
-          rating?: string | null
-          title?: string | null
-          user_id?: string | null
-        }
+          content?: string | null;
+          id?: string;
+          image?: string | null;
+          ingredient?: string | null;
+          rating?: string | null;
+          title?: string | null;
+          user_id?: string | null;
+        };
         Update: {
-          content?: string | null
-          id?: string
-          image?: string | null
-          ingredient?: string | null
-          rating?: string | null
-          title?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+          content?: string | null;
+          id?: string;
+          image?: string | null;
+          ingredient?: string | null;
+          rating?: string | null;
+          title?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
       product: {
         Row: {
-          caution: string | null
-          color: string | null
-          company: string | null
-          composition: string | null
-          expiration_date: string | null
-          function: string | null
-          id: string
-          image: string | null
-          name: string | null
-          registration_date: number | null
-          storage_guide: string | null
-          taking_guide: string | null
-        }
+          caution: string | null;
+          color: string | null;
+          company: string | null;
+          composition: string | null;
+          expiration_date: string | null;
+          function: string | null;
+          id: string;
+          image: string | null;
+          name: string | null;
+          registration_date: number | null;
+          storage_guide: string | null;
+          taking_guide: string | null;
+        };
         Insert: {
-          caution?: string | null
-          color?: string | null
-          company?: string | null
-          composition?: string | null
-          expiration_date?: string | null
-          function?: string | null
-          id?: string
-          image?: string | null
-          name?: string | null
-          registration_date?: number | null
-          storage_guide?: string | null
-          taking_guide?: string | null
-        }
+          caution?: string | null;
+          color?: string | null;
+          company?: string | null;
+          composition?: string | null;
+          expiration_date?: string | null;
+          function?: string | null;
+          id?: string;
+          image?: string | null;
+          name?: string | null;
+          registration_date?: number | null;
+          storage_guide?: string | null;
+          taking_guide?: string | null;
+        };
         Update: {
-          caution?: string | null
-          color?: string | null
-          company?: string | null
-          composition?: string | null
-          expiration_date?: string | null
-          function?: string | null
-          id?: string
-          image?: string | null
-          name?: string | null
-          registration_date?: number | null
-          storage_guide?: string | null
-          taking_guide?: string | null
-        }
-        Relationships: []
-      }
+          caution?: string | null;
+          color?: string | null;
+          company?: string | null;
+          composition?: string | null;
+          expiration_date?: string | null;
+          function?: string | null;
+          id?: string;
+          image?: string | null;
+          name?: string | null;
+          registration_date?: number | null;
+          storage_guide?: string | null;
+          taking_guide?: string | null;
+        };
+        Relationships: [];
+      };
       survey: {
         Row: {
-          age: string | null
-          created_at: string
-          email: string | null
-          gender: string | null
-          height: string | null
-          nickname: string
-          user_id: string
-          weight: string | null
-        }
+          age: string | null;
+          created_at: string;
+          email: string | null;
+          gender: string | null;
+          height: string | null;
+          nickname: string;
+          user_id: string;
+          weight: string | null;
+        };
         Insert: {
-          age?: string | null
-          created_at?: string
-          email?: string | null
-          gender?: string | null
-          height?: string | null
-          nickname?: string
-          user_id?: string
-          weight?: string | null
-        }
+          age?: string | null;
+          created_at?: string;
+          email?: string | null;
+          gender?: string | null;
+          height?: string | null;
+          nickname?: string;
+          user_id?: string;
+          weight?: string | null;
+        };
         Update: {
-          age?: string | null
-          created_at?: string
-          email?: string | null
-          gender?: string | null
-          height?: string | null
-          nickname?: string
-          user_id?: string
-          weight?: string | null
-        }
-        Relationships: []
-      }
+          age?: string | null;
+          created_at?: string;
+          email?: string | null;
+          gender?: string | null;
+          height?: string | null;
+          nickname?: string;
+          user_id?: string;
+          weight?: string | null;
+        };
+        Relationships: [];
+      };
       users: {
         Row: {
-          email: string | null
-          nickname: string | null
-          user_id: string
-        }
+          email: string | null;
+          nickname: string | null;
+          user_id: string;
+        };
         Insert: {
-          email?: string | null
-          nickname?: string | null
-          user_id: string
-        }
+          email?: string | null;
+          nickname?: string | null;
+          user_id: string;
+        };
         Update: {
-          email?: string | null
-          nickname?: string | null
-          user_id?: string
-        }
+          email?: string | null;
+          nickname?: string | null;
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "users_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-    }
+            foreignKeyName: "users_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -240,23 +240,23 @@ export type Tables<
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
   : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
+      PublicSchema["Views"])
+  ? (PublicSchema["Tables"] &
+      PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+      Row: infer R;
+    }
+    ? R
     : never
+  : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -264,20 +264,20 @@ export type TablesInsert<
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
-      }
-      ? I
-      : never
+  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+      Insert: infer I;
+    }
+    ? I
     : never
+  : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -285,20 +285,20 @@ export type TablesUpdate<
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
+  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+      Update: infer U;
+    }
+    ? U
     : never
+  : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -306,9 +306,9 @@ export type Enums<
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never = never
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+  ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+  : never;

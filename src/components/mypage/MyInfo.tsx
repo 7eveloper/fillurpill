@@ -1,11 +1,11 @@
 "use client";
 import { isThereClientSession } from "@/hooks/clientSession";
-import { User } from "@/store/zustandStore";
+
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { alertMsg } from "@/lib/utils";
-import { UserData } from "@/lib/types";
+import { User, UserData } from "@/lib/types";
 
 const MyInfo = () => {
   const { id } = useParams();

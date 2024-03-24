@@ -1,8 +1,9 @@
 "use client";
 import { isThereClientSession } from "@/hooks/clientSession";
-import { User } from "@/store/zustandStore";
+
 import React, { useEffect, useState } from "react";
 import Chart from "chart.js/auto";
+import { User } from "@/lib/types";
 
 const MyBmi = () => {
   const [myBmi, setMyBmi] = useState<number | null>(null); // BMI 값을 저장할 상태
