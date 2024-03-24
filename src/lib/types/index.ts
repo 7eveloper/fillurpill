@@ -14,6 +14,7 @@ export type Post = {
   ingredient: string;
   userId: string;
   image: string;
+  data: Json | null;
 };
 
 export type Product = {
