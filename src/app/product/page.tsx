@@ -6,7 +6,7 @@ import SearchBar from "@/components/product/SearchBar";
 import SkeletonList from "@/components/product/SkeletonList";
 import { useQueryProduct } from "@/hooks/useQueryProduct";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 const ProductListPage = () => {
   const params = useSearchParams();
@@ -48,4 +48,10 @@ const ProductListPage = () => {
   );
 };
 
-export default ProductListPage;
+const SuspensedPage = () => {
+  <Suspense>
+    <ProductListPage />
+  </Suspense>;
+};
+
+export default SuspensedPage;
