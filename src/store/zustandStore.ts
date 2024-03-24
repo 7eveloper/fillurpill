@@ -2,12 +2,12 @@ import { create } from "zustand";
 import { produce } from "immer";
 
 export type User = {
-  gender: string;
-  age: string;
-  weight: string;
-  height: string;
-  nickname: string;
-  email: string;
+  gender: string | null;
+  age: string | null;
+  weight: string | null;
+  height: string | null;
+  nickname: string | null;
+  email: string | null;
 };
 
 type UserState = {
