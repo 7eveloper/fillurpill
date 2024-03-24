@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "../ui/input";
+import SearchBar from "../product/SearchBar";
 
 const W = 500;
 const H = 500;
@@ -299,16 +299,7 @@ const GameApp = () => {
           <img src="/images/logo.png" alt="logo" className="mb-10 w-[30vw]" />
         )}
 
-        <div className="flex w-full max-w-sm items-center space-x-2 my-5">
-          <Input
-            className="bg-white w-[350px]"
-            type="string"
-            placeholder="Search"
-          />
-          <Button type="submit" variant="secondary">
-            Search
-          </Button>
-        </div>
+        <SearchBar searchType="function" />
       </div>
     </div>
   );
