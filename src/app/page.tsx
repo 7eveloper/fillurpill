@@ -1,4 +1,4 @@
-import GameApp from "@/components/customUi/GameApp";
+import GameApp from "@/components/game/GameApp";
 
 export default async function Home() {
   return (

@@ -1,17 +1,10 @@
 "use client";
 import { PAGINATE, fetchData } from "@/lib/fetchData";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
-export const useQueryProduct = () => {
-  const params = useSearchParams();
-  const query = params.get("q") ?? "";
-  const [searchType, setSearchType] = useState(
-    params.get("type") ?? "function"
-  );
-
+export const useQueryProduct = (query: string, searchType: string) => {
   const { ref: pageEnd, inView } = useInView({
     threshold: 1,
   });
@@ -34,11 +27,6 @@ export const useQueryProduct = () => {
     refetch();
   }, [query]);
 
-  const handleChangeType = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setSearchType(e.target.value);
-    refetch();
-  };
-
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
@@ -49,8 +37,8 @@ export const useQueryProduct = () => {
     data,
     isFetching,
     hasNextPage,
+    refetch,
     pageEnd,
     searchType,
-    handleChangeType,
   };
 };

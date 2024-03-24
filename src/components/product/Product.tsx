@@ -2,29 +2,22 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import type { Product } from "@/lib/types";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 
-const Product = ({ product }: { product: Product }) => {
+const Product = async ({ product }: { product: Product }) => {
   return (
     <>
-      <div className="flex flex-col gap-4 sm:min-w-[320px] md:max-w-[320px]">
+      <div className="flex flex-col gap-4 sm:min-w-[520px] md:max-w-[520px]">
         {product.image && (
           <img
             src={product.image}
             className="h-fit rounded-xl border shadow-sm"
           />
         )}
-        {product.link && (
-          <Link
-            className="text-center border p-4 rounded-xl shadow-sm hover:bg-muted"
-            href={product.link}
-            target="_blank"
-          >
-            구매 링크
-          </Link>
-        )}
       </div>
-      <div className="flex flex-col gap-6 leading-relaxed">
-        <h2 className="font-bold text-2xl">{product.name}</h2>
+      <div className="flex flex-col gap-6 leading-relaxed ">
+        <span className="text-primary opacity-40">신고번호 {product.id}</span>
+        <h2 className="font-bold text-3xl">{product.name}</h2>
         <Tabs defaultValue="function">
           <TabsList className="mb-4">
             <TabsTrigger value="function">주요기능</TabsTrigger>
@@ -36,6 +29,15 @@ const Product = ({ product }: { product: Product }) => {
           <TabsContent value="caution">{product.caution}</TabsContent>
         </Tabs>
         <p>성분/함량: {product.raw_materials}</p>
+        {product.link && (
+          <Link
+            className="flex items-center justify-center border p-4 rounded-xl shadow-sm hover:bg-muted "
+            href={product.link}
+            target="_blank"
+          >
+            구매 링크 <ExternalLinkIcon className="ml-2" />
+          </Link>
+        )}
       </div>
     </>
   );
