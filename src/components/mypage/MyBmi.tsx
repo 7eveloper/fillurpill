@@ -36,7 +36,7 @@ const MyBmi = () => {
       // BMI가 계산되면 차트 생성
       createBmiChart();
     }
-  }, []);
+  }, [myBmi]);
 
   const calculateBmi = (userData: User) => {
     // 키와 몸무게가 있는 경우에만 BMI 계산 수행

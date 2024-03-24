@@ -28,14 +28,14 @@ const MyIntakeHistory = () => {
   };
   const [view, setView] = useState<View>(Views.MONTH);
   const [date, setDate] = useState(new Date());
-  const [modalOpen, setModalOpen] = useState(false);
-  const [sideModalOpen, setSideModalOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [contents, setContents] = useState("");
   const [selectedSlot, setSelectedSlot] = useState<{
     start: Date;
     end: Date;
   } | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [sideModalOpen, setSideModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
   const [selectedEvent, setSelectedEvent] = useState<IntakeDiary | null>(null);
   const queryClient = useQueryClient();
   const sideModalRef = useRef<HTMLDivElement>(null);
@@ -103,8 +103,8 @@ const MyIntakeHistory = () => {
       try {
         await addIntakeMutation.mutateAsync({
           id: crypto.randomUUID(),
-          start: String(selectedSlot.start),
-          end: String(selectedSlot.end),
+          start: selectedSlot.start.toISOString(),
+          end: selectedSlot.end.toISOString(),
           title,
           contents,
         });
@@ -128,7 +128,6 @@ const MyIntakeHistory = () => {
     setModalOpen(false);
     setSideModalOpen(true);
     setSelectedEvent(event);
-    console.log("!@3");
   };
   const handleDeleteEvent = async () => {
     const isConfirmed = window.confirm("선택한 항목을 삭제하시겠습니까??");
@@ -165,21 +164,21 @@ const MyIntakeHistory = () => {
         <Calendar
           views={[Views.MONTH, Views.AGENDA]}
           defaultDate={defaultDate}
+          view={view}
+          date={date}
+          onView={(view) => setView(view)}
+          onSelectSlot={handleSelectSlot}
+          onNavigate={(date) => {
+            setDate(new Date(date));
+          }}
           selectable
           localizer={localizer}
           events={intake} // 여기서 myEvents를 사용합니다.
           startAccessor="start"
           endAccessor="end"
           onSelectEvent={handleSelectEvent}
-          onSelectSlot={handleSelectSlot}
           scrollToTime={scrollToTime}
           eventPropGetter={eventStyleGetter}
-          view={view}
-          date={date}
-          onView={(view) => setView(view)}
-          onNavigate={(date) => {
-            setDate(new Date(date));
-          }}
         />
       </div>
       {modalOpen && (
