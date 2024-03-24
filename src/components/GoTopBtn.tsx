@@ -32,7 +32,7 @@ const GoTopBtn = () => {
 
   return (
     <button
-      className="fixed bottom-6 right-6 border rounded-full shadow-sm p-2"
+      className="fixed bottom-6 right-6 border rounded-full shadow-sm p-2 bg-background"
       onClick={scrollToTop}
     >
       <ArrowUpIcon className="w-10 h-10" />

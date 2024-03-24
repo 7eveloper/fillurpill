@@ -1,11 +1,6 @@
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-
-type SearchBarType = {
-  searchType: string;
-  handleChangeType: (e: ChangeEvent<HTMLSelectElement>) => void;
-};
 
 const searchTypes = [
   {
@@ -22,23 +17,26 @@ const searchTypes = [
   },
 ];
 
-const SearchBar = ({ searchType, handleChangeType }: SearchBarType) => {
+const SearchBar = ({ searchType }: { searchType: string }) => {
   const router = useRouter();
+  const [filter, setFilter] = useState(searchType);
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push(
-      `/product?q=${e.currentTarget.search.value}&type=${searchType}`
-    );
+    router.push(`/product?q=${e.currentTarget.search.value}&type=${filter}`);
+  };
+
+  const handleFilter = (e: ChangeEvent<HTMLSelectElement>) => {
+    setFilter(e.currentTarget.value);
   };
 
   return (
     <form
       onSubmit={handleSearch}
-      className="flex items-center gap-2 h-10 max-w-[600px] text-muted-foreground rounded-xl border border-input bg-transparent px-4 py-6 shadow-sm transition-colors my-10 "
+      className="flex items-center gap-2 h-10 max-w-[600px] text-muted-foreground rounded-xl border border-input bg-transparent px-4 py-6 shadow-sm transition-colors my-10 mx-2"
     >
       <MagnifyingGlassIcon className="w-5 h-5" />
-      <select onChange={handleChangeType} className="bg-transparent">
+      <select onChange={handleFilter} className="bg-transparent">
         {searchTypes.map((type) => {
           return (
             <option key={type.value} value={type.value}>
