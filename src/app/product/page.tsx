@@ -37,9 +37,9 @@ const ProductListPage = () => {
               <SkeletonList />
             </>
           ) : hasNextPage ? (
-            "더보기"
+            <div className="py-[200px]">더보기</div>
           ) : (
-            "다음 페이지가 없습니다"
+            <div className="py-[200px]">다음 페이지가 없습니다.</div>
           )}
         </div>
       </section>
