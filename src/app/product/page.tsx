@@ -1,6 +1,6 @@
 "use client";
 
-import GoTopBtn from "@/components/product/GoTopBtn";
+import GoTopBtn from "@/components/GoTopBtn";
 import ProductList from "@/components/product/ProductList";
 import SearchBar from "@/components/product/SearchBar";
 import { useQueryProduct } from "@/hooks/useQueryProduct";
