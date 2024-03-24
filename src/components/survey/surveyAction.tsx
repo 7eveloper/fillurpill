@@ -66,9 +66,9 @@ export const Survey = () => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (nickname: string) => {
     try {
-      await addSurvey(userResult);
+      await addSurvey(userResult, nickname);
     } catch (error) {
       console.log("저장실패!");
     }
@@ -222,7 +222,7 @@ export const Survey = () => {
             <Button
               className="w-52 h-10 text-base"
               onClick={() => {
-                handleSubmit();
+                handleSubmit(nickname);
                 changeSurveyDone(true);
                 alertMsg(
                   "설문조사 완료!",
@@ -279,12 +279,14 @@ export const Header = ({
   );
 };
 
-export const addSurvey = async (userResult: User) => {
+export const addSurvey = async (userResult: User, nickname: string) => {
   const { supabase, user } = await isThereClientSession();
 
   const { error } = await supabase
     .from("survey")
-    .insert([{ user_id: user?.id, ...userResult, email: user?.email }]);
+    .insert([
+      { user_id: user?.id, ...userResult, nickname, email: user?.email },
+    ]);
 
   if (error) {
     console.error("사용자 설문조사 결과 저장 실패", error);
