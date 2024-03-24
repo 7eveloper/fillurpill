@@ -1,4 +1,5 @@
 "use client";
+import { ArrowUpIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 
 const GoTopBtn = () => {
@@ -30,8 +31,11 @@ const GoTopBtn = () => {
   if (!showBtn) return null;
 
   return (
-    <button className="fixed bottom-6 right-6" onClick={scrollToTop}>
-      위로가기
+    <button
+      className="fixed bottom-6 right-6 border rounded-full shadow-sm p-2"
+      onClick={scrollToTop}
+    >
+      <ArrowUpIcon className="w-10 h-10" />
     </button>
   );
 };

@@ -1,11 +1,22 @@
 "use client";
 import { PAGINATE, fetchData } from "@/lib/fetchData";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useInfiniteScroll } from "./useInfiniteScroll";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useInView } from "react-intersection-observer";
 
-export const useQueryProduct = (query: string, searchType: string) => {
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage, refetch } =
+export const useQueryProduct = () => {
+  const params = useSearchParams();
+  const query = params.get("q") ?? "";
+  const [searchType, setSearchType] = useState(
+    params.get("type") ?? "function"
+  );
+
+  const { ref: pageEnd, inView } = useInView({
+    threshold: 1,
+  });
+
+  const { data, hasNextPage, isFetching, fetchNextPage, refetch } =
     useInfiniteQuery({
       queryKey: ["search"],
       queryFn: ({ pageParam }) => fetchData(pageParam, query, searchType),
@@ -21,10 +32,25 @@ export const useQueryProduct = (query: string, searchType: string) => {
 
   useEffect(() => {
     refetch();
-  }, [query, searchType]);
+  }, [query]);
 
-  const pageEnd = useInfiniteScroll(hasNextPage, fetchNextPage);
-  return { data, isFetchingNextPage, hasNextPage, pageEnd };
+  const handleChangeType = (e: ChangeEvent<HTMLSelectElement>): void => {
+    setSearchType(e.target.value);
+    refetch();
+  };
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView]);
+
+  return {
+    data,
+    isFetching,
+    hasNextPage,
+    pageEnd,
+    searchType,
+    handleChangeType,
+  };
 };
-
-export type SearchData = ReturnType<typeof useQueryProduct>["data"];

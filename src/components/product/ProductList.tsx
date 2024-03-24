@@ -1,13 +1,13 @@
 "use client";
 
-import { SearchData } from "@/hooks/useQueryProduct";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useRouter } from "next/navigation";
+import type { Product } from "@/lib/types";
 
-const ProductList = ({ data = [] }: { data: SearchData }) => {
+const ProductList = ({ data }: { data: Product[] }) => {
   const router = useRouter();
 
-  const handleClickDetail = (id: string) => {
+  const handleClickDetail = (id: number) => {
     router.push(`/product/${id}`);
   };
 
@@ -16,7 +16,7 @@ const ProductList = ({ data = [] }: { data: SearchData }) => {
       {data.map((item) => (
         <Card
           key={item.id}
-          className="w-80 min-h-[500px] cursor-pointer overflow-hidden"
+          className="w-80 min-h-[500px] cursor-pointer overflow-hidden hover:scale-105 transition-transform"
           onClick={() => handleClickDetail(item.id)}
         >
           {item.image ? (
