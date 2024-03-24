@@ -76,11 +76,9 @@ const LoginPage = () => {
     clearInput();
     if (email.length === 0) {
       setMessage(["이메일을 입력해주세요🔏"]);
-      return message;
     }
     if (password.length === 0) {
       setMessage(["비밀번호를 입력해주세요🔏"]);
-      return message;
     }
     startTransition(async () => {
       const { error } = await supabase.auth.signUp({
@@ -117,7 +115,6 @@ const LoginPage = () => {
           setMessage(["회원가입 과정에 오류가 발생했습니다😞"]);
         }
       }
-      return message;
     });
   };
 
@@ -125,7 +122,6 @@ const LoginPage = () => {
     clearInput();
     if (email.length === 0 || password.length === 0) {
       setMessage(["이메일과 비밀번호를 모두 입력해주세요🔏"]);
-      return message;
     }
     startTransition(async () => {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -143,7 +139,6 @@ const LoginPage = () => {
       } else if (error && error.message === "Email not confirmed") {
         setMessage(["이메일에서 회원가입을 완료해주세요😉"]);
       }
-      return message;
     });
   };
 

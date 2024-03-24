@@ -17,11 +17,12 @@ export function AlertAuthResult({
   isPending,
   message,
 }: {
-  func: () => Promise<string[] | undefined>;
+  func: () => Promise<void>;
   text: string;
   isPending: boolean;
   message: string[];
 }) {
+  console.log(message);
   const handleClick = async () => {
     await func();
   };
@@ -48,9 +49,9 @@ export function AlertAuthResult({
               message[0]
             )}
           </AlertDialogTitle>
-          {text === "회원가입" ? (
+          {isPending ? (
             <AlertDialogDescription>
-              {isPending ? <></> : message[1]}
+              {text === "회원가입" ? message[1] : <></>}
             </AlertDialogDescription>
           ) : null}
         </AlertDialogHeader>

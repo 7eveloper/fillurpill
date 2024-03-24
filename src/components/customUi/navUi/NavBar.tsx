@@ -28,13 +28,12 @@ const NavBar = () => {
         const surveyResult = await fetchSurvey();
         surveyResult?.length !== 0 && changeSurveyDone(true);
         const userData = await fetchUser();
-        console.log(userData);
         changeNickname(userData && userData[0].nickname);
       }
     };
 
     fetchSession();
-  }, [supabase.auth, changeLoggedIn, changeSurveyDone]);
+  }, [supabase.auth, changeLoggedIn, changeSurveyDone, changeNickname]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
