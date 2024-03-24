@@ -86,7 +86,9 @@ const ReviewList = () => {
           )}
           <div className="p-4 h-auto">
             <h2 className="text-xl font-semibold">{post.title}</h2>
-            <p className="mt-2 h-12">"{post.ingredient}"를(을) 추천합니다.</p>
+            <p className="mt-2 h-12">
+              &quot;{post.ingredient}&quot;를(을) 추천합니다.
+            </p>
             <p className="mt-2 h-12">{post.content}</p>
             <p className="mt-2">⭐️ {post.rating}</p>
             <div className="flex mt-4">
