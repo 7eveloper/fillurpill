@@ -1,6 +1,5 @@
 import { isThereClientSession } from "@/hooks/clientSession";
-import { User, zustandStore } from "@/store/zustandStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,6 +9,8 @@ import {
   SurveyDrawerTitle,
 } from "@/components/ui/drawer";
 import { alertMsg } from "@/lib/utils";
+import { User } from "@/lib/types";
+import { zustandStore } from "@/store/zustandStore";
 
 export const Survey = () => {
   const [userResult, setUserResult] = useState<User>({
@@ -26,15 +27,6 @@ export const Survey = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const changeSurveyDone = zustandStore((state) => state.changeSurveyDone);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { user } = await isThereClientSession();
-      setUserResult({ ...userResult, nickname: user?.user_metadata.nickname });
-    };
-    fetchUser();
-    // 처음에만 User 정보 가져오길 원해서 의존성 배열 비워 둠
-  }, []);
 
   const handleClick = (idx: number, value: string) => {
     setClickList((prev) => {
@@ -287,11 +279,14 @@ export const Header = ({
 };
 
 export const addSurvey = async (userResult: User) => {
+  const nickname = zustandStore((state) => state.user.nickname);
   const { supabase, user } = await isThereClientSession();
 
   const { error } = await supabase
     .from("survey")
-    .insert([{ user_id: user?.id, ...userResult, email: user?.email }]);
+    .insert([
+      { user_id: user?.id, ...userResult, nickname, email: user?.email },
+    ]);
 
   if (error) {
     console.error("사용자 설문조사 결과 저장 실패", error);

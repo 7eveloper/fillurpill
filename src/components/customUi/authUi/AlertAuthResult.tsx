@@ -22,7 +22,6 @@ export function AlertAuthResult({
   isPending: boolean;
   message: string[];
 }) {
-  console.log(message);
   const handleClick = async () => {
     await func();
   };

@@ -145,7 +145,7 @@ const MyInfo = () => {
     const { supabase, user } = await isThereClientSession();
     const { data, error } = await supabase
       .from("survey")
-      .update(formData)
+      .update(formData as Omit<User, "nickname">)
       .eq("user_id", user?.id || "");
     if (error) {
       throw new Error(error.message);

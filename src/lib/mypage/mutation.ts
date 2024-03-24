@@ -1,12 +1,12 @@
-import { IntakeDiary } from "@/store/Intake";
 import { supabase } from "../supabase";
 import { isThereClientSession } from "@/hooks/clientSession";
+import { IntakeDiary } from "../types";
 
 const addIntake = async (newIntake: IntakeDiary) => {
   const { supabase, user } = await isThereClientSession();
   const { data, error } = await supabase
     .from("intake")
-    .insert([{ user_id: user?.id, ...newIntake }]);
+    .insert([{ ...newIntake, user_id: user?.id }]);
   if (error) {
     throw new Error(error.message);
   }

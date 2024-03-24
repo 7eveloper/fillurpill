@@ -37,3 +37,21 @@ export type UserData = {
   nickname: string | null;
   user_id: string;
 };
+
+export type IntakeDiary = {
+  id: string;
+  title: string;
+  contents: string;
+  start: string;
+  end: string;
+  user_id?: string;
+};
+
+export type User = {
+  gender: string | null;
+  age: string | null;
+  weight: string | null;
+  height: string | null;
+  nickname: string | null;
+  email: string | null;
+};
