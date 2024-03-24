@@ -1,6 +1,6 @@
 "use client";
 
-import GoTopBtn from "@/components/product/GoTopBtn";
+import GoTopBtn from "@/components/GoTopBtn";
 import ProductList from "@/components/product/ProductList";
 import SearchBar from "@/components/product/SearchBar";
 import { useQueryProduct } from "@/hooks/useQueryProduct";
@@ -26,7 +26,7 @@ const ProductListPage = () => {
         <ProductList data={data} />
         <div className="py-10 text-center" ref={pageEnd}>
           {isFetching ? (
-            <ClipLoader color="#36d7b7" className="mx-1" />
+            <ClipLoader color="#36d7b7" className="mx-1 w-8 h-8" />
           ) : hasNextPage ? (
             "더보기"
           ) : (
