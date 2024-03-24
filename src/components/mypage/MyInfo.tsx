@@ -143,7 +143,10 @@ const MyInfo = () => {
       return;
     }
     const { supabase, user } = await isThereClientSession();
-    const { data, error } = await supabase.from("survey").insert([formData]);
+    const { data, error } = await supabase
+      .from("survey")
+      .update(formData)
+      .eq("user_id", user?.id || "");
     if (error) {
       throw new Error(error.message);
     }
