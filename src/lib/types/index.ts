@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export type Post = {
+export interface Post {
   id: number;
   title: string;
   content: string;
@@ -14,7 +14,8 @@ export type Post = {
   ingredient: string;
   userId: string;
   image: string;
-};
+  data: Json | null;
+}
 
 export type Product = {
   caution: string | null;
@@ -29,4 +30,10 @@ export type Product = {
   standard: string | null;
   sungsang: string | null;
   taking_guide: string | null;
+};
+
+export type UserData = {
+  email: string | null;
+  nickname: string | null;
+  user_id: string;
 };

@@ -1,8 +1,8 @@
 import React from "react";
-import PostForm from "@/components/community/PostForm";
+import ReviewForm from "@/components/review/ReviewForm";
 
 const NewPostPage = () => {
-  return <PostForm />;
+  return <ReviewForm />;
 };
 
 export default NewPostPage;

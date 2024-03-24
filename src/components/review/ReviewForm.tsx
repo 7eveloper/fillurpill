@@ -16,8 +16,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useNavigation } from "next/navigation";
 
-const PostForm = () => {
+const ReviewForm = () => {
   const [title, setTitle] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [content, setContent] = useState("");
@@ -29,6 +30,7 @@ const PostForm = () => {
     string | undefined
   >("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitted, setIsSumitted] = useState(false);
 
   const addPost = usePostStore((state) => state.addPost);
   const handleSubmit = async (event: FormEvent) => {
@@ -70,6 +72,8 @@ const PostForm = () => {
     setRating("");
     setSelectedProductImage("");
     addPost(newPost);
+    alert("등록이 완료되었습니다.");
+    navigation.navigate("/review");
   };
 
   const handleProductClick = async (productName: string) => {
@@ -202,15 +206,15 @@ const PostForm = () => {
                       <div className="text-center text-white">
                         <Label className="text-2xl mb-2">제품 기능</Label>
                         <p
-                          className="overflow-hidden"
+                          className="overflow-hidden p-3"
                           style={{ maxHeight: "4rem" }}
                         >
                           {result.function}
                         </p>
-                        {result.function.split("\n").length > 4 && (
+                        {result.function.split("\n").length > 3 && (
                           <>
                             <p
-                              className="text-blue-500 cursor-pointer hover:underline mt-2"
+                              className="text-white cursor-pointer hover:underline mt-2"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 event.currentTarget.previousSibling.style.maxHeight =
@@ -223,7 +227,7 @@ const PostForm = () => {
                               [더보기]
                             </p>
                             <p
-                              className="text-blue-500 cursor-pointer hover:underline mt-2 hidden"
+                              className="text-white cursor-pointer hover:underline mt-2 hidden"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 event.currentTarget.previousSibling.previousSibling.style.maxHeight =
@@ -293,4 +297,4 @@ const PostForm = () => {
   );
 };
 
-export default PostForm;
+export default ReviewForm;
