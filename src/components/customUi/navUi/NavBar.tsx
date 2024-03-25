@@ -21,19 +21,27 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      changeLoggedIn(!!data.session);
-
-      if (data.session) {
-        const surveyResult = await fetchSurvey();
-        surveyResult?.length !== 0 && changeSurveyDone(true);
-        const userData = await fetchUser();
-        changeNickname(userData && userData[0].nickname);
-      }
+      const { data: user } = await supabase.auth.getSession();
+      changeLoggedIn(!!user.session);
     };
 
     fetchSession();
-  }, [supabase.auth, changeLoggedIn, changeSurveyDone, changeNickname]);
+  }, [supabase.auth, changeLoggedIn]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const surveyResult = await fetchSurvey();
+      if (surveyResult?.length !== 1) {
+        changeSurveyDone(false);
+      }
+      const userData = await fetchUser();
+      changeNickname(userData && userData[0].nickname);
+    };
+
+    if (loggedIn) {
+      fetchUserData();
+    }
+  }, [loggedIn, changeSurveyDone, changeNickname]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
