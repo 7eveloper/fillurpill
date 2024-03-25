@@ -98,8 +98,6 @@ const LoginPage = () => {
           "이메일에서 회원가입을 완료해주세요💛",
         ]);
         alertMsgWithAction("회원가입", new Date().toLocaleString());
-        setLoginMode(true);
-        // changeLoggedIn(true);
       } else {
         if (
           error.message ===
