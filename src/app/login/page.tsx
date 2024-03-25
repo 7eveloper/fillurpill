@@ -98,8 +98,6 @@ const LoginPage = () => {
           "이메일에서 회원가입을 완료해주세요💛",
         ]);
         alertMsgWithAction("회원가입", new Date().toLocaleString());
-        setLoginMode(true);
-        changeLoggedIn(true);
       } else {
         if (
           error.message ===
@@ -133,7 +131,6 @@ const LoginPage = () => {
         router.refresh();
         changeLoggedIn(!!data.session);
         const userData = await fetchUser();
-        setMessage(["로그인완료", "이거는 되나?"]);
         changeNickname(userData && userData[0].nickname);
         alertMsgWithAction("로그인", new Date().toLocaleString());
       } else if (error && error.message === "Invalid login credentials") {
